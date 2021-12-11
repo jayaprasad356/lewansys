@@ -9,16 +9,33 @@ if (isset($_POST['btnLogin'])) {
   $password = $db->escapeString($_POST['password']);
   $type = $db->escapeString($_POST['register']);
 
-  $sql = "SELECT * FROM $type WHERE email = '" . $email . "' AND password = '" . $password . "'";
-  $db->sql($sql);
+  if(($type == 'college') || ($type == 'institution')){
+    $sql = "SELECT * FROM college_institution WHERE email = '" . $email . "' AND password = '" . $password . "' AND type = '" . $type . "'";
+    $db->sql($sql);
+
+  }
+  else {
+    $sql = "SELECT * FROM $type WHERE email = '" . $email . "' AND password = '" . $password . "'";
+    $db->sql($sql);
+  }
+  
   $res = $db->getResult();
   $num = $db->numRows($res);
   $error = array();
 
   if ($num == 1) {
     $_SESSION['id'] = $res[0]['id'];
-    if(($type == 'company')){
+    $_SESSION['type'] = $res[0]['type'];
+    if(($type == 'company') ){
       header("location: ../company/employer-dashboard.php");
+
+    }
+    else if(($type == 'college') || ($type == 'institution')){
+      header("location: ../college_institution/collage-dashboard.php");
+
+    }
+    else if(($type == 'student')){
+      header("location: ../student/dashboard.php");
 
     }
     

@@ -40,8 +40,8 @@ $email = $db->escapeString($_POST['email']);
 $password = $db->escapeString($_POST['password']);
 $type = $db->escapeString($_POST['type']);
 
-if(($_POST['type'] == 'college')){
-    $sql = "INSERT INTO college(`username`,`email`, `password`)VALUES('$username','$email','$password')";
+if(($_POST['type'] == 'college') || $_POST['type'] == 'institution'){
+    $sql = "INSERT INTO college_institution(`username`,`email`, `password`, `type`)VALUES('$username','$email','$password','$type')";
     $db->sql($sql);
 
     $response['success'] = true;
@@ -58,15 +58,7 @@ else if($_POST['type'] == 'company'){
     print_r(json_encode($response));
 
 }
-else if($_POST['type'] == 'institution'){
-    $sql = "INSERT INTO institution(`username`,`email`, `password`)VALUES('$username','$email','$password')";
-    $db->sql($sql);
 
-    $response['success'] = true;
-    $response['message'] = "User registered successfully";
-    print_r(json_encode($response));
-
-}
 else if($_POST['type'] == 'student'){
     $sql = "INSERT INTO student(`username`,`email`, `password`)VALUES('$username','$email','$password')";
     $db->sql($sql);

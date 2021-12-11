@@ -38,6 +38,7 @@ if (isset($_POST['btnPostJob']))
   $payment_method = $db->escapeString($_POST['payment_method']);
 
   $data = array(
+    'company_id' => $id,
     'job_title' => $job_title,
     'job_category' => $job_category,
     'job_location' => $job_location,
@@ -203,7 +204,7 @@ if($db->insert('jobs', $data, 'id=' . $id)){
                  <!--  <li class="menu-item dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Jobs</a>
                     <ul  class="dropdown-menu">
-                      <li class="menu-item"><a  href="job-listing.html">Job Listing</a></li>
+                      <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
                       <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
                       <li class="menu-item"><a  href="job-details.html">Job Details</a></li>
                       <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
@@ -213,8 +214,8 @@ if($db->insert('jobs', $data, 'id=' . $id)){
                     <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Candidates</a>
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="candidate.html">Candidate Listing</a></li>
-                      <li class="menu-item"><a  href="candidate-details.html">Candidate Details</a></li>
-                      <li class="menu-item"><a  href="add-resume.html">Add Resume</a></li>
+                      <li class="menu-item"><a  href="candidate-details.php">Candidate Details</a></li>
+                      <li class="menu-item"><a  href="add-resume.php">Add Resume</a></li>
                     </ul>
                   </li> -->
                  <!--  <li class="menu-item dropdown">
@@ -230,8 +231,8 @@ if($db->insert('jobs', $data, 'id=' . $id)){
                     <ul class="dropdown-menu">
                           <li class="menu-item"><a href="employer-dashboard.php">Employer Dashboard</a></li>
                           <li class="menu-item"><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.html">Manage Candidate</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.php">Manage Candidate</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-job.php">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
                           <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
@@ -281,7 +282,7 @@ if($db->insert('jobs', $data, 'id=' . $id)){
           <div class="col">
             <div class="dashboard-container">
               <div class="dashboard-content-wrapper">
-                <form action="#" class="dashboard-form job-post-form">
+                <form method="post" enctype="multipart/form-data" class="dashboard-form job-post-form">
                   <div class="dashboard-section basic-info-input">
                     <h4><i data-feather="user-check"></i>Post A Job</h4>
                     <div class="form-group row">
@@ -544,8 +545,8 @@ if($db->insert('jobs', $data, 'id=' . $id)){
                   <ul>
                     <li><i class="fas fa-home"></i><a href="employer-dashboard.php">Dashboard</a></li>
                     <li><i class="fas fa-user"></i><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
-                    <li><i class="fas fa-briefcase"></i><a href="employer-dashboard-manage-job.html">Manage Jobs</a></li>
-                    <li><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.html">Manage Candidates</a></li>
+                    <li><i class="fas fa-briefcase"></i><a href="employer-dashboard-manage-job.php">Manage Jobs</a></li>
+                    <li><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.php">Manage Candidates</a></li>
                     <li><i class="fas fa-heart"></i><a href="#">Shortlisted Resumes</a></li>
                     <li class="active"><i class="fas fa-plus-square"></i><a href="employer-dashboard-post-job.php">Post New Job</a></li>
                     <li><i class="fas fa-comment"></i><a href="employer-dashboard-message.html">Message</a></li>
@@ -598,7 +599,7 @@ if($db->insert('jobs', $data, 'id=' . $id)){
                 <p>Add resume or post a job.</p>
               </div>
               <div class="call-to-action-button">
-                <a href="add-resume.html" class="button">Add Resume</a>
+                <a href="add-resume.php" class="button">Add Resume</a>
                 <span>Or</span>
                 <a href="post-job.html" class="button">Post A Job</a>
               </div>

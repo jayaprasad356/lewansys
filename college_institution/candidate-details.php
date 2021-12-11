@@ -1,3 +1,58 @@
+<?php
+session_start();
+ob_start();
+include_once('../includes/functions.php');
+$function = new functions;
+include_once('../includes/crud.php');
+$db = new Database();
+$db->connect();
+$db->sql("SET NAMES 'utf8'");
+
+$id = $_SESSION['id'];
+if (!isset($id)) {
+  header("location:login.php");
+}
+$student_id = $_GET['student_id'];
+$sql = "SELECT * FROM student WHERE id = $student_id";
+$db->sql($sql);
+$res = $db->getResult();
+
+$name = $res[0]['name'];
+$profile = $res[0]['profile'];
+$about = $res[0]['about'];
+$category = $res[0]['category'];
+$location = $res[0]['location'];
+$job_type = $res[0]['job_type'];
+$experience = $res[0]['experience'];
+$salary_range = $res[0]['salary_range'];
+$gender = $res[0]['gender'];
+$age = $res[0]['age'];
+$qualification = $res[0]['qualification'];
+$skill = $res[0]['skill'];
+
+$spl_qualification = $res[0]['spl_qualification'];
+
+
+
+$pd_name = $res[0]['pd_name'];
+$pd_father_name = $res[0]['pd_father_name'];
+$pd_mother_name = $res[0]['pd_mother_name'];
+$pd_dob = $res[0]['pd_dob'];
+$pd_nationality = $res[0]['pd_nationality'];
+$pd_sex = $res[0]['pd_sex'];
+$pd_address = $res[0]['pd_address'];
+$pd_age = $res[0]['pd_age'];
+
+$facebook = $res[0]['facebook'];
+$twitter = $res[0]['twitter'];
+$google = $res[0]['google'];
+$linkedin = $res[0]['linkedin'];
+$pinterest = $res[0]['pinterest'];
+$instagram = $res[0]['instagram'];
+$behance = $res[0]['behance'];
+$dribbble = $res[0]['dribbble'];
+$github = $res[0]['github'];
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -50,7 +105,7 @@
           <div class="col">
             <div class="header-top">
               <div class="logo-area">
-                <a href="collage-dashboard.html"><img src="images/logo-2.png" alt=""></a>
+                <a href="collage-dashboard.php"><img src="images/logo-2.png" alt=""></a>
               </div>
               <div class="header-top-toggler">
                 <div class="header-top-toggler-button"></div>
@@ -126,7 +181,7 @@
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
-                  <li class="menu-item active"><a title="Home" href="collage-dashboard.html">Home</a></li>
+                  <li class="menu-item active"><a title="Home" href="collage-dashboard.php">Home</a></li>
                 
                   
                  <!--  <li class="menu-item dropdown">
@@ -141,12 +196,12 @@
                     <li class="menu-item dropdown">
                         <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
                         <ul class="dropdown-menu">
-                          <li class="menu-item"><a  href="collage-dashboard.html">Dashboard</a></li>
-                          <li class="menu-item"><a  href="dashboard-edit-profile.html">Edit Profile</a></li>
-                          <li class="menu-item"><a  href="employer-dashboard-manage-candidate.html">Manage Canditates</a></li>
-                          <li class="menu-item"><a  href="job-listing.html">Jobs</a></li>
-                          <li class="menu-item"><a  href="dashboard-bookmark.html">Bookmarked</a></li>
-                          <li class="menu-item"><a  href="add-student.html">Add Student</a></li>
+                          <li class="menu-item"><a  href="collage-dashboard.php">Dashboard</a></li>
+                          <li class="menu-item"><a  href="dashboard-edit-profile.php">Edit Profile</a></li>
+                          <li class="menu-item"><a  href="employer-dashboard-manage-candidate.php">Manage Canditates</a></li>
+                          <li class="menu-item"><a  href="job-listing.php">Jobs</a></li>
+                          <li class="menu-item"><a  href="dashboard-bookmark.php">Bookmarked</a></li>
+                          <li class="menu-item"><a  href="add-student.php">Add Student</a></li>
                           <li class="menu-item"><a  href="dashboard-pricing.html">Pricing</a></li>
                         </ul>
                       </li>
@@ -156,8 +211,8 @@
                         <ul class="dropdown-menu">
                           <li class="menu-item"><a href="employer-dashboard.php">Employer Dashboard</a></li>
                           <li class="menu-item"><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.html">Manage Candidate</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.php">Manage Candidate</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-job.php">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
                           <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
@@ -167,7 +222,7 @@
                   </li>
                  
                   <li class="menu-item"><a href="contact.html">Contact Us</a></li>
-                  <li class="menu-item post-job"><a href="add-student.html"><i class="fas fa-plus"></i>Add Student</a></li>
+                  <li class="menu-item post-job"><a href="add-student.php"><i class="fas fa-plus"></i>Add Student</a></li>
                 </ul>
               </div>
             </nav>
@@ -185,13 +240,13 @@
               <div class="title-and-info">
                 <div class="title">
                   <div class="thumb">
-                    <img src="images/candidate/thumb-1.jpg" class="img-fluid" alt="">
+                    <img src="../<?php echo $profile  ?>" class="img-fluid" alt="">
                   </div>
                   <div class="title-body">
-                    <h4>Micheal N. Taylor</h4>
+                    <h4><?php echo $name  ?></h4>
                     <div class="info">
-                      <span class="candidate-designation"><i data-feather="check-square"></i>ios Developer</span>
-                      <span class="candidate-location"><i data-feather="map-pin"></i>Los Angeles</span>
+                      <span class="candidate-designation"><i data-feather="check-square"></i><?php echo $category  ?></span>
+                      <span class="candidate-location"><i data-feather="map-pin"></i><?php echo $location  ?></span>
                     </div>
                   </div>
                 </div>
@@ -200,62 +255,72 @@
                 </div>
               </div>
               <div class="skill-and-profile">
-                <div class="skill">
-                  <label>Skills:</label>
-                  <a href="#">Design</a>
-                  <a href="#">Illustration</a>
-                  <a href="#">iOS</a>
-                </div>
-                <div class="social-profile">
-                  <label>Social:</label>
-                  <a href="#"><i class="fab fa-facebook-f"></i></a>
-                  <a href="#"><i class="fab fa-twitter"></i></a>
-                  <a href="#"><i class="fab fa-google-plus"></i></a>
-                  <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                  <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                  <a href="#"><i class="fab fa-behance"></i></a>
-                  <a href="#"><i class="fab fa-dribbble"></i></a>
-                  <a href="#"><i class="fab fa-github"></i></a>
-                </div>
+              <div class="skill">
+                    <label>Skills:</label>
+                    <?php $skills = explode(",", $skill);
+                    foreach($skills as $skill) {
+                      $skill = trim($skill); ?>
+                    
+                      <a href="#"><?php echo  $skill ?></a>
+                      <?php }?>
+                  </div>
+                  <div class="social-profile">
+                    <label>Social:</label>
+                    <a href="<?php echo  $facebook ?>" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="<?php echo  $twitter ?>" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="<?php echo  $google ?>" target="_blank"><i class="fab fa-google-plus"></i></a>
+                    <a href="<?php echo  $linkedin ?>" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="<?php echo  $pinterest ?>" target="_blank"><i class="fab fa-pinterest-p"></i></a>
+                    <a href="<?php echo  $behance ?>" target="_blank"><i class="fab fa-behance"></i></a>
+                    <a href="<?php echo  $dribbble ?>" target="_blank"><i class="fab fa-dribbble"></i></a>
+                    <a href="<?php echo  $github ?>" target="_blank"><i class="fab fa-github"></i></a>
+                    
+                    
+                  </div>
               </div>
               <div class="details-information section-padding-60">
                 <div class="row">
                   <div class="col-xl-7 col-lg-8">
                     <div class="about-details details-section">
                       <h4><i data-feather="align-left"></i>About Me</h4>
-                      <p>Combined with a handful of model sentence structures, to generate lorem Ipsum which  It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including.</p>
-                      <p>Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable </p>
+                      <p><?php echo  $about ?></p>
                     </div>
                     <div class="edication-background details-section">
                       <h4><i data-feather="book"></i>Education Background</h4>
-                      <div class="education-label">
-                        <span class="study-year">2018 - Present</span>
-                        <h5>Masters in Software Engineering<span>@ Engineering University</span></h5>
-                        <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
-                      </div>
-                      <div class="education-label">
-                        <span class="study-year">2014 - 2018</span>
-                        <h5>Diploma in Graphics Design<span>@ Graphic Arts Institute</span></h5>
-                        <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
-                      </div>
-                      <div class="education-label">
-                        <span class="study-year">2008 - 2014</span>
-                        <h5>Secondary School Certificate<span>@  Engineering High School</span></h5>
-                        <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
-                      </div>
+                      <?php
+                        $sql = "SELECT * FROM stu_edu WHERE student_id = $id ";
+                        $db->sql($sql);
+                        $edures = $db->getResult();
+                            foreach ($edures as $row) 
+                            { ?>
+                  <div class="education-label">
+                  
+                    <span class="study-year"><?php echo $row['edu_period']  ?></span>
+                    <h5><?php echo $row['edu_designation']  ?><span>@ <?php echo $row['edu_institute']  ?></span></h5>
+                    <p><?php echo $row['edu_description']  ?></p>
+                    
+                    
+                  </div>
+                  <?php }?>
+                      
                     </div>
                     <div class="experience details-section">
                       <h4><i data-feather="briefcase"></i>Work Experiance</h4>
-                      <div class="experience-section">
-                        <span class="service-year">2016 - Present</span>
-                        <h5>Lead UI/UX Designer<span>@ Codepassengers LTD</span></h5>
-                        <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
-                      </div>
-                      <div class="experience-section">
-                        <span class="service-year">2012 - 2016</span>
-                        <h5>Former Graphic Designer<span>@ Graphicreeeo CO</span></h5>
-                        <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
-                      </div>
+                      <?php
+                  $sql = "SELECT * FROM stu_work_exp WHERE student_id = $id ";
+                  $db->sql($sql);
+                  $workexpres = $db->getResult();
+                      foreach ($workexpres as $row) 
+                      { ?>
+                  <div class="experience-section">
+                    <span class="service-year"><?php echo $row['exp_period']  ?></span>
+                    <h5><?php echo $row['exp_title']  ?><span>@ <?php echo $row['exp_company_name']  ?></span></h5>
+                    <p><?php echo $row['exp_description']  ?></p>
+                   
+                  </div>
+                  
+                  <?php }?>
+                      
                     </div>
                     <div class="professonal-skill details-section">
                       <h4><i data-feather="feather"></i>Professional Skill</h4>
@@ -362,14 +427,14 @@
                       <div class="information">
                         <h4>Information</h4>
                         <ul>
-                          <li><span>Category:</span> Design & Creative</li>
-                          <li><span>Location:</span> Los Angeles</li>
-                          <li><span>Status:</span> Full-time</li>
-                          <li><span>Experience:</span> 3 year(s)</li>
-                          <li><span>Salary:</span> $32k - $36k</li>
-                          <li><span>Gender:</span> Male</li>
-                          <li><span>Age:</span> 24 Year(s)</li>
-                          <li><span>Qualification:</span> Gradute</li>
+                          <li><span>Category:</span> <?php echo  $category ?></li>
+                          <li><span>Location:</span> <?php echo  $location ?></li>
+                          <li><span>Job Type:</span> <?php echo  $job_type ?></li>
+                          <li><span>Experience:</span> <?php echo  $experience ?> year(s)</li>
+                          <li><span>Salary:</span> <?php echo  $salary_range ?></li>
+                          <li><span>Gender:</span> <?php echo  $gender ?></li>
+                          <li><span>Age:</span> <?php echo  $age ?> Year(s)</li>
+                          <li><span>Qualification:</span> <?php echo  $qualification ?></li>
                         </ul>
                       </div>
                       <div class="buttons">
@@ -437,7 +502,7 @@
                 <p>Add resume or post a job.</p>
               </div>
               <div class="call-to-action-button">
-                <a href="add-resume.html" class="button">Add Resume</a>
+                <a href="add-resume.php" class="button">Add Resume</a>
                 <span>Or</span>
                 <a href="post-job.html" class="button">Post A Job</a>
               </div>

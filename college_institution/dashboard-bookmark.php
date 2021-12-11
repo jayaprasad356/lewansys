@@ -1,3 +1,35 @@
+<?php
+session_start();
+ob_start();
+$id = $_SESSION['id'];
+  if (!isset($id)) {
+    header("location:login.php");
+  }
+include_once('../includes/crud.php');
+$db = new Database();
+$db->connect();
+$sql = "SELECT *,b.id AS id from jobs j INNER JOIN company c on j.company_id = c.id INNER JOIN clg_ins_bookmark_jobs b ON b.job_id = j.id WHERE b.clg_ins_id = $id";
+$db->sql($sql);
+$result = $db->getResult();
+
+$sql = "SELECT * FROM college_institution WHERE id = $id";
+$db->sql($sql);
+$res = $db->getResult();
+
+$sql = "SELECT COUNT(*) AS count
+    FROM clg_ins_bookmark_jobs
+    WHERE clg_ins_id = $id";
+    $db->sql($sql);
+    $bookcount = $db->getResult();
+    if (isset($_GET['operation'])){
+      if ($_GET['operation'] == 'remove'){
+        $sql = "DELETE FROM clg_ins_bookmark_jobs WHERE id = '" . $_GET['id'] . "'";
+        $db->sql($sql);
+        header("location: dashboard-bookmark.php");
+
+      }
+    }
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -42,13 +74,14 @@
 
   </head>
   <body>
- <header class="header-2">
+
+   <header class="header-2">
       <div class="container">
         <div class="row">
           <div class="col">
             <div class="header-top">
               <div class="logo-area">
-                <a href="employer-dashboard.php"><img src="images/logo-2.png" alt=""></a>
+                <a href="collage-dashboard.php"><img src="images/logo-2.png" alt=""></a>
               </div>
               <div class="header-top-toggler">
                 <div class="header-top-toggler-button"></div>
@@ -97,13 +130,13 @@
                   <a href="#" class="account-button">My Account</a>
                   <div class="account-card">
                     <div class="header-top-account-info">
-                      <a href="#" class="account-thumb">
-                        <img src="images/account/thumb-1.jpg" class="img-fluid" alt="">
-                      </a>
-                      <div class="account-body">
-                        <h5><a href="#">Robert Chavez</a></h5>
-                        <span class="mail">chavez@domain.com</span>
-                      </div>
+                    <a href="#" class="account-thumb">
+                          <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
+                        </a>
+                        <div class="account-body">
+                          <h5><a href="#"><?php echo $res[0]['name'] ?></a></h5>
+                          <span class="mail"><?php echo $res[0]['email'] ?></span>
+                        </div>
                     </div>
                     <ul class="account-item-list">
                       <li><a href="#"><span class="ti-user"></span>Account</a></li>
@@ -112,7 +145,7 @@
                     </ul>
                   </div>
                 </div>
-                <!-- <select class="selectpicker select-language" data-width="fit">
+               <!--  <select class="selectpicker select-language" data-width="fit">
                   <option data-content='<span class="flag-icon flag-icon-us"></span> English'>English</option>
                   <option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
                 </select> -->
@@ -124,46 +157,48 @@
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
-                  <li class="menu-item active"><a title="Home" href="employer-dashboard.php">Home</a></li>
-                 <!--  <li class="menu-item dropdown">
-                    <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Jobs</a>
-                    <ul  class="dropdown-menu">
-                      <li class="menu-item"><a  href="job-listing.html">Job Listing</a></li>
-                      <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
-                      <li class="menu-item"><a  href="job-details.html">Job Details</a></li>
-                      <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
-                    </ul>
-                  </li>
-                  <li class="menu-item dropdown">
-                    <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Candidates</a>
-                    <ul  class="dropdown-menu">
-                      <li class="menu-item"><a  href="candidate.html">Candidate Listing</a></li>
-                      <li class="menu-item"><a  href="candidate-details.html">Candidate Details</a></li>
-                      <li class="menu-item"><a  href="add-resume.html">Add Resume</a></li>
-                    </ul>
-                  </li> -->
+                  <li class="menu-item active"><a title="Home" href="collage-dashboard.php">Home</a></li>
+                
+                  
                  <!--  <li class="menu-item dropdown">
                     <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Employers</a>
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="employer-listing.html">Employer Listing</a></li>
                       <li class="menu-item"><a  href="employer-details.html">Employer Details</a></li>
-                      <li class="menu-item"><a  href="employer-dashboard-post-job.php">Post a Job</a></li>
+                      <li class="menu-item"><a  href="employer-dashboard-post-job.php">Add A Student</a></li>
                     </ul>
                   </li> -->
-                  <li class="menu-item dropdown">
-                    <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
-                    <ul class="dropdown-menu">
+                 
+                    <li class="menu-item dropdown">
+                        <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
+                        <ul class="dropdown-menu">
+                          <li class="menu-item"><a  href="collage-dashboard.php">Dashboard</a></li>
+                          <li class="menu-item"><a  href="collage-dashboard-edit-profile.php">Edit Profile</a></li>
+                          <li class="menu-item"><a  href="employer-dashboard-manage-candidate.php">Manage Canditates</a></li>
+                          <li class="menu-item"><a  href="job-listing.php">Jobs</a></li>
+                          <li class="menu-item"><a  href="dashboard-bookmark.php">Bookmarked</a></li>
+                          <li class="menu-item"><a  href="add-student.php">Add Student</a></li>
+                          <li class="menu-item"><a  href="dashboard-pricing.html">Pricing</a></li>
+                        </ul>
+                      </li>
+                      
+                      <!-- <li class="menu-item dropdown">
+                        <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Employer Dashboard</a>
+                        <ul class="dropdown-menu">
                           <li class="menu-item"><a href="employer-dashboard.php">Employer Dashboard</a></li>
                           <li class="menu-item"><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.html">Manage Candidate</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.php">Manage Candidate</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-job.php">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
                           <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
                         </ul>
+                      </li> -->
+                    
                   </li>
+                 
                   <li class="menu-item"><a href="contact.html">Contact Us</a></li>
-                  <li class="menu-item post-job"><a href="post-job.html"><i class="fas fa-plus"></i>Post a Job</a></li>
+                  <li class="menu-item post-job"><a href="add-student.php"><i class="fas fa-plus"></i>Add Student</a></li>
                 </ul>
               </div>
             </nav>
@@ -178,18 +213,18 @@
         <div class="row">
           <div class="col-md-6">
             <div class="breadcrumb-area">
-              <h1>Employer Dashboard</h1>
+              <h1>Collage/Institution Dashboard</h1>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#">Home</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Employer Dashboard</li>
+                  <li class="breadcrumb-item"><a href="job-listing.php">Home</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Bookmarked</li>
                 </ol>
               </nav>
             </div>
           </div>
           <div class="col-md-6">
             <div class="breadcrumb-form">
-             <!--  <form action="#">
+              <!-- <form action="#">
                 <input type="text" placeholder="Enter Keywords">
                 <button><i data-feather="search"></i></button>
               </form> -->
@@ -206,143 +241,48 @@
           <div class="col">
             <div class="dashboard-container">
               <div class="dashboard-content-wrapper">
-                <div class="manage-job-container">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Job Title</th>
-                        <th>Applications</th>
-                        <th>Deadline</th>
-                        <th>Status</th>
-                        <th class="action">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="job-items">
-                        <td class="title">
-                          <h5><a href="#">Land Development Marketer</a></h5>
-                          <div class="info">
-                            <span class="office-location"><a href="#"><i data-feather="map-pin"></i>New Orleans</a></span>
-                            <span class="job-type full-time"><a href="#"><i data-feather="clock"></i>Full Time</a></span>
-                          </div>
-                        </td>
-                        <td class="application"><a href="#">6 Application(s)</a></td>
-                        <td class="deadline">Oct 31,  2020</td>
-                        <td class="status active">Active</td>
-                        <td class="action">
-                          <a href="#" class="preview" title="Preview"><i data-feather="eye"></i></a>
-                          <a href="#" class="edit" title="Edit"><i data-feather="edit"></i></a>
-                          <a href="#" class="remove" title="Delete"><i data-feather="trash-2"></i></a>
-                        </td>
-                      </tr>
-                      <tr class="job-items">
-                        <td class="title">
-                          <h5><a href="#">Designer Required </a></h5>
-                          <div class="info">
-                            <span class="office-location"><a href="#"><i data-feather="map-pin"></i>New Orleans</a></span>
-                            <span class="job-type freelance"><a href="#"><i data-feather="clock"></i>Freelance</a></span>
-                          </div>
-                        </td>
-                        <td class="application"><a href="#">6 Application(s)</a></td>
-                        <td class="deadline">Oct 31,  2020</td>
-                        <td class="status pending">Pending</td>
-                        <td class="action">
-                          <a href="#" class="preview" title="Preview"><i data-feather="eye"></i></a>
-                          <a href="#" class="edit" title="Edit"><i data-feather="edit"></i></a>
-                          <a href="#" class="remove" title="Delete"><i data-feather="trash-2"></i></a>
-                        </td>
-                      </tr>
-                      <tr class="job-items">
-                        <td class="title">
-                          <h5><a href="#">Restaurant Team Member - Crew</a></h5>
-                          <div class="info">
-                            <span class="office-location"><a href="#"><i data-feather="map-pin"></i>New Orleans</a></span>
-                            <span class="job-type temporary"><a href="#"><i data-feather="clock"></i>Temporary</a></span>
-                          </div>
-                        </td>
-                        <td class="application"><a href="#">6 Application(s)</a></td>
-                        <td class="deadline">Oct 31,  2020</td>
-                        <td class="status expired">Expired</td>
-                        <td class="action">
-                          <a href="#" class="preview" title="Preview"><i data-feather="eye"></i></a>
-                          <a href="#" class="edit" title="Edit"><i data-feather="edit"></i></a>
-                          <a href="#" class="remove" title="Delete"><i data-feather="trash-2"></i></a>
-                        </td>
-                      </tr>
-                      <tr class="job-items">
-                        <td class="title">
-                          <h5><a href="#">Land Development Marketer</a></h5>
-                          <div class="info">
-                            <span class="office-location"><a href="#"><i data-feather="map-pin"></i>New Orleans</a></span>
-                            <span class="job-type full-time"><a href="#"><i data-feather="clock"></i>Full Time</a></span>
-                          </div>
-                        </td>
-                        <td class="application"><a href="#">6 Application(s)</a></td>
-                        <td class="deadline">Oct 31,  2020</td>
-                        <td class="status active">Active</td>
-                        <td class="action">
-                          <a href="#" class="preview" title="Preview"><i data-feather="eye"></i></a>
-                          <a href="#" class="edit" title="Edit"><i data-feather="edit"></i></a>
-                          <a href="#" class="remove" title="Delete"><i data-feather="trash-2"></i></a>
-                        </td>
-                      </tr>
-                      <tr class="job-items">
-                        <td class="title">
-                          <h5><a href="#">Designer Required </a></h5>
-                          <div class="info">
-                            <span class="office-location"><a href="#"><i data-feather="map-pin"></i>New Orleans</a></span>
-                            <span class="job-type freelance"><a href="#"><i data-feather="clock"></i>Freelance</a></span>
-                          </div>
-                        </td>
-                        <td class="application"><a href="#">6 Application(s)</a></td>
-                        <td class="deadline">Oct 31,  2020</td>
-                        <td class="status pending">Pending</td>
-                        <td class="action">
-                          <a href="#" class="preview" title="Preview"><i data-feather="eye"></i></a>
-                          <a href="#" class="edit" title="Edit"><i data-feather="edit"></i></a>
-                          <a href="#" class="remove" title="Delete"><i data-feather="trash-2"></i></a>
-                        </td>
-                      </tr>
-                      <tr class="job-items">
-                        <td class="title">
-                          <h5><a href="#">Restaurant Team Member - Crew</a></h5>
-                          <div class="info">
-                            <span class="office-location"><a href="#"><i data-feather="map-pin"></i>New Orleans</a></span>
-                            <span class="job-type temporary"><a href="#"><i data-feather="clock"></i>Temporary</a></span>
-                          </div>
-                        </td>
-                        <td class="application"><a href="#">6 Application(s)</a></td>
-                        <td class="deadline">Oct 31,  2020</td>
-                        <td class="status expired">Expired</td>
-                        <td class="action">
-                          <a href="#" class="preview" title="Preview"><i data-feather="eye"></i></a>
-                          <a href="#" class="edit" title="Edit"><i data-feather="edit"></i></a>
-                          <a href="#" class="remove" title="Delete"><i data-feather="trash-2"></i></a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="pagination-list text-center">
-                    <nav class="navigation pagination">
-                      <div class="nav-links">
-                        <a class="prev page-numbers" href="#"><i class="fas fa-angle-left"></i></a>
-                        <a class="page-numbers" href="#">1</a>
-                        <span aria-current="page" class="page-numbers current">2</span>
-                        <a class="page-numbers" href="#">3</a>
-                        <a class="page-numbers" href="#">4</a>
-                        <a class="next page-numbers" href="#"><i class="fas fa-angle-right"></i></a>
+                <div class="dashboard-bookmarked">
+                  <h4 class="bookmark-title"><?php echo $bookcount[0]['count'] ?> Job Bookmarked</h4>
+                  <div class="bookmark-area">
+                  <?php
+                      foreach ($result as $row) 
+                      { ?>
+                    <div class="job-list">
+                      <div class="thumb">
+                        <a href="#">
+                        <img src="../<?php echo $row['profile']  ?>" class="img-fluid" alt="">
+                        </a>
                       </div>
-                    </nav>                
+                      <div class="body">
+                        <div class="content">
+                          <h4><a href="job-details.html"><?php echo $row['job_title']  ?></a></h4>
+                          <div class="info">
+                          <span class="company"><a href="#"><i data-feather="briefcase"></i><?php echo $row['company_name']  ?></a></span>
+                          <span class="office-location"><a href="#"><i data-feather="map-pin"></i><?php echo $row['job_location']  ?></a></span>
+                          <span class="job-type temporary"><a href="#"><i data-feather="clock"></i><?php echo $row['job_type']  ?></a></span>
+                          </div>
+                        </div>
+                        <div class="more">
+                          <div class="buttons">
+                            <a href="#" class="button">Apply Now</a>
+                            <a href="#" class="favourite"><i data-feather="heart"></i></a>
+                          </div>
+                          <a href="dashboard-bookmark.php?operation=remove&id=<?php echo $row['id']?>" class="bookmark-remove"><i class="fas fa-times"></i></a>
+                          <p class="deadline"><?php echo $row['job_last_date']  ?></p>
+                        </div>
+                      </div>
+                    </div>
+                    <?php } ?>
                   </div>
                 </div>
               </div>
               <div class="dashboard-sidebar">
-                <div class="company-info">
+                <div class="user-info">
                   <div class="thumb">
-                    <img src="dashboard/images/company-logo.png" class="img-fluid" alt="">
+                    <img src="dashboard/images/user-1.jpg" class="img-fluid" alt="">
                   </div>
-                  <div class="company-body">
-                    <h5>Degoin</h5>
+                  <div class="user-body">
+                    <h5>Lula Wallace</h5>
                     <span>@username</span>
                   </div>
                 </div>
@@ -361,15 +301,16 @@
                 </div>
                 <div class="dashboard-menu">
                   <ul>
-                    <li><i class="fas fa-home"></i><a href="employer-dashboard.php">Dashboard</a></li>
-                    <li><i class="fas fa-user"></i><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
-                    <li class="active"><i class="fas fa-briefcase"></i><a href="employer-dashboard-manage-job.html">Manage Jobs</a></li>
-                    <li><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.html">Manage Candidates</a></li>
-                    <li><i class="fas fa-heart"></i><a href="#">Shortlisted Resumes</a></li>
-                    <li><i class="fas fa-plus-square"></i><a href="employer-dashboard-post-job.php">Post New Job</a></li>
-                    <li><i class="fas fa-comment"></i><a href="employer-dashboard-message.html">Message</a></li>
-                    <li><i class="fas fa-calculator"></i><a href="employer-dashboard-pricing.html">Pricing Plans</a></li>
-                  </ul>
+                    <li><i class="fas fa-home"></i><a href="collage-dashboard.php">Dashboard</a></li>
+                    <li><i class="fas fa-user"></i><a href="collage-dashboard-edit-profile.php">Edit Profile</a></li>
+                     <li><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.php">Manage Candidates</a></li>
+                    <li><i class="fas fa-briefcase"></i><a href="job-listing.php">Jobs</a></li>
+                     <li class="active"><i class="fas fa-heart"></i><a href="dashboard-bookmark.php">Bookmarked</a></li>
+                    <li><i class="fas fa-plus-square"></i><a href="add-student.php">Add Student</a></li>
+                    <!-- <li><i class="fas fa-comment"></i><a href="employer-dashboard-message.html">Message</a></li> -->
+                    <li><i class="fas fa-calculator"></i><a href="dashboard-pricing.html">Pricing Plans</a></li>
+                   
+                   
                   <ul class="delete">
                     <li><i class="fas fa-power-off"></i><a href="#">Logout</a></li>
                     <li><i class="fas fa-trash-alt"></i><a href="#" data-toggle="modal" data-target="#modal-delete">Delete Profile</a></li>
@@ -413,11 +354,11 @@
           <div class="col">
             <div class="call-to-action-2">
               <div class="call-to-action-content">
-                <h2>For Find Your Dream Job or Candidate</h2>
+                <h2>Find Your Dream Job or Candidate</h2>
                 <p>Add resume or post a job.</p>
               </div>
               <div class="call-to-action-button">
-                <a href="add-resume.html" class="button">Add Resume</a>
+                <a href="add-resume.php" class="button">Add Resume</a>
                 <span>Or</span>
                 <a href="post-job.html" class="button">Post A Job</a>
               </div>
@@ -527,7 +468,7 @@
                     </div>
                   </div>
                   <div class="col-xl-4 col-lg-4 order-lg-1">
-                    <p class="copyright-text">Copyright Lewansys 2021, All right reserved.<br> Designed and Developed by <a href="https://aitechnologies.co.in/" target="_blank">AiTechnologies</a></p>
+                    <p class="copyright-text">Copyright Lewansys 2021, All rights reserved. <br> Designed And Developed By <a href="https://aitechnologies.co.in/" target="_blank">AiTechnologies</a>. </p>
                   </div>
                   <div class="col-xl-4 col-lg-3 order-lg-3">
                     <div class="back-to-top">

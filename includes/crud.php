@@ -178,7 +178,7 @@ class Database
     }
 
     //Function to delete table or row(s) from database
-    public function delete($table, $where = null)
+    public function delete($table, $where)
     {
         // Check to see if table exists
         if ($this->tableExists($table)) {

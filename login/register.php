@@ -187,6 +187,9 @@
           cache: false,
           success: function(response) {
           alert(response.message);
+          if(response.success == true){
+            window.location.replace("login.php");
+          }
           },
           error: function(xhr, status, error) {
           console.error(xhr);

@@ -1,3 +1,350 @@
+<?php
+session_start();
+ob_start();
+include_once('../includes/functions.php');
+$function = new functions;
+include_once('../includes/crud.php');
+$db = new Database();
+$db->connect();
+$db->sql("SET NAMES 'utf8'");
+
+$id = $_SESSION['id'];
+if (!isset($id)) {
+  header("location:login.php");
+}
+$sql = "SELECT * FROM student WHERE id = $id";
+$db->sql($sql);
+$res = $db->getResult();
+
+$about = $res[0]['about'];
+$category = $res[0]['category'];
+$location = $res[0]['location'];
+$job_type = $res[0]['job_type'];
+$experience = $res[0]['experience'];
+$salary_range = $res[0]['salary_range'];
+$gender = $res[0]['gender'];
+$age = $res[0]['age'];
+$qualification = $res[0]['qualification'];
+$skill = $res[0]['skill'];
+
+
+
+
+
+
+$spl_qualification = $res[0]['spl_qualification'];
+
+
+
+$pd_name = $res[0]['pd_name'];
+$pd_father_name = $res[0]['pd_father_name'];
+$pd_mother_name = $res[0]['pd_mother_name'];
+$pd_dob = $res[0]['pd_dob'];
+$pd_nationality = $res[0]['pd_nationality'];
+$pd_sex = $res[0]['pd_sex'];
+$pd_address = $res[0]['pd_address'];
+$pd_age = $res[0]['pd_age'];
+
+$facebook = $res[0]['facebook'];
+$twitter = $res[0]['twitter'];
+$google = $res[0]['google'];
+$linkedin = $res[0]['linkedin'];
+$pinterest = $res[0]['pinterest'];
+$instagram = $res[0]['instagram'];
+$behance = $res[0]['behance'];
+$dribbble = $res[0]['dribbble'];
+$github = $res[0]['github'];
+if (isset($_GET['operation']))
+{
+  if ($_GET['operation'] == 'edudelete'){
+    $edudel = $_GET['id'];
+    $sql = "DELETE FROM stu_edu WHERE id = $edudel";
+    $db->sql($sql);
+    $db->getResult();
+
+  }
+  else {
+    $workexpdel = $_GET['id'];
+    $sql = "DELETE FROM stu_work_exp WHERE id = $workexpdel";
+    $db->sql($sql);
+    $db->getResult();
+
+  }
+
+  
+
+}
+
+if (isset($_POST['btnUpdateSocLink'])){
+  $facebook = $db->escapeString($_POST['facebook']);
+  $twitter = $db->escapeString($_POST['twitter']);
+  $google = $db->escapeString($_POST['google']);
+  $linkedin = $db->escapeString($_POST['linkedin']);
+  $pinterest = $db->escapeString($_POST['pinterest']);
+  $instagram = $db->escapeString($_POST['instagram']);
+  $behance = $db->escapeString($_POST['behance']);
+  $dribbble = $db->escapeString($_POST['dribbble']);
+  $github = $db->escapeString($_POST['github']);
+
+  $data = array(
+    'facebook' => $facebook,
+    'twitter' => $twitter,
+    'google' => $google,
+    'linkedin' => $linkedin,
+    'pinterest' => $pinterest,
+    'instagram' => $instagram,
+    'behance' => $behance,
+    'dribbble' => $dribbble,
+    'github' => $github
+  );
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
+  
+
+}
+if (isset($_POST['btnSkillUpdate'])){
+  if(isset($_POST["skill"])){
+    
+    $skill = implode(',', $_POST['skill']);
+
+    $data = array(
+      'skill' => $skill
+    );
+    if($db->update('student', $data, 'id=' . $id)){
+      header("location: edit-resume.php");
+
+    }
+
+  }
+  
+  
+  
+
+}
+if (isset($_POST['btnUpdateAbout']))
+{
+  $about = $db->escapeString($_POST['about']);
+  $category = $db->escapeString($_POST['category']);
+  $location = $db->escapeString($_POST['location']);
+  $job_type = $db->escapeString($_POST['job_type']);
+  $experience = $db->escapeString($_POST['experience']);
+  $salary_range = $db->escapeString($_POST['salary_range']);
+  $gender = $db->escapeString($_POST['gender']);
+  $age = $db->escapeString($_POST['age']);
+  $qualification = $db->escapeString($_POST['qualification']);
+  $data = array(
+    'about' => $about,
+    'category' => $category,
+    'location' => $location,
+    'job_type' => $job_type,
+    'experience' => $experience,
+    'salary_range' => $salary_range,
+    'gender' => $gender,
+    'age' => $age,
+    'qualification' => $qualification
+  );
+
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
+
+}
+if (isset($_POST['btnUpdateEdu'])){
+  $edu_designation = $db->escapeString($_POST['edu_designation']);
+  $edu_institute = $db->escapeString($_POST['edu_institute']);
+  $edu_period = $db->escapeString($_POST['edu_period']);
+  $edu_description = $db->escapeString($_POST['edu_description']);
+  $data = array(
+    'student_id' => $id,
+    'edu_designation' => $edu_designation,
+    'edu_institute' => $edu_institute,
+    'edu_period' => $edu_period,
+    'edu_description' => $edu_description
+  );
+  if($db->insert('stu_edu', $data)){
+    header("location: edit-resume.php");
+  
+  }
+
+}
+if (isset($_POST['btnExpUpdate'])){
+  $exp_title = $db->escapeString($_POST['exp_title']);
+  $exp_company_name = $db->escapeString($_POST['exp_company_name']);
+  $exp_period = $db->escapeString($_POST['exp_period']);
+  $exp_description = $db->escapeString($_POST['exp_description']);
+  $data = array(
+    'student_id' => $id,
+    'exp_title' => $exp_title,
+    'exp_company_name' => $exp_company_name,
+    'exp_period' => $exp_period,
+    'exp_description' => $exp_description
+  );
+  if($db->insert('stu_work_exp', $data)){
+    header("location: edit-resume.php");
+  
+  }
+
+}
+if (isset($_POST['btnProUpdate'])){
+  $pro_designation = $db->escapeString($_POST['pro_designation']);
+  $pro_title = $db->escapeString($_POST['pro_title']);
+  $pro_value = $db->escapeString($_POST['pro_value']);
+  $data = array(
+    'student_id' => $id,
+    'pro_designation' => $pro_designation,
+    'pro_title' => $pro_title,
+    'pro_value' => $pro_value
+  );
+  if($db->insert('stu_prof', $data)){
+    header("location: edit-resume.php");
+  
+  }
+
+
+}
+if (isset($_POST['btnSqUpdate'])){
+  $spl_qualification = $db->escapeString($_POST['spl_qualification']);
+  $data = array(
+    'spl_qualification' => $spl_qualification
+  );
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
+
+
+}
+if (isset($_POST['btnPerUpdate'])){
+  $pd_name = $db->escapeString($_POST['pd_name']);
+  $pd_father_name = $db->escapeString($_POST['pd_father_name']);
+  $pd_mother_name = $db->escapeString($_POST['pd_mother_name']);
+  $pd_dob = $db->escapeString($_POST['pd_dob']);
+  $pd_nationality = $db->escapeString($_POST['pd_nationality']);
+  $pd_sex = $db->escapeString($_POST['pd_sex']);
+  $pd_address = $db->escapeString($_POST['pd_address']);
+  $pd_age = $db->escapeString($_POST['pd_age']);
+
+  $data = array(
+    'pd_name' => $pd_name,
+    'pd_father_name' => $pd_father_name,
+    'pd_mother_name' => $pd_mother_name,
+    'pd_dob' => $pd_dob,
+    'pd_nationality' => $pd_nationality,
+    'pd_sex' => $pd_sex,
+    'pd_address' => $pd_address,
+    'pd_age' => $pd_age
+  );
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
+
+}
+if (isset($_POST['btnPortUpdate'])){
+  $menu_image = $db->escapeString($_FILES['port_image']['name']);
+  $port_title = $db->escapeString($_POST['port_title']);
+  $port_link = $db->escapeString($_POST['port_link']);
+
+  if (!empty($menu_image)) {
+    
+    $extension = end(explode(".", $_FILES["port_image"]["name"]));
+
+
+    // create random image file name
+    $string = '0123456789';
+    $file = preg_replace("/\s+/", "_", $_FILES['port_image']['name']);
+    $menu_image = $function->get_random_string($string, 4) . "-" . date("Y-m-d") . "." . $extension;
+  
+    // upload new image
+    $upload = move_uploaded_file($_FILES['port_image']['tmp_name'], '../upload/images/' . $menu_image);
+  
+    // insert new data to menu table
+    $upload_image = 'upload/images/' . $menu_image;
+    $data = array(
+      'student_id' => $id,
+      'port_title' => $port_title,
+      'port_image' => $upload_image,
+      'port_link' => $port_link
+    );
+
+  }
+  else {
+    $port_title = $db->escapeString($_POST['port_title']);
+    $port_link = $db->escapeString($_POST['port_link']);
+    $data = array(
+      'student_id' => $id,
+      'port_title' => $port_title,
+      'port_link' => $port_link
+    );
+
+  }
+  if($db->insert('stu_port', $data)){
+    header("location: edit-resume.php");
+  
+  }
+
+}
+if (isset($_POST['btnUpdateCVFile']))
+{
+  $menu_image = $db->escapeString($_FILES['cvfile']['name']);
+  if (!empty($menu_image)) {
+    $extension = end(explode(".", $_FILES["cvfile"]["name"]));
+
+
+    // create random image file name
+    $string = '0123456789';
+    $file = preg_replace("/\s+/", "_", $_FILES['cvfile']['name']);
+    $menu_image = $function->get_random_string($string, 4) . "-" . date("Y-m-d") . "." . $extension;
+  
+    // upload new image
+    $upload = move_uploaded_file($_FILES['cvfile']['tmp_name'], '../upload/images/' . $menu_image);
+  
+    // insert new data to menu table
+    $upload_image = 'upload/images/' . $menu_image;
+    $data = array(
+      'cv_file' => $upload_image
+  );
+
+  }
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
+
+}
+if (isset($_POST['btnUpdateCoverFile']))
+{
+  $menu_image = $db->escapeString($_FILES['coverfile']['name']);
+  if (!empty($menu_image)) {
+    $extension = end(explode(".", $_FILES["coverfile"]["name"]));
+
+
+    // create random image file name
+    $string = '0123456789';
+    $file = preg_replace("/\s+/", "_", $_FILES['coverfile']['name']);
+    $menu_image = $function->get_random_string($string, 4) . "-" . date("Y-m-d") . "." . $extension;
+  
+    // upload new image
+    $upload = move_uploaded_file($_FILES['coverfile']['tmp_name'], '../upload/images/' . $menu_image);
+  
+    // insert new data to menu table
+    $upload_image = 'upload/images/' . $menu_image;
+    $data = array(
+      'cover_letter' => $upload_image
+  );
+
+  }
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: edit-resume.php");
+  
+  }
+
+}
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -34,6 +381,10 @@
     <link rel="apple-touch-icon" sizes="72x72" href="images/icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="images/icon-114x114.png">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
 
     <!--[if lt IE 9]>
     <script src="assets/js/html5shiv.min.js"></script>
@@ -49,7 +400,7 @@
           <div class="col">
             <div class="header-top">
               <div class="logo-area">
-                <a href="job-listing.html"><img src="images/logo-2.png" alt=""></a>
+                <a href="job-listing.php"><img src="images/logo-2.png" alt=""></a>
               </div>
               <div class="header-top-toggler">
                 <div class="header-top-toggler-button"></div>
@@ -98,13 +449,13 @@
                   <a href="#" class="account-button">My Account</a>
                   <div class="account-card">
                     <div class="header-top-account-info">
-                      <a href="#" class="account-thumb">
-                        <img src="images/account/thumb-1.jpg" class="img-fluid" alt="">
-                      </a>
-                      <div class="account-body">
-                        <h5><a href="#">Robert Chavez</a></h5>
-                        <span class="mail">chavez@domain.com</span>
-                      </div>
+                        <a href="#" class="account-thumb">
+                          <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
+                        </a>
+                        <div class="account-body">
+                          <h5><a href="#"><?php echo $res[0]['name'] ?></a></h5>
+                          <span class="mail"><?php echo $res[0]['email'] ?></span>
+                        </div>
                     </div>
                     <ul class="account-item-list">
                       <li><a href="#"><span class="ti-user"></span>Account</a></li>
@@ -125,11 +476,11 @@
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
-                  <li class="menu-item active"><a title="Home" href="job-listing.html">Home</a></li>
+                  <li class="menu-item active"><a title="Home" href="job-listing.php">Home</a></li>
                   <!-- <li class="menu-item dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Jobs</a>
                     <ul  class="dropdown-menu">
-                      <li class="menu-item"><a  href="job-listing.html">Job Listing</a></li>
+                      <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
                       <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
                       <li class="menu-item"><a  href="job-details.html">Job Details</a></li>
                       <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
@@ -139,8 +490,8 @@
                     <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Candidates</a>
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="candidate.html">Candidate Listing</a></li>
-                      <li class="menu-item"><a  href="candidate-details.html">Candidate Details</a></li>
-                      <li class="menu-item"><a  href="add-resume.html">Add Resume</a></li>
+                      <li class="menu-item"><a  href="candidate-details.php">Candidate Details</a></li>
+                      <li class="menu-item"><a  href="add-resume.php">Add Resume</a></li>
                     </ul>
                   </li> -->
                   <!-- <li class="menu-item dropdown">
@@ -154,13 +505,13 @@
                   <li class="menu-item dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
                     <ul class="dropdown-menu">
-                          <li class="menu-item"><a  href="dashboard.html">Dashboard</a></li>
-                          <li class="menu-item"><a  href="dashboard-edit-profile.html">Edit Profile</a></li>
-                          <li class="menu-item"><a  href="add-resume.html">Add Resume</a></li>
-                          <li class="menu-item"><a  href="resume.html">Resume</a></li>
-                          <li class="menu-item"><a  href="edit-resume.html">Edit Resume</a></li>
-                          <li class="menu-item"><a  href="dashboard-bookmark.html">Bookmarked</a></li>
-                          <li class="menu-item"><a  href="dashboard-applied.html">Applied</a></li>
+                          <li class="menu-item"><a  href="dashboard.php">Dashboard</a></li>
+                          <li class="menu-item"><a  href="dashboard-edit-profile.php">Edit Profile</a></li>
+                          <li class="menu-item"><a  href="add-resume.php">Add Resume</a></li>
+                          <li class="menu-item"><a  href="resume.php">Resume</a></li>
+                          <li class="menu-item"><a  href="edit-resume.php">Edit Resume</a></li>
+                          <li class="menu-item"><a  href="dashboard-bookmark.php">Bookmarked</a></li>
+                          <li class="menu-item"><a  href="dashboard-applied.php">Applied</a></li>
                           <li class="menu-item"><a  href="dashboard-pricing.html">Pricing</a></li>
                           <li class="menu-item"><a  href="dashboard-message.html">Message</a></li>
                           <li class="menu-item"><a  href="dashboard-alert.html">Alert</a></li>
@@ -170,8 +521,8 @@
                         <ul class="dropdown-menu">
                           <li class="menu-item"><a href="employer-dashboard.php">Employer Dashboard</a></li>
                           <li class="menu-item"><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.html">Manage Candidate</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.php">Manage Candidate</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-job.php">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
                           <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
@@ -221,7 +572,7 @@
               <h1>Edit Resume</h1>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="job-listing.html">Home</a></li>
+                  <li class="breadcrumb-item"><a href="job-listing.php">Home</a></li>
                   <li class="breadcrumb-item active" aria-current="page">Edit Resume</li>
                 </ol>
               </nav>
@@ -246,21 +597,39 @@
           <div class="col">
             <div class="dashboard-container">
               <div class="dashboard-content-wrapper">
-                <div class="download-resume dashboard-section">
+              <form method="post" enctype="multipart/form-data" class="dashboard-form">
+              <div class="download-resume dashboard-section">
+                
                   <div class="update-file">
-                    <input type="file">Update CV <i data-feather="edit-2"></i>
+                    <input name="cvfile" type="file">Update CV <i data-feather="edit-2"></i>
                   </div>
                   <div class="update-file">
-                    <input type="file">Update Cover Letter <i data-feather="edit-2"></i>
+                    <input name="coverfile" type="file">Update Cover Letter <i data-feather="edit-2"></i>
                   </div>
-                  <span>Upload PDF File</span>
+                  <div class="call-to-action-button">
+                  <button  name="btnUpdateCVFile" type="submit" class="button">Upload CV</button>
+                  <button  name="btnUpdateCoverFile" type="submit" class="button">Upload Cover</button>
+              </div>
+                  
+                  
+                  
                 </div>
+              </form>
+                
                 <div class="skill-and-profile dashboard-section">
                   <div class="skill">
                     <label>Skills:</label>
-                    <a href="#">Design</a>
-                    <a href="#">Illustration</a>
-                    <a href="#">iOS</a>
+                    <?php $skills = explode(",", $skill);
+                    foreach($skills as $skill) {
+                      $skill = trim($skill); ?>
+                    
+                      <a href="#"><?php echo  $skill ?></a>
+                      <?php }?>
+
+                    
+                    
+                    <!-- <a href="#">Illustration</a>
+                    <a href="#">iOS</a> -->
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#modal-skill">
                       <i data-feather="edit-2"></i>
@@ -272,22 +641,21 @@
                           <div class="modal-body">
                             <div class="title">
                               <h4><i data-feather="git-branch"></i>MY SKILL</h4>
-                              <a href="#" class="add-more">+ Add Skills</a>
+                              <!-- <a href="#" class="add-more">+ Add Skills</a> -->
                             </div>
                             <div class="content">
-                              <form action="#">
+                              <form method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">Type Skills</label>
                                   <div class="col-sm-9">
-                                    <div class="input-group">
-                                      <div class="input-group-prepend">
-                                        <div class="input-group-text">01</div>
-                                      </div>
-                                      <input type="text" class="form-control" >
-                                    </div>
+                                    <select name='skill[]' id='skills' class='form-control' placeholder='Enter the Skills' required multiple="multiple">
+                                          <option value='Android'>Android</option>
+                                          <option value='IOS'>IOS</option>
+                                          <option value='WEB'>WEB</option>
+                                    </select>
                                   </div>
                                 </div>
-                                <div class="form-group row">
+                                <!-- <div class="form-group row">
                                   <div class="offset-sm-3 col-sm-9">
                                     <div class="input-group">
                                       <div class="input-group-prepend">
@@ -336,11 +704,12 @@
                                       <input type="text" class="form-control" >
                                     </div>
                                   </div>
-                                </div>
+                                </div> -->
                                 <div class="row">
                                   <div class="offset-sm-3 col-sm-9">
                                     <div class="buttons">
-                                      <button class="primary-bg">Save Update</button>
+                                      <button  name="btnSkillUpdate" type="submit" class="primary-bg">Save Update</button>
+                                      
                                       <button class="" data-dismiss="modal">Cancel</button>
                                     </div>
                                   </div>
@@ -354,14 +723,14 @@
                   </div>
                   <div class="social-profile">
                     <label>Social:</label>
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-google-plus"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                    <a href="#"><i class="fab fa-behance"></i></a>
-                    <a href="#"><i class="fab fa-dribbble"></i></a>
-                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="<?php echo  $facebook ?>" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="<?php echo  $twitter ?>" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="<?php echo  $google ?>" target="_blank"><i class="fab fa-google-plus"></i></a>
+                    <a href="<?php echo  $linkedin ?>" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="<?php echo  $pinterest ?>" target="_blank"><i class="fab fa-pinterest-p"></i></a>
+                    <a href="<?php echo  $behance ?>" target="_blank"><i class="fab fa-behance"></i></a>
+                    <a href="<?php echo  $dribbble ?>" target="_blank"><i class="fab fa-dribbble"></i></a>
+                    <a href="<?php echo  $github ?>" target="_blank"><i class="fab fa-github"></i></a>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#modal-social">
                       <i data-feather="edit-2"></i>
@@ -373,10 +742,10 @@
                           <div class="modal-body">
                             <div class="title">
                               <h4><i data-feather="git-branch"></i>Social Networks</h4>
-                              <a href="#" class="add-more">+ Add Social</a>
+                              <!-- <a href="#" class="add-more">+ Add Social</a> -->
                             </div>
                             <div class="content">
-                              <form action="#">
+                              <form method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">Social Links</label>
                                   <div class="col-sm-9">
@@ -384,7 +753,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-facebook-f"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="facebook.com/username">
+                                      <input name="facebook" type="text" class="form-control"  placeholder="facebook.com/username" value="<?php echo  $facebook ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -394,7 +763,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-twitter"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="twitter.com/username">
+                                      <input name="twitter" type="text" class="form-control"  placeholder="twitter.com/username" value="<?php echo  $twitter ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -404,7 +773,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-google-plus"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="google.com/username">
+                                      <input name="google" type="text" class="form-control"  placeholder="google.com/username" value="<?php echo  $google ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -414,7 +783,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-linkedin-in"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="linkedin.com/username">
+                                      <input name="linkedin" type="text" class="form-control"  placeholder="linkedin.com/username" value="<?php echo  $linkedin ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -424,7 +793,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-pinterest-p"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="pinterest.com/username">
+                                      <input name="pinterest" type="text" class="form-control"  placeholder="pinterest.com/username" value="<?php echo  $pinterest ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -434,7 +803,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-instagram"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="instagram.com/username">
+                                      <input name="instagram" type="text" class="form-control"  placeholder="instagram.com/username" value="<?php echo  $instagram ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -444,7 +813,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-behance"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="behance.com/username">
+                                      <input name="behance" type="text" class="form-control"  placeholder="behance.com/username" value="<?php echo  $behance ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -454,7 +823,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-dribbble"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="dribbble.com/username">
+                                      <input name="dribbble" type="text" class="form-control"  placeholder="dribbble.com/username" value="<?php echo  $dribbble ?>">
                                     </div>
                                   </div>
                                 </div>
@@ -464,11 +833,11 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fab fa-github"></i></div>
                                       </div>
-                                      <input type="text" class="form-control"  placeholder="github.com/username">
+                                      <input name="github" type="text" class="form-control"  placeholder="github.com/username" value="<?php echo  $github ?>">
                                     </div>
                                   </div>
                                 </div>
-                                <div class="form-group row">
+                                <!-- <div class="form-group row">
                                   <div class="offset-sm-3 col-sm-9">
                                     <div class="input-group">
                                       <div class="input-group-prepend">
@@ -485,11 +854,12 @@
                                       <input type="text" class="form-control"  placeholder="Input Profile Link">
                                     </div>
                                   </div>
-                                </div>
+                                </div> -->
                                 <div class="row">
                                   <div class="offset-sm-3 col-sm-9">
                                     <div class="buttons">
-                                      <button class="primary-bg">Save Update</button>
+                                      
+                                      <button  name="btnUpdateSocLink" type="submit" class="primary-bg">Save Update</button>
                                       <button class="" data-dismiss="modal">Cancel</button>
                                     </div>
                                   </div>
@@ -504,20 +874,20 @@
                 </div>
                 <div class="about-details details-section dashboard-section">
                   <h4><i data-feather="align-left"></i>About Me</h4>
-                  <p>Combined with a handful of model sentence structures, to generate lorem Ipsum which  It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including.</p>
-                  <p>Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable </p>
+                  <p><?php echo  $about ?></p>
+                  
                   <div class="information-and-contact">
                     <div class="information">
                       <h4>Information</h4>
                       <ul>
-                        <li><span>Category:</span> Design & Creative</li>
-                        <li><span>Location:</span> Los Angeles</li>
-                        <li><span>Status:</span> Full-time</li>
-                        <li><span>Experience:</span> 3 year(s)</li>
-                        <li><span>Salary:</span> $32k - $36k</li>
-                        <li><span>Gender:</span> Male</li>
-                        <li><span>Age:</span> 24 Year(s)</li>
-                        <li><span>Qualification:</span> Gradute</li>
+                        <li><span>Category:</span> <?php echo  $category ?></li>
+                        <li><span>Location:</span> <?php echo  $location ?></li>
+                        <li><span>Job Type:</span> <?php echo  $job_type ?></li>
+                        <li><span>Experience:</span> <?php echo  $experience ?> year(s)</li>
+                        <li><span>Salary:</span> <?php echo  $salary_range ?></li>
+                        <li><span>Gender:</span> <?php echo  $gender ?></li>
+                        <li><span>Age:</span> <?php echo  $age ?> Year(s)</li>
+                        <li><span>Qualification:</span> <?php echo  $qualification ?></li>
                       </ul>
                     </div>
                   </div>
@@ -534,66 +904,75 @@
                             <h4><i data-feather="align-left"></i>About Me</h4>
                           </div>
                           <div class="content">
-                            <form action="#">
+                            <form method="post" enctype="multipart/form-data">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Write Yourself</label>
                                 <div class="col-sm-9">
-                                  <textarea class="form-control" placeholder="Write Yourself"></textarea>
+                                  <textarea name="about" class="form-control" placeholder="Write Yourself"><?php echo  $about ?></textarea>
                                 </div>
                               </div>
                               <h4><i data-feather="align-left"></i>Information</h4>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Category</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Design &amp; Creative">
+                                  <input name="category" type="text" class="form-control"  placeholder="Design &amp; Creative" value="<?php echo  $category ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Location</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Los Angeles">
+                                  <input name="location" type="text" class="form-control"  placeholder="Los Angeles" value="<?php echo  $location ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Status</label>
+                                <label class="col-sm-3 col-form-label">Job Type</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Full Time">
+                                    <select name="job_type" class="form-control">
+                                    <option>Job Type</option>
+                                    <option>Part Time</option>
+                                    <option>Full Time</option>
+                                    <option>Temperory</option>
+                                    <option>Permanent</option>
+                                    <option>Freelance</option>
+                                  </select>
+                                  
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Experience</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="3 Year">
+                                  <input name="experience" type="text" class="form-control"  placeholder="3 Year" value="<?php echo  $experience ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Salary Range</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="30k - 40k">
+                                  <input name="salary_range" type="text" class="form-control"  placeholder="30k - 40k" value="<?php echo  $salary_range ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Gender</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Male">
+                                  <input name="gender" type="text" class="form-control"  placeholder="Male" value="<?php echo  $gender ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Age</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="25 Years">
+                                  <input name="age" type="text" class="form-control"  placeholder="25 Years" value="<?php echo  $age ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Qualification</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Gradute">
+                                  <input name="qualification" type="text" class="form-control"  placeholder="Gradute" value="<?php echo  $qualification ?>">
                                 </div>
                               </div>
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
-                                    <button class="primary-bg">Save Update</button>
+                                    <button  name="btnUpdateAbout" type="submit" class="primary-bg">Save Update</button>
+                                    
                                     <button class="" data-dismiss="modal">Cancel</button>
                                   </div>
                                 </div>
@@ -607,21 +986,24 @@
                 </div>
                 <div class="edication-background details-section dashboard-section">
                   <h4><i data-feather="book"></i>Education Background</h4>
+                  <?php
+                  $sql = "SELECT * FROM stu_edu WHERE student_id = $id ";
+                  $db->sql($sql);
+                  $edures = $db->getResult();
+                      foreach ($edures as $row) 
+                      { ?>
                   <div class="education-label">
-                    <span class="study-year">2018 - Present</span>
-                    <h5>Masters in Software Engineering<span>@ Engineering University</span></h5>
-                    <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
+                  
+                    <span class="study-year"><?php echo $row['edu_period']  ?></span>
+                    <h5><?php echo $row['edu_designation']  ?><span>@ <?php echo $row['edu_institute']  ?></span></h5>
+                    <p><?php echo $row['edu_description']  ?></p>
+                    <a href="edit-resume.php?operation=edudelete&id=<?php echo $row['id']?> " class="delete">
+                    <i class="fas fa-trash-alt"></i>
+                    </a>
+                    
                   </div>
-                  <div class="education-label">
-                    <span class="study-year">2014 - 2018</span>
-                    <h5>Diploma in Graphics Design<span>@ Graphic Arts Institute</span></h5>
-                    <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
-                  </div>
-                  <div class="education-label">
-                    <span class="study-year">2008 - 2014</span>
-                    <h5>Secondary School Certificate<span>@  Engineering High School</span></h5>
-                    <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
-                  </div>
+                  <?php }?>
+                  
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary edit-resume" data-toggle="modal" data-target="#modal-education">
                     <i data-feather="edit-2"></i>
@@ -632,20 +1014,22 @@
                       <div class="modal-content">
                         <div class="modal-body">
                           <div class="title">
+                          
                             <h4><i data-feather="book"></i>Education</h4>
-                            <a href="#" class="add-more">+ Add Education</a>
+                            <!-- <a href="#" class="add-more">+ Add Education</a> -->
                           </div>
                           <div class="content">
-                            <form action="#">
+                            <form method="post" enctype="multipart/form-data">
                               <div class="input-block-wrap">
                                 <div class="form-group row">
+                                  
                                   <label class="col-sm-3 col-form-label">01</label>
                                   <div class="col-sm-9">
                                     <div class="input-group">
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Title</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="edu_designation" type="text" class="form-control"  >
                                     </div>
                                   </div>
                                 </div>
@@ -655,7 +1039,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Institute</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="edu_institute" type="text" class="form-control"  >
                                     </div>
                                   </div>
                                 </div>
@@ -665,7 +1049,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Period</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="edu_period" type="text" class="form-control"  >
                                     </div>
                                   </div>
                                 </div>
@@ -675,12 +1059,12 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Description</div>
                                       </div>
-                                      <textarea class="form-control"></textarea>
+                                      <textarea name="edu_description" class="form-control" >   </textarea>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                              <div class="input-block-wrap">
+                              <!-- <div class="input-block-wrap">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">02</label>
                                   <div class="col-sm-9">
@@ -722,11 +1106,12 @@
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                              </div> -->
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
-                                    <button class="primary-bg">Save Update</button>
+                                    
+                                    <button  name="btnUpdateEdu" type="submit" class="primary-bg">Save Update</button>
                                     <button class="" data-dismiss="modal">Cancel</button>
                                   </div>
                                 </div>
@@ -740,16 +1125,27 @@
                 </div>
                 <div class="experience dashboard-section details-section">
                   <h4><i data-feather="briefcase"></i>Work Experiance</h4>
+                  <?php
+                  $sql = "SELECT * FROM stu_work_exp WHERE student_id = $id ";
+                  $db->sql($sql);
+                  $workexpres = $db->getResult();
+                      foreach ($workexpres as $row) 
+                      { ?>
                   <div class="experience-section">
-                    <span class="service-year">2016 - Present</span>
-                    <h5>Lead UI/UX Designer<span>@ Codepassengers LTD</span></h5>
-                    <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
+                    <span class="service-year"><?php echo $row['exp_period']  ?></span>
+                    <h5><?php echo $row['exp_title']  ?><span>@ <?php echo $row['exp_company_name']  ?></span></h5>
+                    <p><?php echo $row['exp_description']  ?></p>
+                    <a href="edit-resume.php?operation=workexpdelete&id=<?php echo $row['id']?> " class="delete">
+                    <i class="fas fa-trash-alt"></i>
+                    </a>
                   </div>
-                  <div class="experience-section">
+                  
+                  <?php }?>
+                  <!-- <div class="experience-section">
                     <span class="service-year">2012 - 2016</span>
                     <h5>Former Graphic Designer<span>@ Graphicreeeo CO</span></h5>
                     <p>Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage</p>
-                  </div>
+                  </div> -->
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary edit-resume" data-toggle="modal" data-target="#modal-experience">
                     <i data-feather="edit-2"></i>
@@ -761,12 +1157,12 @@
                         <div class="modal-body">
                           <div class="title">
                             <h4><i data-feather="briefcase"></i>Experience</h4>
-                            <a href="#" class="add-more">+ Add Experience</a>
+                            <!-- <a href="#" class="add-more">+ Add Experience</a> -->
                           </div>
                           <div class="content">
-                            <form action="#">
+                            <form method="post" enctype="multipart/form-data">
                               <div class="input-block-wrap">
-                                <div class="form-group row">
+                                <!-- <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">01</label>
                                   <div class="col-sm-9">
                                     <div class="input-group">
@@ -776,6 +1172,17 @@
                                       <input type="text" class="form-control" >
                                     </div>
                                   </div>
+                                </div> -->
+                                <div class="form-group row">
+                                  <div class="offset-sm-3 col-sm-9">
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        
+                                        <div class="input-group-text">TITLE</div>
+                                      </div>
+                                      <input  name="exp_title" type="text" class="form-control"  >
+                                    </div>
+                                  </div>
                                 </div>
                                 <div class="form-group row">
                                   <div class="offset-sm-3 col-sm-9">
@@ -783,7 +1190,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Company</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input  name="exp_company_name" type="text" class="form-control"  >
                                     </div>
                                   </div>
                                 </div>
@@ -793,7 +1200,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Period</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input  name="exp_period" type="text" class="form-control"  >
                                     </div>
                                   </div>
                                 </div>
@@ -803,12 +1210,12 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Description</div>
                                       </div>
-                                      <textarea class="form-control"></textarea>
+                                      <textarea name="exp_description" class="form-control"></textarea>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                              <div class="input-block-wrap">
+                              <!-- <div class="input-block-wrap">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">02</label>
                                   <div class="col-sm-9">
@@ -850,11 +1257,12 @@
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                              </div> -->
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
-                                    <button class="primary-bg">Save Update</button>
+                                    <button  name="btnExpUpdate" type="submit" class="button">Save Update</button>
+                                    
                                     <button class="" data-dismiss="modal">Cancel</button>
                                   </div>
                                 </div>
@@ -868,20 +1276,27 @@
                 </div>
                 <div class="professonal-skill dashboard-section details-section">
                   <h4><i data-feather="feather"></i>Professional Skill</h4>
-                  <p>Combined with a handful of model sentence structures, to generate lorem Ipsum which  It has survived not only five centuries, but also the leap into electronic typesetting</p>
+                  <?php
+                  $sql = "SELECT * FROM stu_prof WHERE student_id = $id ";
+                  $db->sql($sql);
+                  $profres = $db->getResult();
+                      foreach ($profres as $row) 
+                      { ?>
+                  <p><?php echo $row['pro_designation']  ?></p>
                   <div class="progress-group">
                     <div class="progress-item">
                       <div class="progress-head">
-                        <p class="progress-on">Photoshop</p>
+                        <p class="progress-on"><?php echo $row['pro_title']  ?></p>
                       </div>
                       <div class="progress-body">
                         <div class="progress">
-                          <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
+                          <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $row['pro_value']  ?>" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
                         </div>
-                        <p class="progress-to">70%</p>
+                        <p class="progress-to"><?php echo $row['pro_value']  ?>%</p>
                       </div>
                     </div>
-                    <div class="progress-item">
+                    
+                    <!-- <div class="progress-item">
                       <div class="progress-head">
                         <p class="progress-on">HTML/CSS</p>
                       </div>
@@ -913,8 +1328,11 @@
                         </div>
                         <p class="progress-to">86%</p>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
+                  <br>
+                  <br>
+                  <?php } ?>
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary edit-resume" data-toggle="modal" data-target="#modal-pro-skill">
                     <i data-feather="edit-2"></i>
@@ -926,10 +1344,10 @@
                         <div class="modal-body">
                           <div class="title">
                             <h4><i data-feather="feather"></i>Professional Skill</h4>
-                            <a href="#" class="add-more">+ Add Skill</a>
+                            <!-- <a href="#" class="add-more">+ Add Skill</a> -->
                           </div>
                           <div class="content">
-                            <form action="#">
+                            <form method="post" enctype="multipart/form-data">
                               <div class="input-block-wrap">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">About Skill</label>
@@ -938,7 +1356,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Description</div>
                                       </div>
-                                      <textarea class="form-control"></textarea>
+                                      <textarea name="pro_designation" class="form-control"></textarea>
                                     </div>
                                   </div>
                                 </div>
@@ -951,7 +1369,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Skill Name</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="pro_title" type="text" class="form-control"  >
                                     </div>
                                   </div>
                                 </div>
@@ -961,12 +1379,12 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Percentage</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="pro_value" type="text" class="form-control" >
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                              <div class="input-block-wrap">
+                              <!-- <div class="input-block-wrap">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">Skill 02</label>
                                   <div class="col-sm-9">
@@ -1034,11 +1452,12 @@
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                              </div> -->
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
-                                    <button class="primary-bg">Save Update</button>
+                                    
+                                    <button  name="btnProUpdate" type="submit" class="primary-bg">Save Update</button>
                                     <button class="" data-dismiss="modal">Cancel</button>
                                   </div>
                                 </div>
@@ -1053,10 +1472,22 @@
                 <div class="special-qualification dashboard-section details-section">
                   <h4><i data-feather="gift"></i>Special Qualification</h4>
                   <ul>
-                    <li>5 years+ experience designing and building products.</li>
-                    <li>Skilled at any Kind Design Tools.</li>
+                  <?php 
+                  $sql = "SELECT * FROM student WHERE id = $id";
+                  $db->sql($sql);
+                  $res_sql = $db->getResult();
+                  $spl_quali = $res_sql[0]['spl_qualification'];
+                  $spl_quali = explode(",", $spl_quali);
+                    foreach($spl_quali as $spl) {
+                      $spl = trim($spl); ?>
+                    
+                    <li><?php echo  $spl ?></li>
+                      <?php }?>
+                   
+                    
+                    <!-- <li>Skilled at any Kind Design Tools.</li>
                     <li>Passion for people-centered design, solid intuition.</li>
-                    <li>Hard Worker & Quick Lerner.</li>
+                    <li>Hard Worker & Quick Lerner.</li> -->
                   </ul>
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary edit-resume" data-toggle="modal" data-target="#modal-qualification">
@@ -1069,22 +1500,20 @@
                         <div class="modal-body">
                           <div class="title">
                             <h4><i data-feather="align-left"></i>Special Qualification</h4>
-                            <a href="#" class="add-more">+ Add Another</a>
+                            <!-- <a href="#" class="add-more">+ Add Another</a> -->
                           </div>
                           <div class="content">
-                            <form action="#">
+                            <form method="post" enctype="multipart/form-data">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Type Here</label>
                                 <div class="col-sm-9">
                                   <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <div class="input-group-text">01</div>
-                                    </div>
-                                    <input type="text" class="form-control" >
+                                    
+                                    <input name="spl_qualification" type="text" class="form-control" value="<?php echo  $spl_qualification ?>" >
                                   </div>
                                 </div>
                               </div>
-                              <div class="form-group row">
+                              <!-- <div class="form-group row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="input-group">
                                     <div class="input-group-prepend">
@@ -1123,11 +1552,12 @@
                                     <input type="text" class="form-control" >
                                   </div>
                                 </div>
-                              </div>
+                              </div> -->
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
-                                    <button class="primary-bg">Save Update</button>
+                                    
+                                    <button  name="btnSqUpdate" type="submit" class="primary-bg">Save Update</button>
                                     <button class="" data-dismiss="modal">Cancel</button>
                                   </div>
                                 </div>
@@ -1142,14 +1572,21 @@
                 <div class="portfolio dashboard-section details-section">
                   <h4><i data-feather="gift"></i>Portfolio</h4>
                   <div class="portfolio-slider owl-carousel">
+                  <?php
+                  $sql = "SELECT * FROM stu_port WHERE student_id = $id ";
+                  $db->sql($sql);
+                  $portres = $db->getResult();
+                      foreach ($portres as $row) 
+                      { ?>
                     <div class="portfolio-item">
-                      <img src="images/portfolio/thumb-3.jpg" class="img-fluid" alt="">
+                      <img src="../<?php echo $row['port_image'] ?>" class="img-fluid" alt="">
                       <div class="overlay">
-                        <a href="#"><i data-feather="eye"></i></a>
-                        <a href="#"><i data-feather="link"></i></a>
+                        <!-- <a href="#"><i data-feather="eye"></i></a> -->
+                        <a target="_blank" href="<?php echo $row['port_link'] ?>"><i data-feather="link"></i></a>
                       </div>
                     </div>
-                    <div class="portfolio-item">
+                    <?php }?>
+                    <!-- <div class="portfolio-item">
                       <img src="images/portfolio/thumb-1.jpg" class="img-fluid" alt="">
                       <div class="overlay">
                         <a href="#"><i data-feather="eye"></i></a>
@@ -1176,7 +1613,7 @@
                         <a href="#"><i data-feather="eye"></i></a>
                         <a href="#"><i data-feather="link"></i></a>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary edit-resume" data-toggle="modal" data-target="#modal-portfolio">
@@ -1189,10 +1626,10 @@
                         <div class="modal-body">
                           <div class="title">
                             <h4><i data-feather="grid"></i>Portfolio</h4>
-                            <a href="#" class="add-more">+ Add Another</a>
+                            <!-- <a href="#" class="add-more">+ Add Another</a> -->
                           </div>
                           <div class="content">
-                            <form action="#">
+                            <form method="post" enctype="multipart/form-data">
                               <div class="input-block-wrap">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">Portfolio 01</label>
@@ -1201,7 +1638,7 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Title</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="port_title" type="text" class="form-control"  >
                                     </div>
                                   </div>
                                 </div>
@@ -1213,10 +1650,10 @@
                                       </div>
                                       <div class="upload-profile-photo">
                                         <div class="update-photo">
-                                          <img class="image" src="images/portfolio/thumb-1.jpg" alt="">
+                                          <img class="image"  alt="">
                                         </div>
                                         <div class="file-upload">            
-                                          <input type="file" class="file-input">Change Avatar
+                                          <input name="port_image" type="file" class="file-input">Change Avatar
                                         </div>
                                       </div>
                                     </div>
@@ -1228,12 +1665,12 @@
                                       <div class="input-group-prepend">
                                         <div class="input-group-text">Link</div>
                                       </div>
-                                      <input type="text" class="form-control" >
+                                      <input name="port_link" type="text" class="form-control" >
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                              <div class="input-block-wrap">
+                              <!-- <div class="input-block-wrap">
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">Portfolio 02</label>
                                   <div class="col-sm-9">
@@ -1312,11 +1749,12 @@
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                              </div> -->
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
-                                    <button class="primary-bg">Save Update</button>
+                                    
+                                    <button  name="btnPortUpdate" type="submit" class="primary-bg">Save Update</button>
                                     <button class="" data-dismiss="modal">Cancel</button>
                                   </div>
                                 </div>
@@ -1331,13 +1769,13 @@
                 <div class="personal-information dashboard-section last-child details-section">
                   <h4><i data-feather="user-plus"></i>Personal Deatils</h4>
                   <ul>
-                    <li><span>Full Name:</span> Micheal N. Taylor</li>
-                    <li><span>Father's Name:</span> Howard Armour</li>
-                    <li><span>Mother's Name:</span> Megan Higbee</li>
-                    <li><span>Date of Birth:</span> 22/08/1992</li>
-                    <li><span>Nationality:</span> American </li>
-                    <li><span>Sex:</span> Male</li>
-                    <li><span>Address:</span> 2018 Nelm Street, Beltsville, VA 20705</li>
+                    <li><span>Full Name:</span> <?php echo  $pd_name ?></li>
+                    <li><span>Father's Name:</span> <?php echo  $pd_father_name ?></li>
+                    <li><span>Mother's Name:</span> <?php echo  $pd_mother_name ?></li>
+                    <li><span>Date of Birth:</span> <?php echo  $pd_dob ?></li>
+                    <li><span>Nationality:</span> <?php echo  $pd_nationality ?></li>
+                    <li><span>Sex:</span> <?php echo  $pd_sex ?></li>
+                    <li><span>Address:</span> <?php echo  $pd_address ?></li>
                   </ul>
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary edit-resume" data-toggle="modal" data-target="#modal-personal-details">
@@ -1352,59 +1790,60 @@
                             <h4><i data-feather="user-plus"></i>Personal Details</h4>
                           </div>
                           <div class="content">
-                            <form action="#">
+                            <form method="post" enctype="multipart/form-data">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Full Name</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Micheal N. Taylor">
+                                  <input name="pd_name" type="text" class="form-control"  placeholder="Micheal N. Taylor" value="<?php echo  $pd_name ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Father’s Name</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Howard Armour">
+                                  <input name="pd_father_name" type="text" class="form-control"  placeholder="Howard Armour" value="<?php echo  $pd_father_name ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Mother’s Name</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Megan Higbee">
+                                  <input name="pd_mother_name" type="text" class="form-control"  placeholder="Megan Higbee" value="<?php echo  $pd_mother_name ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Date Of Birth</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="22/08/1992">
+                                  <input name="pd_dob" type="text" class="form-control"  placeholder="22/08/1992" value="<?php echo  $pd_dob ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Nationality</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="American">
+                                  <input name="pd_nationality" type="text" class="form-control"  placeholder="American" value="<?php echo  $pd_nationality ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Gender</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="Male">
+                                  <input name="pd_sex" type="text" class="form-control"  placeholder="Male" value="<?php echo  $pd_sex ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Age</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="25 Years">
+                                  <input name="pd_age" type="text" class="form-control"  placeholder="25 Years" value="<?php echo  $pd_age ?>">
                                 </div>
                               </div>
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Address</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control"  placeholder="2018 Nelm Street, Beltsville, VA 20705">
+                                  <input name="pd_address" type="text" class="form-control"  placeholder="2018 Nelm Street, Beltsville, VA 20705" value="<?php echo  $pd_address ?>">
                                 </div>
                               </div>
                               <div class="row">
                                 <div class="offset-sm-3 col-sm-9">
                                   <div class="buttons">
-                                    <button class="primary-bg">Save Update</button>
+                                    
+                                    <button  name="btnPerUpdate" type="submit" class="primary-bg">Save Update</button>
                                     <button class="" data-dismiss="modal">Cancel</button>
                                   </div>
                                 </div>
@@ -1420,11 +1859,11 @@
               <div class="dashboard-sidebar">
                 <div class="user-info">
                   <div class="thumb">
-                    <img src="dashboard/images/user-1.jpg" class="img-fluid" alt="">
+                    <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                   </div>
                   <div class="user-body">
-                    <h5>Lula Wallace</h5>
-                    <span>@username</span>
+                    <h5><?php echo $res[0]['name'] ?></h5>
+                    <span>@<?php echo $res[0]['username'] ?></span>
                   </div>
                 </div>
                 <div class="profile-progress">
@@ -1442,12 +1881,12 @@
                 </div>
                 <div class="dashboard-menu">
                   <ul>
-                    <li><i class="fas fa-home"></i><a href="dashboard.html">Dashboard</a></li>
-                    <li><i class="fas fa-user"></i><a href="dashboard-edit-profile.html">Edit Profile</a></li>
-                    <li><i class="fas fa-file-alt"></i><a href="resume.html">Resume</a></li>
-                    <li class="active"><i class="fas fa-edit"></i><a href="edit-resume.html">Edit Resume</a></li>
-                    <li><i class="fas fa-heart"></i><a href="dashboard-bookmark.html">Bookmarked</a></li>
-                    <li><i class="fas fa-check-square"></i><a href="dashboard-applied.html">Applied Job</a></li>
+                    <li><i class="fas fa-home"></i><a href="dashboard.php">Dashboard</a></li>
+                    <li><i class="fas fa-user"></i><a href="dashboard-edit-profile.php">Edit Profile</a></li>
+                    <li><i class="fas fa-file-alt"></i><a href="resume.php">Resume</a></li>
+                    <li class="active"><i class="fas fa-edit"></i><a href="edit-resume.php">Edit Resume</a></li>
+                    <li><i class="fas fa-heart"></i><a href="dashboard-bookmark.php">Bookmarked</a></li>
+                    <li><i class="fas fa-check-square"></i><a href="dashboard-applied.php">Applied Job</a></li>
                     <li><i class="fas fa-comment"></i><a href="dashboard-message.html">Message</a></li>
                     <li><i class="fas fa-calculator"></i><a href="dashboard-pricing.html">Pricing Plans</a></li>
                   </ul>
@@ -1498,7 +1937,7 @@
                 <p>Add resume or post a job.</p>
               </div>
               <div class="call-to-action-button">
-                <a href="add-resume.html" class="button">Add Resume</a>
+                <a href="add-resume.php" class="button">Add Resume</a>
                 <span>Or</span>
                 <a href="post-job.html" class="button">Post A Job</a>
               </div>
@@ -1623,6 +2062,58 @@
       </div>
     </footer>
     <!-- Footer End -->
+
+    <script>
+       
+        $('#skills').select2({
+            width: 'element',
+            placeholder: 'type in skill name to search',
+            // minimumInputLength: 3,
+            /* ajax: {
+            	url: 'api/get-bootstrap-table-data.php',
+            	dataType: 'json',
+            	type: "GET",
+            	quietMillis: 1,
+            	data:function(params){
+            		return{
+            			products_list: 1,
+            			name:params.term,
+            		};
+            	},
+            	processResults:function(data) {
+            		// alert(JSON.stringify(data));
+            		return {
+            			results: data
+            		};
+            	},
+            } */
+        });
+        
+        $('#category_ids').select2({
+            width: 'element',
+            placeholder: 'type in category name to search',
+            // minimumInputLength: 3,
+            /* ajax: {
+            	url: 'api/get-bootstrap-table-data.php',
+            	dataType: 'json',
+            	type: "GET",
+            	quietMillis: 1,
+            	data:function(params){
+            		return{
+            			products_list: 1,
+            			name:params.term,
+            		};
+            	},
+            	processResults:function(data) {
+            		// alert(JSON.stringify(data));
+            		return {
+            			results: data
+            		};
+            	},
+            } */
+        });
+        
+    </script>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

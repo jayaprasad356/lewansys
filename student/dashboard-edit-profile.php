@@ -1,10 +1,106 @@
+<?php
+session_start();
+ob_start();
+include_once('../includes/functions.php');
+$function = new functions;
+include_once('../includes/crud.php');
+$db = new Database();
+$db->connect();
+$db->sql("SET NAMES 'utf8'");
+
+$id = $_SESSION['id'];
+if (!isset($id)) {
+  header("location:login.php");
+}
+$sql = "SELECT * FROM student WHERE id = $id";
+$db->sql($sql);
+$res = $db->getResult();
+
+$name = $res[0]['name'];
+$username = $res[0]['username'];
+$mobile = $res[0]['mobile'];
+$email = $res[0]['email'];
+$address = $res[0]['address'];
+$skill = $res[0]['skill'];
+$about = $res[0]['about'];
+$profile = $res[0]['profile'];
+$password = $res[0]['password'];
+
+if (isset($_POST['btnUpdate'])){
+  $menu_image = $db->escapeString($_FILES['profile']['name']);
+  $name = $db->escapeString($_POST['name']);
+  $username = $db->escapeString($_POST['username']);
+  $mobile = $db->escapeString($_POST['mobile']);
+  $email = $db->escapeString($_POST['email']);
+  $address = $db->escapeString($_POST['address']);
+  $skill = $db->escapeString($_POST['skill']);
+  $about = $db->escapeString($_POST['about']);
+  $profile = $db->escapeString($_POST['profile']);
+
+  if (!empty($menu_image)) {
+    $extension = end(explode(".", $_FILES["profile"]["name"]));
+
+
+    // create random image file name
+    $string = '0123456789';
+    $file = preg_replace("/\s+/", "_", $_FILES['profile']['name']);
+    $menu_image = $function->get_random_string($string, 4) . "-" . date("Y-m-d") . "." . $extension;
+  
+    // upload new image
+    $upload = move_uploaded_file($_FILES['profile']['tmp_name'], '../upload/images/' . $menu_image);
+  
+    // insert new data to menu table
+    $upload_image = 'upload/images/' . $menu_image;
+    $data = array(
+      'name' => $name,
+      'mobile' => $mobile,
+      'email' => $email,
+      'address' => $address,
+      'profile' => $upload_image,
+      'skill' => $skill,
+      'about' => $about
+  );
+  }
+  else{
+    $data = array(
+      'name' => $name,
+      'mobile' => $mobile,
+      'email' => $email,
+      'address' => $address,
+      'skill' => $skill,
+      'about' => $about
+  );
+
+  }
+  if($db->update('student', $data, 'id=' . $id)){
+    header("location: dashboard-edit-profile.php");
+  
+  }
+
+}
+// if (isset($_POST['btnChangePwd'])){
+//   $newpassword = $db->escapeString($_POST['newpassword']);
+//   $data = array(
+//     'password' => $newpassword
+// );
+// if($db->update('student', $data, 'id=' . $id)){
+  
+//   header("location: dashboard-edit-profile.php");
+
+// }
+
+// }
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title>Lewansys</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -42,13 +138,13 @@
   </head>
   <body>
 
-   <header class="header-2">
+    <header class="header-2">
       <div class="container">
         <div class="row">
           <div class="col">
             <div class="header-top">
               <div class="logo-area">
-                <a href="collage-dashboard.html"><img src="images/logo-2.png" alt=""></a>
+                <a href="job-listing.php"><img src="images/logo-2.png" alt=""></a>
               </div>
               <div class="header-top-toggler">
                 <div class="header-top-toggler-button"></div>
@@ -97,14 +193,15 @@
                   <a href="#" class="account-button">My Account</a>
                   <div class="account-card">
                     <div class="header-top-account-info">
-                      <a href="#" class="account-thumb">
-                        <img src="images/account/thumb-1.jpg" class="img-fluid" alt="">
-                      </a>
-                      <div class="account-body">
-                        <h5><a href="#">Robert Chavez</a></h5>
-                        <span class="mail">chavez@domain.com</span>
+                        <a href="#" class="account-thumb">
+                          <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
+                        </a>
+                        <div class="account-body">
+                          <h5><a href="#"><?php echo $res[0]['name'] ?></a></h5>
+                          <span class="mail"><?php echo $res[0]['email'] ?></span>
+                        </div>
                       </div>
-                    </div>
+                    
                     <ul class="account-item-list">
                       <li><a href="#"><span class="ti-user"></span>Account</a></li>
                       <li><a href="#"><span class="ti-settings"></span>Settings</a></li>
@@ -112,7 +209,7 @@
                     </ul>
                   </div>
                 </div>
-               <!--  <select class="selectpicker select-language" data-width="fit">
+                <!-- <select class="selectpicker select-language" data-width="fit">
                   <option data-content='<span class="flag-icon flag-icon-us"></span> English'>English</option>
                   <option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
                 </select> -->
@@ -124,48 +221,85 @@
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
-                  <li class="menu-item active"><a title="Home" href="collage-dashboard.html">Home</a></li>
-                
-                  
+                  <li class="menu-item active"><a title="Home" href="job-listing.php">Home</a></li>
                  <!--  <li class="menu-item dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Jobs</a>
+                    <ul  class="dropdown-menu">
+                      <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
+                      <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
+                      <li class="menu-item"><a  href="job-details.html">Job Details</a></li>
+                      <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
+                    </ul>
+                  </li> -->
+                 <!--  <li class="menu-item dropdown">
+                    <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Candidates</a>
+                    <ul  class="dropdown-menu">
+                      <li class="menu-item"><a  href="candidate.html">Candidate Listing</a></li>
+                      <li class="menu-item"><a  href="candidate-details.php">Candidate Details</a></li>
+                      <li class="menu-item"><a  href="add-resume.php">Add Resume</a></li>
+                    </ul>
+                  </li> -->
+                  <!-- <li class="menu-item dropdown">
                     <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Employers</a>
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="employer-listing.html">Employer Listing</a></li>
                       <li class="menu-item"><a  href="employer-details.html">Employer Details</a></li>
-                      <li class="menu-item"><a  href="employer-dashboard-post-job.php">Add A Student</a></li>
+                      <li class="menu-item"><a  href="employer-dashboard-post-job.php">Post a Job</a></li>
                     </ul>
                   </li> -->
-                 
-                    <li class="menu-item dropdown">
-                        <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
-                        <ul class="dropdown-menu">
-                          <li class="menu-item"><a  href="dashboard.html">Dashboard</a></li>
-                          <li class="menu-item"><a  href="dashboard-edit-profile.html">Edit Profile</a></li>
-                          <li class="menu-item"><a  href="employer-dashboard-manage-candidate.html">Manage Canditates</a></li>
-                          <li class="menu-item"><a  href="job-listing.html">Jobs</a></li>
-                          <li class="menu-item"><a  href="dashboard-bookmark.html">Bookmarked</a></li>
-                          <li class="menu-item"><a  href="add-student.html">Add Student</a></li>
+                  <li class="menu-item dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
+                    <ul class="dropdown-menu">
+                          <li class="menu-item"><a  href="dashboard.php">Dashboard</a></li>
+                          <li class="menu-item"><a  href="dashboard-edit-profile.php">Edit Profile</a></li>
+                          <li class="menu-item"><a  href="add-resume.php">Add Resume</a></li>
+                          <li class="menu-item"><a  href="resume.php">Resume</a></li>
+                          <li class="menu-item"><a  href="edit-resume.php">Edit Resume</a></li>
+                          <li class="menu-item"><a  href="dashboard-bookmark.php">Bookmarked</a></li>
+                          <li class="menu-item"><a  href="dashboard-applied.php">Applied</a></li>
                           <li class="menu-item"><a  href="dashboard-pricing.html">Pricing</a></li>
+                          <li class="menu-item"><a  href="dashboard-message.html">Message</a></li>
+                          <li class="menu-item"><a  href="dashboard-alert.html">Alert</a></li>
                         </ul>
-                      </li>
-                      
-                      <!-- <li class="menu-item dropdown">
-                        <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Employer Dashboard</a>
+                    
+                     <!--    <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Employer Dashboard</a>
                         <ul class="dropdown-menu">
                           <li class="menu-item"><a href="employer-dashboard.php">Employer Dashboard</a></li>
                           <li class="menu-item"><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.html">Manage Candidate</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.php">Manage Candidate</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-job.php">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
                           <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
                         </ul>
                       </li> -->
-                    
-                  </li>
-                 
+          
+                 <!--  <li class="menu-item dropdown">
+                    <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Pages</a>
+                    <ul  class="dropdown-menu">
+                      <li class="menu-item"><a href="about-us.html">About Us</a></li>
+                      <li class="menu-item"><a href="how-it-work.html">How It Works</a></li>
+                      <li class="menu-item"><a href="pricing.html">Pricing Plan</a></li>
+                      <li class="menu-item"><a href="faq.html">FAQ</a></li>
+                      <li class="menu-item dropdown">
+                        <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">News &amp; Advices</a>
+                        <ul class="dropdown-menu">
+                          <li class="menu-item"><a href="blog.html">News</a></li>
+                          <li class="menu-item"><a href="blog-grid.html">News Grid</a></li>
+                          <li class="menu-item"><a href="blog-details.html">News Details</a></li>
+                        </ul>
+                      </li>
+                      <li class="menu-item"><a href="checkout.html">Checkout</a></li>
+                      <li class="menu-item"><a href="payment-complete.html">Payment Complete</a></li>
+                      <li class="menu-item"><a href="invoice.html">Invoice</a></li>
+                      <li class="menu-item"><a href="terms-and-condition.html">Terms And Condition</a></li>
+                      <li class="menu-item"><a href="404.html">404 Page</a></li>
+                      <li class="menu-item"><a href="login.php">Login</a></li>
+                      <li class="menu-item"><a href="register.php">Register</a></li>
+                    </ul>
+                  </li> -->
                   <li class="menu-item"><a href="contact.html">Contact Us</a></li>
-                  <li class="menu-item post-job"><a href="add-student.html"><i class="fas fa-plus"></i>Add Student</a></li>
+                 <!--  <li class="menu-item post-job"><a href="post-job.html"><i class="fas fa-plus"></i>Post a Job</a></li> -->
                 </ul>
               </div>
             </nav>
@@ -180,23 +314,23 @@
         <div class="row">
           <div class="col-md-6">
             <div class="breadcrumb-area">
-              <h1>Collage/Institute Dashboard</h1>
+              <h1>Candidates Dashboard</h1>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="collage-dashboard.html">Home</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Edit Profile</li>
+                  <li class="breadcrumb-item"><a href="job-listing.php">Home</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Candidates Dashboard</li>
                 </ol>
               </nav>
             </div>
           </div>
-          <div class="col-md-6">
+          <!-- <div class="col-md-6">
             <div class="breadcrumb-form">
               <form action="#">
-                <input type="text" placeholder="Search">
+                <input type="text" placeholder="Enter Keywords">
                 <button><i data-feather="search"></i></button>
               </form>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -208,181 +342,111 @@
           <div class="col">
             <div class="dashboard-container">
               <div class="dashboard-content-wrapper">
-                <form action="#" class="dashboard-form">
+                <form method="post" enctype="multipart/form-data" class="dashboard-form">
                   <div class="dashboard-section upload-profile-photo">
                     <div class="update-photo">
-                      <img class="image" src="dashboard/images/company-logo.png" alt="">
+                      <img class="image" src="../<?php echo  $profile ?>" alt="">
                     </div>
                     <div class="file-upload">            
-                      <input type="file" class="file-input">Change Avatar
+                      <input name="profile" type="file" class="file-input">Change Avatar
                     </div>
                   </div>
                   <div class="dashboard-section basic-info-input">
                     <h4><i data-feather="user-check"></i>Basic Info</h4>
                     <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Collage/Institute Name</label>
+                      <label class="col-sm-3 col-form-label">Full Name</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="Company Name">
+                        <input name="name" type="text" class="form-control" placeholder="Full Name" value="<?php echo $name ?>">
                       </div>
                     </div>
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">Username</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="@username">
+                        <input name="username" type="text" class="form-control" placeholder="@username" value="<?php echo $username ?>" disabled >
                       </div>
                     </div>
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">Email Address</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="email@example.com">
+                        <input name="email" type="text" class="form-control" placeholder="email@example.com" value="<?php echo $email ?>" required>
                       </div>
                     </div>
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">Phone</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="+55 123 4563 4643">
+                        <input name="mobile" type="text" class="form-control" placeholder="+55 123 4563 4643" value="<?php echo $mobile ?>">
                       </div>
                     </div>
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">Address</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="Washington D.C">
+                        <input name="address" type="text" class="form-control" placeholder="Washington D.C" value="<?php echo $address ?>">
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Category</label>
+                      <label class="col-sm-3 col-form-label">Indestry Expertise</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="UI & UX Designer">
+                        <input name="skill" type="text" class="form-control" placeholder="UI & UX Designer" value="<?php echo $skill ?>">
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">About Us</label>
+                      <label class="col-sm-3 col-form-label">About Me</label>
                       <div class="col-sm-9">
-                        <textarea class="form-control" placeholder=""></textarea>
-                      </div>
+                        <textarea name="about" class="form-control" placeholder="Introduce Yourself" ><?php echo $about ?></textarea>
+                      </div> 
                     </div>
+                    <div class="col-sm-9">
+                        <button  name="btnUpdate" type="submit" class="button">Save Change</button>
+                        
+                      </div>
                   </div>
-                  <div class="dashboard-section media-inputs">
-                    <h4><i data-feather="image"></i>Photo &amp; Video</h4>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Intro Video</label>
-                      <div class="col-sm-9">
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">Link</div>
-                          </div>
-                          <input type="text" class="form-control" placeholder="https://www.youtube.com/watch?v=ZRkdyjJ_489M">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Gallery</label>
-                      <div class="col-sm-9">
-                        <div class="input-group image-upload-input">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">Image</div>
-                          </div>
-                          <div class="active">
-                            <div class="upload-images">
-                              <div class="pic">
-                                <span class="ti-plus"></span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="dashboard-section social-inputs">
-                    <h4><i data-feather="cast"></i>Social Networks</h4>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Social Links</label>
-                      <div class="col-sm-9">
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text"><i class="fab fa-facebook-f"></i></div>
-                          </div>
-                          <input type="text" class="form-control" placeholder="facebook.com/username">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <div class="offset-sm-3 col-sm-9">
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text"><i class="fab fa-twitter"></i></div>
-                          </div>
-                          <input type="text" class="form-control" placeholder="twitter.com/username">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <div class="offset-sm-3 col-sm-9">
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text"><i class="fab fa-google-plus"></i></div>
-                          </div>
-                          <input type="text" class="form-control" placeholder="google.com/username">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <div class="offset-sm-3 col-sm-9">
-                        <div class="input-group add-new">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text dropdown-label">
-                              <select class="form-control" id="exampleFormControlSelect1">
-                                <option>Select</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                              </select><i class="fa fa-caret-down"></i>
-                            </div>
-                          </div>
-                          <input type="text" class="form-control" placeholder="Input Profile Link">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  </form>
+                  <br>
+                  <br>
+                  <form method="post" enctype="multipart/form-data" class="dashboard-form">
+                  
                   <div class="dashboard-section basic-info-input">
                     <h4><i data-feather="lock"></i>Change Password</h4>
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">Current Password</label>
                       <div class="col-sm-9">
-                        <input type="password" class="form-control" placeholder="Current Password">
+                        <input  id="oldpassword" name="oldpassword" type="password" class="form-control" placeholder="Current Password" required>
                       </div>
                     </div>
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">New Password</label>
                       <div class="col-sm-9">
-                        <input type="password" class="form-control" placeholder="New Password">
+                        <input id="newpassword" name="newpassword" type="password" class="form-control" placeholder="New Password" required>
                       </div>
                     </div>
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">Retype Password</label>
                       <div class="col-sm-9">
-                        <input type="password" class="form-control" placeholder="Retype Password">
+                        <input id="retypepassword" name="retypepassword" type="password" class="form-control" placeholder="Retype Password" required>
                       </div>
                     </div>
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label"></label>
                       <div class="col-sm-9">
-                        <button class="button">Save Change</button>
+                        <input id="btnChangePwd" type="button" class="button" value="Change Password" />
+                
+                      
+                        <!-- <button  name="btnChangePwd" type="submit" class="button">Change Password</button> -->
+                        
                       </div>
                     </div>
                   </div>
                 </form>
               </div>
               <div class="dashboard-sidebar">
-                <div class="company-info">
+                <div class="user-info">
                   <div class="thumb">
-                    <img src="dashboard/images/company-logo.png" class="img-fluid" alt="">
-                  </div>
-                  <div class="company-body">
-                    <h5>Degoin</h5>
-                    <span>@username</span>
-                  </div>
+                      <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
+                    </div>
+                    <div class="user-body">
+                      <h5><?php echo $res[0]['name'] ?></h5>
+                      <span>@<?php echo $res[0]['username'] ?></span>
+                    </div>
                 </div>
                 <div class="profile-progress">
                   <div class="progress-item">
@@ -399,13 +463,13 @@
                 </div>
                 <div class="dashboard-menu">
                   <ul>
-                    <li><i class="fas fa-home"></i><a href="collage-dashboard.html">Dashboard</a></li>
-                    <li class="active"><i class="fas fa-user"></i><a href="collage-dashboard-edit-profile.html">Edit Profile</a></li>
-                     <li><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.html">Manage Candidates</a></li>
-                    <li><i class="fas fa-briefcase"></i><a href="job-listing.html">Jobs</a></li>
-                     <li><i class="fas fa-heart"></i><a href="dashboard-bookmark.html">Bookmarked</a></li>
-                    <li><i class="fas fa-plus-square"></i><a href="add-student.html">Add Student</a></li>
-                    <!-- <li><i class="fas fa-comment"></i><a href="employer-dashboard-message.html">Message</a></li> -->
+                    <li><i class="fas fa-home"></i><a href="dashboard.php">Dashboard</a></li>
+                    <li class="active"><i class="fas fa-user"></i><a href="dashboard-edit-profile.php">Edit Profile</a></li>
+                    <li><i class="fas fa-file-alt"></i><a href="resume.php">Resume</a></li>
+                    <li><i class="fas fa-edit"></i><a href="edit-resume.php">Edit Resume</a></li>
+                    <li><i class="fas fa-heart"></i><a href="dashboard-bookmark.php">Bookmarked</a></li>
+                    <li><i class="fas fa-check-square"></i><a href="dashboard-applied.php">Applied Job</a></li>
+                    <li><i class="fas fa-comment"></i><a href="dashboard-message.html">Message</a></li>
                     <li><i class="fas fa-calculator"></i><a href="dashboard-pricing.html">Pricing Plans</a></li>
                   </ul>
                   <ul class="delete">
@@ -451,11 +515,11 @@
           <div class="col">
             <div class="call-to-action-2">
               <div class="call-to-action-content">
-                <h2>For Find Your Dream Job or Candidate</h2>
+                <h2>Find Your Dream Job or Candidate</h2>
                 <p>Add resume or post a job.</p>
               </div>
               <div class="call-to-action-button">
-                <a href="add-resume.html" class="button">Add Resume</a>
+                <a href="add-resume.php" class="button">Add Resume</a>
                 <span>Or</span>
                 <a href="post-job.html" class="button">Post A Job</a>
               </div>
@@ -565,7 +629,7 @@
                     </div>
                   </div>
                   <div class="col-xl-4 col-lg-4 order-lg-1">
-                    <p class="copyright-text">Copyright Lewansys 2021, All right reserved.<br> Designed and Developed by <a href="https://aitechnologies.co.in/" target="_blank">AiTechnologies</a></p>
+                    <p class="copyright-text">Copyright Lewansys 2021, All rights reserved. <br> Designed and Developed By <a href="https://aitechnologies.co.in/" target="_blank">AiTechnologies</a>.</p>
                   </div>
                   <div class="col-xl-4 col-lg-3 order-lg-3">
                     <div class="back-to-top">
@@ -605,5 +669,47 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC87gjXWLqrHuLKR0CTV5jNLdP4pEHMhmg"></script>
     <script src="js/map.js"></script>
+    <script>
+      $(document).ready(function() {
+      
+      $("#btnChangePwd").click(function() {
+        var retypepassword = $("#retypepassword").val();
+        var newpassword = $("#newpassword").val();
+        var oldpassword = $("#oldpassword").val();
+        var id='<?php echo $id;?>';
+        var password='<?php echo $password;?>';
+        
+      
+         
+        
+        $.ajax({
+          type: "POST",
+          url: "changepassword.php",
+          data: {
+          
+          currentpwd: oldpassword,
+          newpwd: newpassword,
+          retypepwd: retypepassword,
+          password: password,
+          id: id
+          },
+          cache: false,
+          success: function(response) {
+          alert(response.message);
+          if(response.success == true){
+            window.location.replace("dashboard-edit-profile.php");
+          }
+          },
+          error: function(xhr, status, error) {
+          console.error(xhr);
+          }
+          });
+      
+      
+      
+      });
+      
+      });
+    </script>
   </body>
 </html>

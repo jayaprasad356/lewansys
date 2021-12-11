@@ -1,3 +1,8 @@
+<?php
+session_start();
+ob_start();
+$id = $_SESSION['id'];
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -42,14 +47,13 @@
 
   </head>
   <body>
-
-    <header class="header-2">
+ <header class="header-2">
       <div class="container">
         <div class="row">
           <div class="col">
             <div class="header-top">
               <div class="logo-area">
-                <a href="job-listing.html"><img src="images/logo-2.png" alt=""></a>
+                <a href="employer-dashboard.php"><img src="images/logo-2.png" alt=""></a>
               </div>
               <div class="header-top-toggler">
                 <div class="header-top-toggler-button"></div>
@@ -125,25 +129,25 @@
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
-                  <li class="menu-item active"><a title="Home" href="job-listing.html">Home</a></li>
+                  <li class="menu-item active"><a title="Home" href="employer-dashboard.php">Home</a></li>
                  <!--  <li class="menu-item dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Jobs</a>
                     <ul  class="dropdown-menu">
-                      <li class="menu-item"><a  href="job-listing.html">Job Listing</a></li>
+                      <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
                       <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
                       <li class="menu-item"><a  href="job-details.html">Job Details</a></li>
                       <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
                     </ul>
-                  </li> -->
-                 <!--  <li class="menu-item dropdown">
+                  </li>
+                  <li class="menu-item dropdown">
                     <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Candidates</a>
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="candidate.html">Candidate Listing</a></li>
-                      <li class="menu-item"><a  href="candidate-details.html">Candidate Details</a></li>
-                      <li class="menu-item"><a  href="add-resume.html">Add Resume</a></li>
+                      <li class="menu-item"><a  href="candidate-details.php">Candidate Details</a></li>
+                      <li class="menu-item"><a  href="add-resume.php">Add Resume</a></li>
                     </ul>
                   </li> -->
-                  <!-- <li class="menu-item dropdown">
+                 <!--  <li class="menu-item dropdown">
                     <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Employers</a>
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="employer-listing.html">Employer Listing</a></li>
@@ -154,56 +158,17 @@
                   <li class="menu-item dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
                     <ul class="dropdown-menu">
-                          <li class="menu-item"><a  href="dashboard.html">Dashboard</a></li>
-                          <li class="menu-item"><a  href="dashboard-edit-profile.html">Edit Profile</a></li>
-                          <li class="menu-item"><a  href="add-resume.html">Add Resume</a></li>
-                          <li class="menu-item"><a  href="resume.html">Resume</a></li>
-                          <li class="menu-item"><a  href="edit-resume.html">Edit Resume</a></li>
-                          <li class="menu-item"><a  href="dashboard-bookmark.html">Bookmarked</a></li>
-                          <li class="menu-item"><a  href="dashboard-applied.html">Applied</a></li>
-                          <li class="menu-item"><a  href="dashboard-pricing.html">Pricing</a></li>
-                          <li class="menu-item"><a  href="dashboard-message.html">Message</a></li>
-                          <li class="menu-item"><a  href="dashboard-alert.html">Alert</a></li>
-                        </ul>
-                    
-                     <!--    <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Employer Dashboard</a>
-                        <ul class="dropdown-menu">
                           <li class="menu-item"><a href="employer-dashboard.php">Employer Dashboard</a></li>
                           <li class="menu-item"><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.html">Manage Candidate</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.php">Manage Candidate</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-job.php">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
                           <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
                         </ul>
-                      </li> -->
-          
-                 <!--  <li class="menu-item dropdown">
-                    <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Pages</a>
-                    <ul  class="dropdown-menu">
-                      <li class="menu-item"><a href="about-us.html">About Us</a></li>
-                      <li class="menu-item"><a href="how-it-work.html">How It Works</a></li>
-                      <li class="menu-item"><a href="pricing.html">Pricing Plan</a></li>
-                      <li class="menu-item"><a href="faq.html">FAQ</a></li>
-                      <li class="menu-item dropdown">
-                        <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">News &amp; Advices</a>
-                        <ul class="dropdown-menu">
-                          <li class="menu-item"><a href="blog.html">News</a></li>
-                          <li class="menu-item"><a href="blog-grid.html">News Grid</a></li>
-                          <li class="menu-item"><a href="blog-details.html">News Details</a></li>
-                        </ul>
-                      </li>
-                      <li class="menu-item"><a href="checkout.html">Checkout</a></li>
-                      <li class="menu-item"><a href="payment-complete.html">Payment Complete</a></li>
-                      <li class="menu-item"><a href="invoice.html">Invoice</a></li>
-                      <li class="menu-item"><a href="terms-and-condition.html">Terms And Condition</a></li>
-                      <li class="menu-item"><a href="404.html">404 Page</a></li>
-                      <li class="menu-item"><a href="login.php">Login</a></li>
-                      <li class="menu-item"><a href="register.php">Register</a></li>
-                    </ul>
-                  </li> -->
+                  </li>
                   <li class="menu-item"><a href="contact.html">Contact Us</a></li>
-                 <!--  <li class="menu-item post-job"><a href="post-job.html"><i class="fas fa-plus"></i>Post a Job</a></li> -->
+                  <li class="menu-item post-job"><a href="post-job.html"><i class="fas fa-plus"></i>Post a Job</a></li>
                 </ul>
               </div>
             </nav>
@@ -218,186 +183,29 @@
         <div class="row">
           <div class="col-md-6">
             <div class="breadcrumb-area">
-              <h1>Candidates Dashboard</h1>
+              <h1>Employer Dashboard</h1>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="job-listing.html">Home</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Candidates Dashboard</li>
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Employer Dashboard</li>
                 </ol>
               </nav>
             </div>
           </div>
-          <!-- <div class="col-md-6">
+          <div class="col-md-6">
             <div class="breadcrumb-form">
-              <form action="#">
+             <!--  <form action="#">
                 <input type="text" placeholder="Enter Keywords">
                 <button><i data-feather="search"></i></button>
-              </form>
+              </form> -->
             </div>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
     <!-- Breadcrumb End -->
 
-    <div class="alice-bg section-padding-bottom">
-      <div class="container no-gliters">
-        <div class="row no-gliters">
-          <div class="col">
-            <div class="dashboard-container">
-              <div class="dashboard-content-wrapper">
-                <form action="#" class="dashboard-form">
-                  <div class="dashboard-section upload-profile-photo">
-                    <div class="update-photo">
-                      <img class="image" src="dashboard/images/user-1.jpg" alt="">
-                    </div>
-                    <div class="file-upload">            
-                      <input type="file" class="file-input">Change Avatar
-                    </div>
-                  </div>
-                  <div class="dashboard-section basic-info-input">
-                    <h4><i data-feather="user-check"></i>Basic Info</h4>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Full Name</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="Full Name">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Username</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="@username">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Email Address</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="email@example.com">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Phone</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="+55 123 4563 4643">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Address</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="Washington D.C">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Indestry Expertise</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="UI & UX Designer">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">About Me</label>
-                      <div class="col-sm-9">
-                        <textarea class="form-control" placeholder="Introduce Yourself"></textarea>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="dashboard-section basic-info-input">
-                    <h4><i data-feather="lock"></i>Change Password</h4>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Current Password</label>
-                      <div class="col-sm-9">
-                        <input type="password" class="form-control" placeholder="Current Password">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">New Password</label>
-                      <div class="col-sm-9">
-                        <input type="password" class="form-control" placeholder="New Password">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label">Retype Password</label>
-                      <div class="col-sm-9">
-                        <input type="password" class="form-control" placeholder="Retype Password">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-3 col-form-label"></label>
-                      <div class="col-sm-9">
-                        <button class="button">Save Change</button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="dashboard-sidebar">
-                <div class="user-info">
-                  <div class="thumb">
-                    <img src="dashboard/images/user-1.jpg" class="img-fluid" alt="">
-                  </div>
-                  <div class="user-body">
-                    <h5>Lula Wallace</h5>
-                    <span>@username</span>
-                  </div>
-                </div>
-                <div class="profile-progress">
-                  <div class="progress-item">
-                    <div class="progress-head">
-                      <p class="progress-on">Profile</p>
-                    </div>
-                    <div class="progress-body">
-                      <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
-                      </div>
-                      <p class="progress-to">70%</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="dashboard-menu">
-                  <ul>
-                    <li><i class="fas fa-home"></i><a href="dashboard.html">Dashboard</a></li>
-                    <li class="active"><i class="fas fa-user"></i><a href="dashboard-edit-profile.html">Edit Profile</a></li>
-                    <li><i class="fas fa-file-alt"></i><a href="resume.html">Resume</a></li>
-                    <li><i class="fas fa-edit"></i><a href="edit-resume.html">Edit Resume</a></li>
-                    <li><i class="fas fa-heart"></i><a href="dashboard-bookmark.html">Bookmarked</a></li>
-                    <li><i class="fas fa-check-square"></i><a href="dashboard-applied.html">Applied Job</a></li>
-                    <li><i class="fas fa-comment"></i><a href="dashboard-message.html">Message</a></li>
-                    <li><i class="fas fa-calculator"></i><a href="dashboard-pricing.html">Pricing Plans</a></li>
-                  </ul>
-                  <ul class="delete">
-                    <li><i class="fas fa-power-off"></i><a href="#">Logout</a></li>
-                    <li><i class="fas fa-trash-alt"></i><a href="#" data-toggle="modal" data-target="#modal-delete">Delete Profile</a></li>
-                  </ul>
-                  <!-- Modal -->
-                  <div class="modal fade modal-delete" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-body">
-                          <h4><i data-feather="trash-2"></i>Delete Account</h4>
-                          <p>Are you sure! You want to delete your profile. This can't be undone!</p>
-                          <form action="#">
-                            <div class="form-group">
-                              <input type="password" class="form-control" placeholder="Enter password">
-                            </div>
-                            <div class="buttons">
-                              <button class="delete-button">Save Update</button>
-                              <button class="">Cancel</button>
-                            </div>
-                            <div class="form-group form-check">
-                              <input type="checkbox" class="form-check-input" checked="">
-                              <label class="form-check-label">You accepts our <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a></label>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <?php include('public/view-jobs-table.php'); ?>
 
     <!-- Call to Action -->
     <div class="call-to-action-bg padding-top-90 padding-bottom-90">
@@ -406,11 +214,11 @@
           <div class="col">
             <div class="call-to-action-2">
               <div class="call-to-action-content">
-                <h2>Find Your Dream Job or Candidate</h2>
+                <h2>For Find Your Dream Job or Candidate</h2>
                 <p>Add resume or post a job.</p>
               </div>
               <div class="call-to-action-button">
-                <a href="add-resume.html" class="button">Add Resume</a>
+                <a href="add-resume.php" class="button">Add Resume</a>
                 <span>Or</span>
                 <a href="post-job.html" class="button">Post A Job</a>
               </div>
@@ -520,7 +328,7 @@
                     </div>
                   </div>
                   <div class="col-xl-4 col-lg-4 order-lg-1">
-                    <p class="copyright-text">Copyright Lewansys 2021, All rights reserved. <br> Designed and Developed By <a href="https://aitechnologies.co.in/" target="_blank">AiTechnologies</a>.</p>
+                    <p class="copyright-text">Copyright Lewansys 2021, All right reserved.<br> Designed and Developed by <a href="https://aitechnologies.co.in/" target="_blank">AiTechnologies</a></p>
                   </div>
                   <div class="col-xl-4 col-lg-3 order-lg-3">
                     <div class="back-to-top">

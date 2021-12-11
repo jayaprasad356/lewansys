@@ -1,6 +1,8 @@
 <?php 
 session_start();
 ob_start();
+include_once('../includes/functions.php');
+$function = new functions;
 include_once('../includes/crud.php');
 $db = new Database();
 $db->connect();
@@ -29,8 +31,25 @@ $facebook = $res[0]['facebook'];
 $google = $res[0]['google'];
 $twitter = $res[0]['twitter'];
 
+if (isset($_POST['btnpwdUpdate']))
+{
+  $newpassword = $db->escapeString($_POST['newpassword']);
+
+  $data = array(
+    'password' => $newpassword
+  );
+  if($db->update('company', $data, 'id=' . $id)){
+    header("location: ../company/employer-dashboard.php");
+  
+  }
+
+}
 if (isset($_POST['btnUpdate'])) 
 {
+  
+
+  
+  $menu_image = $db->escapeString($_FILES['profile']['name']);
   $username = $db->escapeString($_POST['username']);
   $mobile = $db->escapeString($_POST['mobile']);
   $email = $db->escapeString($_POST['email']);
@@ -39,25 +58,57 @@ if (isset($_POST['btnUpdate']))
   $about_us = $db->escapeString($_POST['about_us']);
   $video = $db->escapeString($_POST['video']);
   $company_name = $db->escapeString($_POST['company_name']);
-  $oldpassword = $db->escapeString($_POST['oldpassword']);
   $facebook = $db->escapeString($_POST['facebook']);
   $google = $db->escapeString($_POST['google']);
   $twitter = $db->escapeString($_POST['twitter']);
 
-  $data = array(
-    'username' => $username,
-    'mobile' => $mobile,
-    'email' => $email,
-    'address' => $address,
-    'category' => $category,
-    'about_us' => $about_us,
-    'video' => $video,
-    'company_name' => $company_name,
-    'password' => $oldpassword,
-    'facebook' => $facebook,
-    'google' => $google,
-    'twitter' => $twitter
-);
+  if (!empty($menu_image)) {
+    $extension = end(explode(".", $_FILES["profile"]["name"]));
+
+
+    // create random image file name
+    $string = '0123456789';
+    $file = preg_replace("/\s+/", "_", $_FILES['profile']['name']);
+    $menu_image = $function->get_random_string($string, 4) . "-" . date("Y-m-d") . "." . $extension;
+  
+    // upload new image
+    $upload = move_uploaded_file($_FILES['profile']['tmp_name'], '../upload/images/' . $menu_image);
+  
+    // insert new data to menu table
+    $upload_image = 'upload/images/' . $menu_image;
+    $data = array(
+      'username' => $username,
+      'mobile' => $mobile,
+      'email' => $email,
+      'address' => $address,
+      'profile' => $upload_image,
+      'category' => $category,
+      'about_us' => $about_us,
+      'video' => $video,
+      'company_name' => $company_name,
+      'facebook' => $facebook,
+      'google' => $google,
+      'twitter' => $twitter
+  );
+
+  }
+  else {
+    $data = array(
+      'username' => $username,
+      'mobile' => $mobile,
+      'email' => $email,
+      'address' => $address,
+      'category' => $category,
+      'about_us' => $about_us,
+      'video' => $video,
+      'company_name' => $company_name,
+      'facebook' => $facebook,
+      'google' => $google,
+      'twitter' => $twitter
+  );
+  }
+
+  
 if($db->update('company', $data, 'id=' . $id)){
   header("location: ../company/employer-dashboard.php");
 
@@ -201,7 +252,7 @@ if($db->update('company', $data, 'id=' . $id)){
                  <!--  <li class="menu-item dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Jobs</a>
                     <ul  class="dropdown-menu">
-                      <li class="menu-item"><a  href="job-listing.html">Job Listing</a></li>
+                      <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
                       <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
                       <li class="menu-item"><a  href="job-details.html">Job Details</a></li>
                       <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
@@ -211,8 +262,8 @@ if($db->update('company', $data, 'id=' . $id)){
                     <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Candidates</a>
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="candidate.html">Candidate Listing</a></li>
-                      <li class="menu-item"><a  href="candidate-details.html">Candidate Details</a></li>
-                      <li class="menu-item"><a  href="add-resume.html">Add Resume</a></li>
+                      <li class="menu-item"><a  href="candidate-details.php">Candidate Details</a></li>
+                      <li class="menu-item"><a  href="add-resume.php">Add Resume</a></li>
                     </ul>
                   </li> -->
                  <!--  <li class="menu-item dropdown">
@@ -228,8 +279,8 @@ if($db->update('company', $data, 'id=' . $id)){
                     <ul class="dropdown-menu">
                           <li class="menu-item"><a href="employer-dashboard.php">Employer Dashboard</a></li>
                           <li class="menu-item"><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.html">Manage Candidate</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-job.html">Manage Job</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.php">Manage Candidate</a></li>
+                          <li class="menu-item"><a href="employer-dashboard-manage-job.php">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
                           <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
@@ -282,10 +333,10 @@ if($db->update('company', $data, 'id=' . $id)){
                 <form method="post" enctype="multipart/form-data" class="dashboard-form">
                   <div class="dashboard-section upload-profile-photo">
                     <div class="update-photo">
-                      <img class="image" src="<?php echo $profile ?>" alt="">
+                      <img class="image" src="../<?php echo  $profile ?>" alt="">
                     </div>
                     <div class="file-upload">            
-                      <input type="file" class="file-input">Change Avatar
+                      <input name="profile" type="file" class="file-input">Change Avatar
                     </div>
                   </div>
                   <div class="dashboard-section basic-info-input">
@@ -397,6 +448,10 @@ if($db->update('company', $data, 'id=' . $id)){
                         </div>
                       </div>
                     </div>
+                    <div class="col-sm-9">
+                        <button  name="btnUpdate" type="submit" class="button">Save Change</button>
+                        
+                      </div>
                     <!-- <div class="form-group row">
                       <div class="offset-sm-3 col-sm-9">
                         <div class="input-group add-new">
@@ -427,7 +482,7 @@ if($db->update('company', $data, 'id=' . $id)){
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">New Password</label>
                       <div class="col-sm-9">
-                        <input type="password" class="form-control" placeholder="New Password">
+                        <input name="newpassword" type="password" class="form-control" placeholder="New Password">
                       </div>
                     </div>
                     <div class="form-group row">
@@ -439,7 +494,7 @@ if($db->update('company', $data, 'id=' . $id)){
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label"></label>
                       <div class="col-sm-9">
-                        <button  name="btnUpdate" type="submit" class="button">Save Change</button>
+                        <button  name="btnpwdUpdate" type="submit" class="button">Change Password</button>
                         
                       </div>
                     </div>
@@ -473,8 +528,8 @@ if($db->update('company', $data, 'id=' . $id)){
                   <ul>
                     <li><i class="fas fa-home"></i><a href="employer-dashboard.php">Dashboard</a></li>
                     <li class="active"><i class="fas fa-user"></i><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
-                    <li><i class="fas fa-briefcase"></i><a href="employer-dashboard-manage-job.html">Manage Jobs</a></li>
-                    <li><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.html">Manage Candidates</a></li>
+                    <li><i class="fas fa-briefcase"></i><a href="employer-dashboard-manage-job.php">Manage Jobs</a></li>
+                    <li><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.php">Manage Candidates</a></li>
                     <li><i class="fas fa-heart"></i><a href="#">Shortlisted Resumes</a></li>
                     <li><i class="fas fa-plus-square"></i><a href="employer-dashboard-post-job.php">Post New Job</a></li>
                     <li><i class="fas fa-comment"></i><a href="employer-dashboard-message.html">Message</a></li>
@@ -527,7 +582,7 @@ if($db->update('company', $data, 'id=' . $id)){
                 <p>Add resume or post a job.</p>
               </div>
               <div class="call-to-action-button">
-                <a href="add-resume.html" class="button">Add Resume</a>
+                <a href="add-resume.php" class="button">Add Resume</a>
                 <span>Or</span>
                 <a href="post-job.html" class="button">Post A Job</a>
               </div>
