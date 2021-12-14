@@ -15,9 +15,26 @@ $id = $_SESSION['id'];
 if (!isset($id)) {
   header("location:login.php");
 }
-$sql = "SELECT * FROM college_institution WHERE id = $id";
-$db->sql($sql);
-$res = $db->getResult();
+$sql = "SELECT * FROM student WHERE id = $id";
+    $db->sql($sql);
+    $res = $db->getResult();
+
+    $sql = "SELECT COUNT(*) AS count
+    FROM student_job
+    WHERE student_id = $id AND status = 'applied'";
+    $db->sql($sql);
+    $resapcount = $db->getResult();
+
+    $sql = "SELECT COUNT(*) AS count
+    FROM stu_bookmark_jobs
+    WHERE student_id = $id";
+    $db->sql($sql);
+    $bookcount = $db->getResult();
+
+    $sql = "SELECT COUNT(*) AS count
+    FROM jobs";
+    $db->sql($sql);
+    $jobcount = $db->getResult();
     
 
 
@@ -29,7 +46,7 @@ $res = $db->getResult();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Lewansys</title>
+    <title>Lewnasys</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -73,7 +90,7 @@ $res = $db->getResult();
           <div class="col">
             <div class="header-top">
               <div class="logo-area">
-                <a href="collage-dashboard.php"><img src="images/logo-2.png" alt=""></a>
+                <a href="job-listing.php"><img src="images/logo-2.png" alt=""></a>
               </div>
               <div class="header-top-toggler">
                 <div class="header-top-toggler-button"></div>
@@ -126,7 +143,7 @@ $res = $db->getResult();
                         <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                       </a>
                       <div class="account-body">
-                        <h5><a href="#"><?php echo $res[0]['username'] ?> </a></h5>
+                        <h5><a href="#"><?php echo $res[0]['name'] ?></a></h5>
                         <span class="mail"><?php echo $res[0]['email'] ?></span>
                       </div>
                     </div>
@@ -137,7 +154,7 @@ $res = $db->getResult();
                     </ul>
                   </div>
                 </div>
-               <!--  <select class="selectpicker select-language" data-width="fit">
+                <!-- <select class="selectpicker select-language" data-width="fit">
                   <option data-content='<span class="flag-icon flag-icon-us"></span> English'>English</option>
                   <option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
                 </select> -->
@@ -149,32 +166,47 @@ $res = $db->getResult();
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
-                  <li class="menu-item active"><a title="Home" href="collage-dashboard.php">Home</a></li>
-                
-                  
+                  <li class="menu-item active"><a title="Home" href="job-listing.php">Home</a></li>
                  <!--  <li class="menu-item dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Jobs</a>
+                    <ul  class="dropdown-menu">
+                      <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
+                      <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
+                      <li class="menu-item"><a  href="job-details.html">Job Details</a></li>
+                      <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
+                    </ul>
+                  </li> -->
+                 <!--  <li class="menu-item dropdown">
+                    <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Candidates</a>
+                    <ul  class="dropdown-menu">
+                      <li class="menu-item"><a  href="candidate.html">Candidate Listing</a></li>
+                      <li class="menu-item"><a  href="candidate-details.php">Candidate Details</a></li>
+                      <li class="menu-item"><a  href="add-resume.php">Add Resume</a></li>
+                    </ul>
+                  </li> -->
+                  <!-- <li class="menu-item dropdown">
                     <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Employers</a>
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="employer-listing.html">Employer Listing</a></li>
                       <li class="menu-item"><a  href="employer-details.html">Employer Details</a></li>
-                      <li class="menu-item"><a  href="employer-dashboard-post-job.php">Add A Student</a></li>
+                      <li class="menu-item"><a  href="employer-dashboard-post-job.php">Post a Job</a></li>
                     </ul>
                   </li> -->
-                 
-                    <li class="menu-item dropdown">
-                        <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
-                        <ul class="dropdown-menu">
-                          <li class="menu-item"><a  href="collage-dashboard.php">Dashboard</a></li>
-                          <li class="menu-item"><a  href="collage-dashboard-edit-profile.php">Edit Profile</a></li>
-                          <li class="menu-item"><a  href="employer-dashboard-manage-candidate.php">Manage Canditates</a></li>
-                          <li class="menu-item"><a  href="job-listing.php">Jobs</a></li>
+                  <li class="menu-item dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
+                    <ul class="dropdown-menu">
+                          <li class="menu-item"><a  href="dashboard.php">Dashboard</a></li>
+                          <li class="menu-item"><a  href="dashboard-edit-profile.php">Edit Profile</a></li>
+                          <li class="menu-item"><a  href="add-resume.php">Add Resume</a></li>
+                          <li class="menu-item"><a  href="resume.php">Resume</a></li>
+                          <li class="menu-item"><a  href="edit-resume.php">Edit Resume</a></li>
                           <li class="menu-item"><a  href="dashboard-bookmark.php">Bookmarked</a></li>
-                          <li class="menu-item"><a  href="add-student.php">Add Student</a></li>
+                          <li class="menu-item"><a  href="dashboard-applied.php">Applied</a></li>
                           <li class="menu-item"><a  href="dashboard-pricing.html">Pricing</a></li>
+                          <li class="menu-item"><a  href="dashboard-message.html">Message</a></li>
+                          <li class="menu-item"><a  href="dashboard-alert.html">Alert</a></li>
                         </ul>
-                      </li>
-                      
-                      <!-- <li class="menu-item dropdown">
+                     <!--  <li class="menu-item dropdown">
                         <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Employer Dashboard</a>
                         <ul class="dropdown-menu">
                           <li class="menu-item"><a href="employer-dashboard.php">Employer Dashboard</a></li>
@@ -186,11 +218,32 @@ $res = $db->getResult();
                           <li class="menu-item"><a href="employer-dashboard-post-job.php">Post Job</a></li>
                         </ul>
                       </li> -->
-                    
-                  </li>
-                 
+                <!--   <li class="menu-item dropdown">
+                    <a title="" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Pages</a>
+                    <ul  class="dropdown-menu">
+                      <li class="menu-item"><a href="about-us.html">About Us</a></li>
+                      <li class="menu-item"><a href="how-it-work.html">How It Works</a></li>
+                      <li class="menu-item"><a href="pricing.html">Pricing Plan</a></li>
+                      <li class="menu-item"><a href="faq.html">FAQ</a></li>
+                      <li class="menu-item dropdown">
+                        <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">News &amp; Advices</a>
+                        <ul class="dropdown-menu">
+                          <li class="menu-item"><a href="blog.html">News</a></li>
+                          <li class="menu-item"><a href="blog-grid.html">News Grid</a></li>
+                          <li class="menu-item"><a href="blog-details.html">News Details</a></li>
+                        </ul>
+                      </li>
+                      <li class="menu-item"><a href="checkout.html">Checkout</a></li>
+                      <li class="menu-item"><a href="payment-complete.html">Payment Complete</a></li>
+                      <li class="menu-item"><a href="invoice.html">Invoice</a></li>
+                      <li class="menu-item"><a href="terms-and-condition.html">Terms And Condition</a></li>
+                      <li class="menu-item"><a href="404.html">404 Page</a></li>
+                      <li class="menu-item"><a href="login.php">Login</a></li>
+                      <li class="menu-item"><a href="register.php">Register</a></li>
+                    </ul>
+                  </li> -->
                   <li class="menu-item"><a href="contact.html">Contact Us</a></li>
-                  <li class="menu-item post-job"><a href="add-student.php"><i class="fas fa-plus"></i>Add Student</a></li>
+                  <!-- <li class="menu-item post-job"><a href="post-job.html"><i class="fas fa-plus"></i>Post a Job</a></li> -->
                 </ul>
               </div>
             </nav>
@@ -205,23 +258,23 @@ $res = $db->getResult();
         <div class="row">
           <div class="col-md-6">
             <div class="breadcrumb-area">
-              <h1>Collage/Institution Dashboard</h1>
+              <h1>Candidates Dashboard</h1>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#">Home</a></li>
-                  <!-- <li class="breadcrumb-item active" aria-current="page">Collage/Institution Dashboard</li> -->
+                  <li class="breadcrumb-item"><a href="job-listing.php">Home</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Candidates Dashboard</li>
                 </ol>
               </nav>
             </div>
           </div>
-          <div class="col-md-6">
+         <!--  <div class="col-md-6">
             <div class="breadcrumb-form">
               <form action="#">
-                <input type="text" placeholder="Search">
+                <input type="text" placeholder="Enter Keywords">
                 <button><i data-feather="search"></i></button>
               </form>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -235,30 +288,30 @@ $res = $db->getResult();
               <div class="dashboard-content-wrapper">
                 <div class="dashboard-section user-statistic-block">
                   <div class="user-statistic">
-                    <i data-feather="command"></i>
-                    <h3>06</h3>
-                    <span>Total Students</span>
+                    <i data-feather="pie-chart"></i>
+                    <h3><?php echo $jobcount[0]['count'] ?></h3>
+                    <span>Total Jobs</span>
                   </div>
                   <div class="user-statistic">
-                    <i data-feather="file-text"></i>
-                    <h3>123</h3>
-                    <span>Assigned Students</span>
+                    <i data-feather="briefcase"></i>
+                    <h3><?php echo $resapcount[0]['count'] ?></h3>
+                    <span>Applied Jobs</span>
                   </div>
                   <div class="user-statistic">
-                    <i data-feather="users"></i>
-                    <h3>32</h3>
-                    <span>Selected Students</span>
+                    <i data-feather="heart"></i>
+                    <h3><?php echo $bookcount[0]['count'] ?></h3>
+                    <span>Favourite Jobs</span>
                   </div>
                 </div>
                 <div class="dashboard-section dashboard-view-chart">
                   <canvas id="view-chart" width="400" height="200"></canvas>
                 </div>
-                <div class="dashboard-section dashboard-recent-activity">
+                <!-- <div class="dashboard-section dashboard-recent-activity">
                   <h4 class="title">Recent Activity</h4>
                   <div class="activity-list">
                     <i class="fas fa-bolt"></i>
                     <div class="content">
-                      <h5>Student Resume Updated!</h5>
+                      <h5>Your Resume Updated!</h5>
                       <span class="time">5 hours ago</span>
                     </div>
                     <div class="close-activity">
@@ -315,15 +368,15 @@ $res = $db->getResult();
                       <i class="fas fa-times"></i>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
               <div class="dashboard-sidebar">
-                <div class="company-info">
+                <div class="user-info">
                   <div class="thumb">
                     <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                   </div>
-                  <div class="company-body">
-                    <h5><?php echo $res[0]['college_institution_name'] ?></h5>
+                  <div class="user-body">
+                    <h5><?php echo $res[0]['name'] ?></h5>
                     <span>@<?php echo $res[0]['username'] ?></span>
                   </div>
                 </div>
@@ -342,13 +395,13 @@ $res = $db->getResult();
                 </div>
                 <div class="dashboard-menu">
                   <ul>
-                    <li class="active"><i class="fas fa-home"></i><a href="collage-dashboard.php">Dashboard</a></li>
-                    <li><i class="fas fa-user"></i><a href="collage-dashboard-edit-profile.php">Edit Profile</a></li>
-                     <li><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.php">Manage Candidates</a></li>
-                    <li><i class="fas fa-briefcase"></i><a href="job-listing.php">Jobs</a></li>
-                     <li><i class="fas fa-heart"></i><a href="dashboard-bookmark.php">Bookmarked</a></li>
-                    <li><i class="fas fa-plus-square"></i><a href="add-student.php">Add Student</a></li>
-                    <!-- <li><i class="fas fa-comment"></i><a href="employer-dashboard-message.html">Message</a></li> -->
+                    <li class="active"><i class="fas fa-home"></i><a href="dashboard.php">Dashboard</a></li>
+                    <li><i class="fas fa-user"></i><a href="dashboard-edit-profile.php">Edit Profile</a></li>
+                    <li><i class="fas fa-file-alt"></i><a href="resume.php">Resume</a></li>
+                    <li><i class="fas fa-edit"></i><a href="edit-resume.php">Edit Resume</a></li>
+                    <li><i class="fas fa-heart"></i><a href="dashboard-bookmark.php">Bookmarked</a></li>
+                    <li><i class="fas fa-check-square"></i><a href="dashboard-applied.php">Applied Job</a></li>
+                    <li><i class="fas fa-comment"></i><a href="dashboard-message.html">Message</a></li>
                     <li><i class="fas fa-calculator"></i><a href="dashboard-pricing.html">Pricing Plans</a></li>
                   </ul>
                   <ul class="delete">
@@ -394,13 +447,13 @@ $res = $db->getResult();
           <div class="col">
             <div class="call-to-action-2">
               <div class="call-to-action-content">
-                <h2>For Find Your Dream Job or Candidate</h2>
+                <h2>Find Your Dream Job or Candidate</h2>
                 <p>Add resume or post a job.</p>
               </div>
               <div class="call-to-action-button">
-                <a href="#" class="button">Add Resume</a>
+                <a href="add-resume.php" class="button">Add Resume</a>
                 <span>Or</span>
-                <a href="#" class="button">Post A Job</a>
+                <a href="post-job.html" class="button">Post A Job</a>
               </div>
             </div>
           </div>
@@ -508,7 +561,7 @@ $res = $db->getResult();
                     </div>
                   </div>
                   <div class="col-xl-4 col-lg-4 order-lg-1">
-                    <p class="copyright-text">Copyright Lewansys 2021, All right reserved.<br> Designed and Developed by <a href="https://aitechnologies.co.in/" target="_blank">AiTechnologies</a></p>
+                    <p class="copyright-text">Copyright Lewansys 2021, All rights reserved. <br> Designed and Developed by <a href="https://aitechnologies.co.in/" target="_blank">AiTechnologies</a>. </p>
                   </div>
                   <div class="col-xl-4 col-lg-3 order-lg-3">
                     <div class="back-to-top">

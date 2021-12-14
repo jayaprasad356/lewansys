@@ -1296,39 +1296,6 @@ if (isset($_POST['btnUpdateCoverFile']))
                       </div>
                     </div>
                     
-                    <!-- <div class="progress-item">
-                      <div class="progress-head">
-                        <p class="progress-on">HTML/CSS</p>
-                      </div>
-                      <div class="progress-body">
-                        <div class="progress">
-                          <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
-                        </div>
-                        <p class="progress-to">90%</p>
-                      </div>
-                    </div>
-                    <div class="progress-item">
-                      <div class="progress-head">
-                        <p class="progress-on">JavaScript</p>
-                      </div>
-                      <div class="progress-body">
-                        <div class="progress">
-                          <div class="progress-bar" role="progressbar" aria-valuenow="74" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
-                        </div>
-                        <p class="progress-to">74%</p>
-                      </div>
-                    </div>
-                    <div class="progress-item">
-                      <div class="progress-head">
-                        <p class="progress-on">PHP</p>
-                      </div>
-                      <div class="progress-body">
-                        <div class="progress">
-                          <div class="progress-bar" role="progressbar" aria-valuenow="86" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
-                        </div>
-                        <p class="progress-to">86%</p>
-                      </div>
-                    </div> -->
                   </div>
                   <br>
                   <br>

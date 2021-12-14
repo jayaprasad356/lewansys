@@ -31,6 +31,7 @@ $qualification = $res[0]['qualification'];
 $skill = $res[0]['skill'];
 
 $spl_qualification = $res[0]['spl_qualification'];
+$cv_file = $res[0]['cv_file'];
 
 
 
@@ -251,7 +252,7 @@ $github = $res[0]['github'];
                   </div>
                 </div>
                 <div class="download-resume">
-                  <a href="#">Download CV <i data-feather="download"></i></a>
+                  <a href="../<?php echo $cv_file  ?>">Download CV <i data-feather="download"></i></a>
                 </div>
               </div>
               <div class="skill-and-profile">
@@ -324,101 +325,70 @@ $github = $res[0]['github'];
                     </div>
                     <div class="professonal-skill details-section">
                       <h4><i data-feather="feather"></i>Professional Skill</h4>
-                      <p>Combined with a handful of model sentence structures, to generate lorem Ipsum which  It has survived not only five centuries, but also the leap into electronic typesetting</p>
+                          <?php
+                          $sql = "SELECT * FROM stu_prof WHERE student_id = $student_id ";
+                          $db->sql($sql);
+                          $profres = $db->getResult();
+                          foreach ($profres as $row) 
+                          { ?>
+                      <p><?php echo $row['pro_designation']  ?></p>
                       <div class="progress-group">
                         <div class="progress-item">
                           <div class="progress-head">
-                            <p class="progress-on">Photoshop</p>
+                            <p class="progress-on"><?php echo $row['pro_title']  ?></p>
                           </div>
                           <div class="progress-body">
                             <div class="progress">
-                              <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
+                              <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $row['pro_value']  ?>" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
                             </div>
-                            <p class="progress-to">70%</p>
+                            <p class="progress-to"><?php echo $row['pro_value']  ?>%</p>
                           </div>
                         </div>
-                        <div class="progress-item">
-                          <div class="progress-head">
-                            <p class="progress-on">HTML/CSS</p>
-                          </div>
-                          <div class="progress-body">
-                            <div class="progress">
-                              <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
-                            </div>
-                            <p class="progress-to">90%</p>
-                          </div>
-                        </div>
-                        <div class="progress-item">
-                          <div class="progress-head">
-                            <p class="progress-on">JavaScript</p>
-                          </div>
-                          <div class="progress-body">
-                            <div class="progress">
-                              <div class="progress-bar" role="progressbar" aria-valuenow="74" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
-                            </div>
-                            <p class="progress-to">74%</p>
-                          </div>
-                        </div>
-                        <div class="progress-item">
-                          <div class="progress-head">
-                            <p class="progress-on">PHP</p>
-                          </div>
-                          <div class="progress-body">
-                            <div class="progress">
-                              <div class="progress-bar" role="progressbar" aria-valuenow="86" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
-                            </div>
-                            <p class="progress-to">86%</p>
-                          </div>
-                        </div>
+                        
+                        
                       </div>
+                      <br>
+                      <br>
+                      <?php } ?>
                     </div>
                     <div class="special-qualification details-section">
                       <h4><i data-feather="gift"></i>Special Qualification</h4>
                       <ul>
-                        <li>5 years+ experience designing and building products.</li>
-                        <li>Skilled at any Kind Design Tools.</li>
-                        <li>Passion for people-centered design, solid intuition.</li>
-                        <li>Hard Worker & Quick Lerner.</li>
-                      </ul>
+                      <?php 
+                      $sql = "SELECT * FROM student WHERE id = $student_id";
+                      $db->sql($sql);
+                      $res_sql = $db->getResult();
+                      $spl_quali = $res_sql[0]['spl_qualification'];
+                      $spl_quali = explode(",", $spl_quali);
+                        foreach($spl_quali as $spl) {
+                          $spl = trim($spl); ?>
+                        
+                        <li><?php echo  $spl ?></li>
+                          <?php }?>
+                   
+                    
+                    <!-- <li>Skilled at any Kind Design Tools.</li>
+                    <li>Passion for people-centered design, solid intuition.</li>
+                    <li>Hard Worker & Quick Lerner.</li> -->
+                  </ul>
                     </div>
                     <div class="portfolio details-section">
                       <h4><i data-feather="gift"></i>Portfolio</h4>
                       <div class="portfolio-slider owl-carousel">
-                        <div class="portfolio-item">
-                          <img src="images/portfolio/thumb-3.jpg" class="img-fluid" alt="">
-                          <div class="overlay">
-                            <a href="#"><i data-feather="eye"></i></a>
-                            <a href="#"><i data-feather="link"></i></a>
-                          </div>
-                        </div>
-                        <div class="portfolio-item">
-                          <img src="images/portfolio/thumb-1.jpg" class="img-fluid" alt="">
-                          <div class="overlay">
-                            <a href="#"><i data-feather="eye"></i></a>
-                            <a href="#"><i data-feather="link"></i></a>
-                          </div>
-                        </div>
-                        <div class="portfolio-item">
-                          <img src="images/portfolio/thumb-2.jpg" class="img-fluid" alt="">
-                          <div class="overlay">
-                            <a href="#"><i data-feather="eye"></i></a>
-                            <a href="#"><i data-feather="link"></i></a>
-                          </div>
-                        </div>
-                        <div class="portfolio-item">
-                          <img src="images/portfolio/thumb-3.jpg" class="img-fluid" alt="">
-                          <div class="overlay">
-                            <a href="#"><i data-feather="eye"></i></a>
-                            <a href="#"><i data-feather="link"></i></a>
-                          </div>
-                        </div>
-                        <div class="portfolio-item">
-                          <img src="images/portfolio/thumb-2.jpg" class="img-fluid" alt="">
-                          <div class="overlay">
-                            <a href="#"><i data-feather="eye"></i></a>
-                            <a href="#"><i data-feather="link"></i></a>
-                          </div>
-                        </div>
+                      <?php
+                        $sql = "SELECT * FROM stu_port WHERE student_id = $student_id ";
+                        $db->sql($sql);
+                        $portres = $db->getResult();
+                      foreach ($portres as $row) 
+                      { ?>
+                    <div class="portfolio-item">
+                      <img src="../<?php echo $row['port_image'] ?>" class="img-fluid" alt="">
+                      <div class="overlay">
+                        <!-- <a href="#"><i data-feather="eye"></i></a> -->
+                        <a target="_blank" href="<?php echo $row['port_link'] ?>"><i data-feather="link"></i></a>
+                      </div>
+                    </div>
+                    <?php }?>
                       </div>
                     </div>
                   </div>
@@ -437,11 +407,11 @@ $github = $res[0]['github'];
                           <li><span>Qualification:</span> <?php echo  $qualification ?></li>
                         </ul>
                       </div>
-                      <div class="buttons">
+                      <!-- <div class="buttons">
                         <a href="#" class="button contact-button" data-toggle="modal" data-target="#exampleModal">Contact Me</a>
                         <a href="#" class="button cover-download"><i data-feather="download"></i>Cover Letter</a>
                         <a href="#" class="button contact-download"><i data-feather="download"></i>Contact</a>
-                      </div>
+                      </div> -->
                       <!-- Modal -->
                       <div class="modal fade contact-form-modal" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -473,14 +443,14 @@ $github = $res[0]['github'];
                   <div class="personal-information details-section">
                     <h4><i data-feather="user-plus"></i>Personal Deatils</h4>
                     <ul>
-                      <li><span>Full Name:</span> Micheal N. Taylor</li>
-                      <li><span>Father's Name:</span> Howard Armour</li>
-                      <li><span>Mother's Name:</span> Megan Higbee</li>
-                      <li><span>Date of Birth:</span> 22/08/1992</li>
-                      <li><span>Nationality:</span> American </li>
-                      <li><span>Sex:</span> Male</li>
-                      <li><span>Address:</span> 2018 Nelm Street, Beltsville, VA 20705</li>
-                    </ul>
+                      <li><span>Full Name:</span> <?php echo  $pd_name ?></li>
+                      <li><span>Father's Name:</span> <?php echo  $pd_father_name ?></li>
+                      <li><span>Mother's Name:</span> <?php echo  $pd_mother_name ?></li>
+                      <li><span>Date of Birth:</span> <?php echo  $pd_dob ?></li>
+                      <li><span>Nationality:</span> <?php echo  $pd_nationality ?></li>
+                      <li><span>Sex:</span> <?php echo  $pd_sex ?></li>
+                      <li><span>Address:</span> <?php echo  $pd_address ?></li>
+                  </ul>
                   </div>
                 </div>
               </div>

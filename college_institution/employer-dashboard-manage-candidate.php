@@ -253,7 +253,7 @@ $result = $db->getResult();
                        <!--  <td class="status"><i data-feather="check-circle"></i>Shortlisted</td> -->
                          <td class="action">
                           <a href="candidate-details.php?student_id=<?php echo $row['id']?>" class="download" title="Preview"><i data-feather="eye"></i></a>
-                          <a href="edit.html" class="inbox" title="Edit"><i data-feather="edit"></i></a>
+                          <a href="edit.php?student_id=<?php echo $row['id']?>" class="inbox" title="Edit"><i data-feather="edit"></i></a>
                           <a href="#" class="remove" title="Delete"><i data-feather="trash-2"></i></a>
                         </td>
                       </tr>
