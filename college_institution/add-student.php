@@ -12,6 +12,9 @@ $id = $_SESSION['id'];
 if (!isset($id)) {
   header("location:login.php");
 }
+$sql = "SELECT * FROM college_institution WHERE id = $id";
+$db->sql($sql);
+$res = $db->getResult();
 
 if (isset($_POST['btnAddStudent'])){
   
@@ -245,12 +248,12 @@ if ($student_result == 1) {
                   <a href="#" class="account-button">My Account</a>
                   <div class="account-card">
                     <div class="header-top-account-info">
-                      <a href="#" class="account-thumb">
-                        <img src="images/account/thumb-1.jpg" class="img-fluid" alt="">
+                    <a href="#" class="account-thumb">
+                        <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                       </a>
                       <div class="account-body">
-                        <h5><a href="#">Robert Chavez</a></h5>
-                        <span class="mail">chavez@domain.com</span>
+                      <h5><a href="#"><?php echo $res[0]['college_institution_name'] ?></a></h5>
+                        <span class="mail"><?php echo $res[0]['email'] ?></span>
                       </div>
                     </div>
                     <ul class="account-item-list">

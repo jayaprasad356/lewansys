@@ -134,7 +134,7 @@ $sql = "SELECT COUNT(*) AS count
                           <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                         </a>
                         <div class="account-body">
-                          <h5><a href="#"><?php echo $res[0]['name'] ?></a></h5>
+                          <h5><a href="#"><?php echo $res[0]['college_institution_name'] ?></a></h5>
                           <span class="mail"><?php echo $res[0]['email'] ?></span>
                         </div>
                     </div>
@@ -279,11 +279,11 @@ $sql = "SELECT COUNT(*) AS count
               <div class="dashboard-sidebar">
                 <div class="user-info">
                   <div class="thumb">
-                    <img src="dashboard/images/user-1.jpg" class="img-fluid" alt="">
+                    <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                   </div>
                   <div class="user-body">
-                    <h5>Lula Wallace</h5>
-                    <span>@username</span>
+                    <h5><?php echo $res[0]['college_institution_name'] ?></h5>
+                    <span>@<?php echo $res[0]['username'] ?></span>
                   </div>
                 </div>
                 <div class="profile-progress">

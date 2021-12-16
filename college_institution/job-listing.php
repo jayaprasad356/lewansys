@@ -12,11 +12,16 @@ ob_start();
   LEFT JOIN company
   ON jobs.company_id = company.id";
   $db->sql($sql);
-  $res = $db->getResult();
+  $result = $db->getResult();
+  
   $id = $_SESSION['id'];
   if (!isset($id)) {
     header("location:login.php");
   }
+
+  $sql = "SELECT * FROM college_institution WHERE id = $id";
+$db->sql($sql);
+$res = $db->getResult();
   if (isset($_GET['operation'])){
     
     if ($_GET['operation'] == 'bookmarkjob'){
@@ -154,12 +159,12 @@ ob_start();
                   <a href="#" class="account-button">My Account</a>
                   <div class="account-card">
                     <div class="header-top-account-info">
-                      <a href="#" class="account-thumb">
-                        <img src="images/account/thumb-1.jpg" class="img-fluid" alt="">
+                    <a href="#" class="account-thumb">
+                        <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                       </a>
                       <div class="account-body">
-                        <h5><a href="#">Robert Chavez</a></h5>
-                        <span class="mail">chavez@domain.com</span>
+                      <h5><a href="#"><?php echo $res[0]['college_institution_name'] ?></a></h5>
+                        <span class="mail"><?php echo $res[0]['email'] ?></span>
                       </div>
                     </div>
                     <ul class="account-item-list">
@@ -280,7 +285,7 @@ ob_start();
                 </div>
                 <div class="job-filter-result">
                 <?php
-                      foreach ($res as $row) 
+                      foreach ($result as $row) 
                       { ?>
                 
                   <div class="job-list">
@@ -300,7 +305,7 @@ ob_start();
                       </div>
                       <div class="more">
                         <div class="buttons">
-                          <a href="#" class="button" data-toggle="modal" data-target="#apply-popup-id">Assign</a>
+                          <a href="assign-candidates.php?id=<?php echo $row['id'] ?>" class="button">Assign</a>
                           <?php
                           $sql = "SELECT * FROM clg_ins_bookmark_jobs WHERE job_id = '" . $row['id'] . "'";
                           $db->sql($sql);

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2021 at 04:17 PM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 7.4.25
+-- Generation Time: Dec 16, 2021 at 04:10 PM
+-- Server version: 10.4.18-MariaDB
+-- PHP Version: 7.3.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,6 +32,13 @@ CREATE TABLE `clg_ins_bookmark_jobs` (
   `clg_ins_id` int(10) NOT NULL,
   `job_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `clg_ins_bookmark_jobs`
+--
+
+INSERT INTO `clg_ins_bookmark_jobs` (`id`, `clg_ins_id`, `job_id`) VALUES
+(3, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -63,7 +70,7 @@ CREATE TABLE `college_institution` (
 --
 
 INSERT INTO `college_institution` (`id`, `type`, `username`, `mobile`, `profile`, `address`, `category`, `about_us`, `image`, `video`, `college_institution_name`, `email`, `password`, `facebook`, `google`, `twitter`) VALUES
-(2, 'institution', 'rahul123', '', 'upload/images/5960-2021-12-10.jpg', '', '', '', 'upload/images/0440-2021-12-10.jpg', '', '', 'rahul@gmail.com', '1234', '', '', '');
+(2, 'institution', 'rahul123', '08778624681', 'upload/images/5960-2021-12-10.jpg', 'Rahul Nagar, damodarpur, Muzaffarpur, Bihar', '', '', 'upload/images/0440-2021-12-10.jpg', '', 'Anna University', 'harisudhan05@gmail.com', '1234', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -200,12 +207,11 @@ INSERT INTO `student` (`id`, `college_institution`, `username`, `email`, `passwo
 (2, 0, 'dfdg', 'gfgf', NULL, '', '', '', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL),
 (3, 0, NULL, NULL, NULL, '', '', '', 0, 'fgfrhfr', 'Health Care', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL),
 (4, 0, NULL, NULL, NULL, '', '', '', 0, 'swswds', 'Garments / Textile', '', 'Job Type', 'Experience (Optional)', '', 'Qualification', 'Gender', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Sex', '', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL),
-(6, 2, '', 'prasad@gmail.com', '12345678', '797886786', 'hrgbfb fgbgf gf gfnfg', 'upload/images/8435-2021-11-25.jpg', 0, 'jaya prasad', 'Developer', 'Bangalore', NULL, NULL, NULL, NULL, NULL, NULL, 'design,developer', '', NULL, NULL, 'upload/images/3075-2021-11-25.jpg', 'upload/images/2607-2021-11-25.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL),
+(6, 2, '', 'prasad@gmail.com', '12345678', '797886786', 'hrgbfb fgbgf gf gfnfg', 'upload/images/8435-2021-11-25.jpg', 0, 'jaya prasad', 'Developer', 'Bangalore', 'Job Type', '', '', '', '', NULL, 'skill,android', 'Hi Am Jp', NULL, 'Presentation,Animation', 'upload/images/3075-2021-11-25.jpg', 'upload/images/1118-2021-12-14.png', NULL, 'Jaya Prasad', 'Selvam', '', '', '', '', '', 0, 'https://www.facebook.com/samantharuthofficial', '', '', '', '', '', '', '', ''),
 (7, 0, 'vicky', 'vicky@gmail.com', '12345678', '9827328', '', 'upload/images/5479-2021-11-29.jpg', 23, 'Vicky Kumar', 'Designer', 'Chennai', 'Part Time', '5 Year', '20k - 40k', 'Engineering', 'male', NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (8, 2, '', 'surya@gmail.com', '12345678', '2434343', 'street west', 'upload/images/4596-2021-12-01.jpg', 24, 'surya surya', 'designer', 'Chennai', 'Part Time', '2 years', '20k to 40 k', 'Engineering', 'male', NULL, 'developer', 'am surya as developer', NULL, 'web development', 'upload/images/1719-2021-12-01.sql', 'upload/images/5231-2021-12-01.php', NULL, 'JP', 'Rajesh', 'Radha', '01-11-2000', 'Indian', 'Male', 'Street East', 23, 'https://www.facebook.com/', '', '', '', '', '', '', '', ''),
 (41, 0, NULL, NULL, NULL, '', '', '', 0, '', 'Select Category', '', 'Job Type', 'Experience (Optional)', '', 'Qualification', 'Gender', '', '', '', NULL, '', 'upload/images/6510-2021-12-10.', '', NULL, 'jp am', '', '', '', '', 'Sex', '', NULL, '', '', '', '', '', '', '', '', ''),
-(42, 0, NULL, NULL, NULL, '', '', '', 0, '', 'Select Category', '', 'Job Type', 'Experience (Optional)', '', 'Qualification', 'Gender', '', '', '', NULL, '', 'upload/images/1871-2021-12-10.php', '', NULL, 'hi', '', '', '', '', 'Sex', '', NULL, '', '', '', '', '', '', '', '', ''),
-(43, 2, NULL, NULL, NULL, '', '', '', 0, 'armstrong', 'Select Category', '', 'Job Type', 'Experience (Optional)', '', 'Qualification', 'Gender', '', '', '', NULL, '', 'upload/images/0127-2021-12-10.', '', NULL, '', '', '', '', '', 'Sex', '', NULL, '', '', '', '', '', '', '', '', '');
+(42, 0, NULL, NULL, NULL, '', '', '', 0, '', 'Select Category', '', 'Job Type', 'Experience (Optional)', '', 'Qualification', 'Gender', '', '', '', NULL, '', 'upload/images/1871-2021-12-10.php', '', NULL, 'hi', '', '', '', '', 'Sex', '', NULL, '', '', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -217,17 +223,24 @@ CREATE TABLE `student_job` (
   `id` int(10) NOT NULL,
   `student_id` int(10) NOT NULL,
   `job_id` int(10) NOT NULL,
-  `status` varchar(100) NOT NULL
+  `status` varchar(100) NOT NULL,
+  `refer_category` varchar(200) DEFAULT NULL,
+  `refer_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `student_job`
 --
 
-INSERT INTO `student_job` (`id`, `student_id`, `job_id`, `status`) VALUES
-(7, 1, 1, 'applied'),
-(8, 1, 2, 'applied'),
-(9, 1, 3, 'applied');
+INSERT INTO `student_job` (`id`, `student_id`, `job_id`, `status`, `refer_category`, `refer_id`) VALUES
+(7, 1, 1, 'applied', '', 0),
+(8, 1, 2, 'applied', '', 0),
+(9, 1, 3, 'applied', '', 0),
+(10, 0, 1, 'applied', 'college_institution', 2),
+(11, 6, 1, 'applied', 'college_institution', 2),
+(12, 43, 1, 'applied', 'college_institution', 2),
+(13, 8, 1, 'applied', 'college_institution', 2),
+(14, 6, 2, 'applied', 'college_institution', 2);
 
 -- --------------------------------------------------------
 
@@ -278,7 +291,11 @@ INSERT INTO `stu_edu` (`id`, `student_id`, `edu_designation`, `edu_institute`, `
 (28, 40, '', '', '', ''),
 (29, 41, '', '', '', ''),
 (30, 42, '', '', '', ''),
-(31, 43, '', '', '', '');
+(31, 43, '', '', '', ''),
+(38, 6, 'Engineering', 'CARE', '2017-2020', '   cvc'),
+(39, 44, 'vb', 'bv', 'b', 'bgnv'),
+(40, 44, '', '', '', ''),
+(41, 44, '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -304,7 +321,11 @@ INSERT INTO `stu_port` (`id`, `student_id`, `port_title`, `port_image`, `port_li
 (3, 40, 'kum port', 'upload/images/3340-2021-12-09.jpg', 'dsc d ds  fs fd '),
 (4, 41, '', 'upload/images/0053-2021-12-10.', ''),
 (5, 42, '', 'upload/images/9831-2021-12-10.', ''),
-(6, 43, '', 'upload/images/7639-2021-12-10.', '');
+(6, 43, '', 'upload/images/7639-2021-12-10.', ''),
+(7, 6, 'fefcdsc', 'upload/images/1480-2021-12-02.jpg', 'https://www.geeksforgeeks.org/how-to-get-multiple-selected-values-of-select-box-in-php/'),
+(8, 6, 'fefcdsc', 'upload/images/0499-2021-12-02.png', 'https://www.panasonic.com/in/consumer/home-entertainment/televisions.html'),
+(9, 6, 'Prasad', 'upload/images/7862-2021-12-14.png', ''),
+(10, 44, '', 'upload/images/2709-2021-12-15.', '');
 
 -- --------------------------------------------------------
 
@@ -336,7 +357,11 @@ INSERT INTO `stu_prof` (`id`, `student_id`, `pro_designation`, `pro_title`, `pro
 (10, 40, '', '', 0),
 (11, 41, '', '', 0),
 (12, 42, '', '', 0),
-(13, 43, '', '', 0);
+(13, 43, '', '', 0),
+(14, 6, 'Developer', 'App Developer', 70),
+(15, 6, 'We Designer', 'Web Development', 90),
+(16, 6, 'ffsfs', 'android', 35),
+(17, 44, '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -368,7 +393,11 @@ INSERT INTO `stu_work_exp` (`id`, `student_id`, `exp_title`, `exp_company_name`,
 (10, 40, '', '', '', ''),
 (11, 41, '', '', '', ''),
 (12, 42, '', '', '', ''),
-(13, 43, '', '', '', '');
+(13, 43, '', '', '', ''),
+(14, 2, 'UIUX', 'Google', '217-2020', 'Nice'),
+(15, 2, 'UIUX', 'Google', '217-2020', 'ffvf'),
+(18, 6, 'UIUX', 'Google', '2017-2020', 'vbnvn'),
+(19, 44, '', 'BooksBear', '', '');
 
 --
 -- Indexes for dumped tables
@@ -448,7 +477,7 @@ ALTER TABLE `stu_work_exp`
 -- AUTO_INCREMENT for table `clg_ins_bookmark_jobs`
 --
 ALTER TABLE `clg_ins_bookmark_jobs`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `college_institution`
@@ -472,13 +501,13 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `student_job`
 --
 ALTER TABLE `student_job`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `stu_bookmark_jobs`
@@ -490,25 +519,25 @@ ALTER TABLE `stu_bookmark_jobs`
 -- AUTO_INCREMENT for table `stu_edu`
 --
 ALTER TABLE `stu_edu`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `stu_port`
 --
 ALTER TABLE `stu_port`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `stu_prof`
 --
 ALTER TABLE `stu_prof`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `stu_work_exp`
 --
 ALTER TABLE `stu_work_exp`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

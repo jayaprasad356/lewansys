@@ -18,6 +18,25 @@ if (!isset($id)) {
 $sql = "SELECT * FROM college_institution WHERE id = $id";
 $db->sql($sql);
 $res = $db->getResult();
+
+$sql = "SELECT COUNT(*) AS count
+    FROM student
+    WHERE college_institution = $id";
+    $db->sql($sql);
+    $restotalstudents = $db->getResult();
+
+    $sql = "SELECT COUNT(*) AS count
+    FROM student_job
+    WHERE refer_id = $id";
+    $db->sql($sql);
+    $resassignstudents = $db->getResult();
+    $sql = "SELECT COUNT(*) AS count
+    FROM student_job
+    WHERE refer_id = $id AND status = 'selected'";
+    $db->sql($sql);
+    $resselectedstudents = $db->getResult();
+
+    
     
 
 
@@ -126,7 +145,7 @@ $res = $db->getResult();
                         <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                       </a>
                       <div class="account-body">
-                        <h5><a href="#"><?php echo $res[0]['username'] ?> </a></h5>
+                        <h5><a href="#"><?php echo $res[0]['college_institution_name'] ?> </a></h5>
                         <span class="mail"><?php echo $res[0]['email'] ?></span>
                       </div>
                     </div>
@@ -236,24 +255,24 @@ $res = $db->getResult();
                 <div class="dashboard-section user-statistic-block">
                   <div class="user-statistic">
                     <i data-feather="command"></i>
-                    <h3>06</h3>
+                    <h3><?php echo $restotalstudents[0]['count'] ?></h3>
                     <span>Total Students</span>
                   </div>
                   <div class="user-statistic">
                     <i data-feather="file-text"></i>
-                    <h3>123</h3>
+                    <h3><?php echo $resassignstudents[0]['count'] ?></h3>
                     <span>Assigned Students</span>
                   </div>
                   <div class="user-statistic">
                     <i data-feather="users"></i>
-                    <h3>32</h3>
+                    <h3><?php echo $resselectedstudents[0]['count'] ?></h3>
                     <span>Selected Students</span>
                   </div>
                 </div>
                 <div class="dashboard-section dashboard-view-chart">
                   <canvas id="view-chart" width="400" height="200"></canvas>
                 </div>
-                <div class="dashboard-section dashboard-recent-activity">
+                <!-- <div class="dashboard-section dashboard-recent-activity">
                   <h4 class="title">Recent Activity</h4>
                   <div class="activity-list">
                     <i class="fas fa-bolt"></i>
@@ -315,7 +334,7 @@ $res = $db->getResult();
                       <i class="fas fa-times"></i>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
               <div class="dashboard-sidebar">
                 <div class="company-info">

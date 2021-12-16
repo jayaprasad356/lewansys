@@ -295,12 +295,13 @@ if($db->update('college_institution', $data, 'id=' . $id)){
                   <a href="#" class="account-button">My Account</a>
                   <div class="account-card">
                     <div class="header-top-account-info">
-                      <a href="#" class="account-thumb">
-                        <img src="images/account/thumb-1.jpg" class="img-fluid" alt="">
+                    <a href="#" class="account-thumb">
+                        <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                       </a>
+                      
                       <div class="account-body">
-                        <h5><a href="#">Robert Chavez</a></h5>
-                        <span class="mail">chavez@domain.com</span>
+                        <h5><a href="#"><?php echo $res[0]['college_institution_name'] ?></a></h5>
+                        <span class="mail"><?php echo $res[0]['email'] ?></span>
                       </div>
                     </div>
                     <ul class="account-item-list">
@@ -601,7 +602,7 @@ if($db->update('college_institution', $data, 'id=' . $id)){
                   </div>
                   <div class="company-body">
                     <h5><?php echo $college_name ?></h5>
-                    <span>@.<?php echo $username ?></span>
+                    <span>@<?php echo $username ?></span>
                   </div>
                 </div>
                 <div class="profile-progress">

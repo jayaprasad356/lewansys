@@ -11,6 +11,17 @@ $id = $_SESSION['id'];
 $sql = "SELECT * FROM student WHERE college_institution = $id";
 $db->sql($sql);
 $result = $db->getResult();
+$sql = "SELECT * FROM college_institution WHERE id = $id";
+$db->sql($sql);
+$res = $db->getResult();
+if (isset($_GET['operation'])){
+  if ($_GET['operation'] == 'remove'){
+    $sql = "DELETE FROM student WHERE id = '" . $_GET['student_id'] . "'";
+    $db->sql($sql);
+    header("location: employer-dashboard-manage-candidate.php");
+
+  }
+}
 
 
 ?>
@@ -114,11 +125,11 @@ $result = $db->getResult();
                   <div class="account-card">
                     <div class="header-top-account-info">
                       <a href="#" class="account-thumb">
-                        <img src="images/account/thumb-1.jpg" class="img-fluid" alt="">
+                        <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                       </a>
                       <div class="account-body">
-                        <h5><a href="#">Robert Chavez</a></h5>
-                        <span class="mail">chavez@domain.com</span>
+                      <h5><a href="#"><?php echo $res[0]['college_institution_name'] ?></a></h5>
+                        <span class="mail"><?php echo $res[0]['email'] ?></span>
                       </div>
                     </div>
                     <ul class="account-item-list">
@@ -254,7 +265,7 @@ $result = $db->getResult();
                          <td class="action">
                           <a href="candidate-details.php?student_id=<?php echo $row['id']?>" class="download" title="Preview"><i data-feather="eye"></i></a>
                           <a href="edit.php?student_id=<?php echo $row['id']?>" class="inbox" title="Edit"><i data-feather="edit"></i></a>
-                          <a href="#" class="remove" title="Delete"><i data-feather="trash-2"></i></a>
+                          <a href="employer-dashboard-manage-candidate.php?operation=remove&student_id=<?php echo $row['id'] ?>" class="remove" title="Delete"><i data-feather="trash-2"></i></a>
                         </td>
                       </tr>
                       <?php }?>
@@ -279,11 +290,11 @@ $result = $db->getResult();
               <div class="dashboard-sidebar">
                 <div class="company-info">
                   <div class="thumb">
-                    <img src="dashboard/images/company-logo.png" class="img-fluid" alt="">
+                    <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                   </div>
                   <div class="company-body">
-                    <h5>Degoin</h5>
-                    <span>@username</span>
+                    <h5><?php echo $res[0]['college_institution_name'] ?></h5>
+                    <span>@<?php echo $res[0]['username'] ?></span>
                   </div>
                 </div>
                 <div class="profile-progress">

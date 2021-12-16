@@ -143,7 +143,7 @@ $sql = "SELECT * FROM student WHERE id = $id";
                         <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                       </a>
                       <div class="account-body">
-                        <h5><a href="#"><?php echo $res[0]['name'] ?></a></h5>
+                        <h5><a href="#"><?php echo $res[0]['college_institution_name'] ?></a></h5>
                         <span class="mail"><?php echo $res[0]['email'] ?></span>
                       </div>
                     </div>
