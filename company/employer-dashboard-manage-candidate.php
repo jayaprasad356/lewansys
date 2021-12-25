@@ -1,3 +1,24 @@
+<?php
+session_start();
+ob_start();
+include_once('../includes/crud.php');
+$db = new Database();
+$db->connect();
+$id = $_SESSION['id'];
+  if (!isset($id)) {
+    header("location:login.php");
+  }
+  $job_id = $_GET['job_id'];
+$sql = "SELECT *,sj.student_id AS id from student s INNER JOIN student_job sj on s.id = sj.student_id WHERE sj.job_id = $job_id";
+$db->sql($sql);
+$result = $db->getResult();
+$sql = "SELECT * FROM company WHERE id = $id";
+$db->sql($sql);
+$res = $db->getResult();
+
+
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -131,7 +152,7 @@
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
                       <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
-                      <li class="menu-item"><a  href="job-details.html">Job Details</a></li>
+                      <li class="menu-item"><a  href="job-details.php">Job Details</a></li>
                       <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
                     </ul>
                   </li>
@@ -217,86 +238,31 @@
                       </tr>
                     </thead>
                     <tbody>
+                    <?php
+                      foreach ($result as $row) 
+                      { ?>
                       <tr class="candidates-list">
                         <td class="title">
                           <div class="thumb">
-                            <img src="dashboard/images/user-1.jpg" class="img-fluid" alt="">
+                            <img src="../<?php echo $row['profile']  ?>" class="img-fluid" alt="">
                           </div>
                           <div class="body">
-                            <h5><a href="#">Lula Wallace</a></h5>
+                            <h5><a href="#"><?php echo $row['name']  ?></a></h5>
                             <div class="info">
-                              <span class="designation"><a href="#"><i data-feather="check-square"></i>Senior UI / UX Designer</a></span>
-                              <span class="location"><a href="#"><i data-feather="map-pin"></i>New Orleans</a></span>
+                              <span class="designation"><a href="#"><i data-feather="check-square"></i><?php echo $row['category']  ?></a></span>
+                              <span class="location"><a href="#"><i data-feather="map-pin"></i><?php echo $row['location']  ?></a></span>
                             </div>
                           </div>
                         </td>
-                        <td class="status"><i data-feather="check-circle"></i>Shortlisted</td>
+                        <td class="status"><i data-feather="check-circle"></i><?php echo $row['status']  ?></td>
                         <td class="action">
                           <a href="#" class="download"><i data-feather="download"></i></a>
                           <a href="#" class="inbox"><i data-feather="mail"></i></a>
                           <a href="#" class="remove"><i data-feather="trash-2"></i></a>
                         </td>
                       </tr>
-                      <tr class="candidates-list">
-                        <td class="title">
-                          <div class="thumb">
-                            <img src="dashboard/images/user-2.jpg" class="img-fluid" alt="">
-                          </div>
-                          <div class="body">
-                            <h5><a href="#">Hertha A. Sullivan</a></h5>
-                            <div class="info">
-                              <span class="designation"><a href="#"><i data-feather="check-square"></i>Senior UI / UX Designer</a></span>
-                              <span class="location"><a href="#"><i data-feather="map-pin"></i>New Orleans</a></span>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="status"><i data-feather="check-circle"></i>Shortlisted</td>
-                        <td class="action">
-                          <a href="#" class="download"><i data-feather="download"></i></a>
-                          <a href="#" class="inbox"><i data-feather="mail"></i></a>
-                          <a href="#" class="remove"><i data-feather="trash-2"></i></a>
-                        </td>
-                      </tr>
-                      <tr class="candidates-list">
-                        <td class="title">
-                          <div class="thumb">
-                            <img src="dashboard/images/user-3.jpg" class="img-fluid" alt="">
-                          </div>
-                          <div class="body">
-                            <h5><a href="#">David Johnston</a></h5>
-                            <div class="info">
-                              <span class="designation"><a href="#"><i data-feather="check-square"></i>Senior UI / UX Designer</a></span>
-                              <span class="location"><a href="#"><i data-feather="map-pin"></i>New Orleans</a></span>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="status"><i data-feather="check-circle"></i>Shortlisted</td>
-                        <td class="action">
-                          <a href="#" class="download"><i data-feather="download"></i></a>
-                          <a href="#" class="inbox"><i data-feather="mail"></i></a>
-                          <a href="#" class="remove"><i data-feather="trash-2"></i></a>
-                        </td>
-                      </tr>
-                      <tr class="candidates-list">
-                        <td class="title">
-                          <div class="thumb">
-                            <img src="dashboard/images/user-4.jpg" class="img-fluid" alt="">
-                          </div>
-                          <div class="body">
-                            <h5><a href="#">Robert Hayes</a></h5>
-                            <div class="info">
-                              <span class="designation"><a href="#"><i data-feather="check-square"></i>Senior UI / UX Designer</a></span>
-                              <span class="location"><a href="#"><i data-feather="map-pin"></i>New Orleans</a></span>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="status"><i data-feather="check-circle"></i>Shortlisted</td>
-                        <td class="action">
-                          <a href="#" class="download"><i data-feather="download"></i></a>
-                          <a href="#" class="inbox"><i data-feather="mail"></i></a>
-                          <a href="#" class="remove"><i data-feather="trash-2"></i></a>
-                        </td>
-                      </tr>
+                      <?php }?>
+                      
                     </tbody>
                   </table>
                   <div class="pagination-list text-center">
@@ -316,11 +282,11 @@
               <div class="dashboard-sidebar">
                 <div class="company-info">
                   <div class="thumb">
-                    <img src="dashboard/images/company-logo.png" class="img-fluid" alt="">
+                    <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                   </div>
                   <div class="company-body">
-                    <h5>Degoin</h5>
-                    <span>@username</span>
+                    <h5><?php echo $res[0]['company_name'] ?></h5>
+                    <span>@<?php echo $res[0]['username'] ?></span>
                   </div>
                 </div>
                 <div class="profile-progress">

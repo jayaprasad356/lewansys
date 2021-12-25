@@ -78,18 +78,7 @@ if (isset($_POST['btnUpdate'])){
   }
 
 }
-// if (isset($_POST['btnChangePwd'])){
-//   $newpassword = $db->escapeString($_POST['newpassword']);
-//   $data = array(
-//     'password' => $newpassword
-// );
-// if($db->update('student', $data, 'id=' . $id)){
-  
-//   header("location: dashboard-edit-profile.php");
 
-// }
-
-// }
 
 ?>
 <!doctype html>
@@ -227,7 +216,7 @@ if (isset($_POST['btnUpdate'])){
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
                       <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
-                      <li class="menu-item"><a  href="job-details.html">Job Details</a></li>
+                      <li class="menu-item"><a  href="job-details.php">Job Details</a></li>
                       <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
                     </ul>
                   </li> -->

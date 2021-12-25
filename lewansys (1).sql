@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2021 at 04:10 PM
+-- Generation Time: Dec 25, 2021 at 05:34 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.3.27
 
@@ -101,7 +101,7 @@ CREATE TABLE `company` (
 --
 
 INSERT INTO `company` (`id`, `username`, `mobile`, `profile`, `address`, `category`, `about_us`, `image`, `video`, `company_name`, `email`, `password`, `facebook`, `google`, `twitter`) VALUES
-(1, 'jpmart', '08778624681', 'upload/images/0539-2021-11-24.jpg', 'Rahul Nagar, damodarpur, Muzaffarpur, Bihar', '', '', '', '', 'BooksBear', 'harisudhan05@gmail.com', '344555', '', '0', '');
+(1, 'jpmart', '8778624681', 'upload/images/6685-2021-12-22.png', 'Rahul Nagar, damodarpur, Muzaffarpur, Bihar', 'company', '', 'upload/images/9347-2021-12-20.png', '', 'JP Mart', 'hari@gmail.com', '12345', '', '0', '');
 
 -- --------------------------------------------------------
 
@@ -143,9 +143,11 @@ CREATE TABLE `jobs` (
 --
 
 INSERT INTO `jobs` (`id`, `company_id`, `job_title`, `job_category`, `job_location`, `job_type`, `job_experience`, `job_salary_range`, `job_qualification`, `job_gender`, `job_vacancy`, `job_last_date`, `job_description`, `responsibilities`, `education`, `other_benefits`, `country`, `city`, `pincode`, `location`, `company_name`, `web_address`, `company_profile`, `package`, `payment_method`, `status`) VALUES
-(1, 1, 'Manager', 'Health Care', 'Bangalore', 'Part Time', 'Experience (Optional)', 'ghf', 'Qualification', 'Gender', 0, '21-01-2021', '', '', '', '', 'Country', 'City', '', '', '', '', '', '1', '', 'active'),
-(2, 1, 'Team Leader', 'Select Category', 'Chennai', 'Freelancer', 'Experience (Optional)', '', 'Qualification', 'Gender', 0, '01-11-2021', '', '', '', '', 'Country', 'City', '', '', '', '', '', '1', '', ''),
-(3, 1, 'Team Leader', 'Select Category', 'Chennai', 'Freelancer', 'Experience (Optional)', '', 'Qualification', 'Gender', 0, '01-11-2021', '', '', '', '', 'Country', 'City', '', '', '', '', '', '1', '', '');
+(1, 1, 'Manager', 'Health Care', 'Bangalore', 'Part Time', 'Experience (Optional)', 'ghf', 'Qualification', 'Gender', 0, '21-01-2021', 'rfgrf gdf fbgfd frdb f fd rfv fbb fd fd fdbgfdbgfdgfd', '', '', '', 'Country', 'City', '', '', '', '', '', '1', '', 'active'),
+(2, 1, 'Team Leader', 'Select Category', 'Chennai', 'Freelancer', 'Experience (Optional)', '', 'Qualification', 'Gender', 0, '01-11-2021', '', '', '', '', 'Country', 'City', '', '', '', '', '', '1', '', 'active'),
+(3, 1, 'Team Leader', 'Select Category', 'Chennai', 'Freelancer', 'Experience (Optional)', '', 'Qualification', 'Gender', 0, '01-11-2021', '', '', '', '', 'Country', 'City', '', '', '', '', '', '1', '', 'active'),
+(4, 1, '', 'Garments / Textile', '', 'Full Time', 'Less than 1 Year', '', 'Qualification', 'Gender', 0, '', '', '', '', '', 'Spain', 'Washington D.C', '842003', 'public_html/wp-content', 'BooksBear', 'Rahul Nagar, damodarpur, Muzaffarpur, Bihar', '', '1', '', ''),
+(5, 1, 'App Developer', 'Accounting / Finance', 'Chennnai', 'Part Time', '2 Year', '27000', 'Gradute', 'Male', 43, '2021-12-16', '<p>vcvbcxbb&nbsp;</p>', '<p>bvbnvcbb</p>', '<p>bvbvc</p>', '<p>b vb c</p>', 'USA', 'City', '', '', '', '', '', '1', '', '');
 
 -- --------------------------------------------------------
 
@@ -203,11 +205,11 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`id`, `college_institution`, `username`, `email`, `password`, `mobile`, `address`, `profile`, `age`, `name`, `category`, `location`, `job_type`, `experience`, `salary_range`, `qualification`, `gender`, `dob`, `skill`, `about`, `work_experience`, `spl_qualification`, `cv_file`, `cover_letter`, `social_portfolio`, `pd_name`, `pd_father_name`, `pd_mother_name`, `pd_dob`, `pd_nationality`, `pd_sex`, `pd_address`, `pd_age`, `facebook`, `twitter`, `google`, `linkedin`, `pinterest`, `instagram`, `behance`, `dribbble`, `github`) VALUES
-(1, 0, 'ramesh', 'ramesh@gmail.com', '12345678', '', '', 'upload/images/6476-2021-11-28.jpg', 23, 'Ramesh', 'Developer', 'Chennai', 'Job Type', '3 Years', '40k', 'Engineering', 'male', '', 'Android,IOS,WEB', 'am jp yes', '', 'developer,designer', '', '', '', 'JP', 'Rajesh', 'Radha', '01-11-2000', 'Indian', 'Male', 'Street East', 23, 'https://www.facebook.com/', 'https://twitter.com/?lang=en', 'https://accounts.google.com/', 'https://www.linkedin.com/in/tim-cook-47522b6', '', '', '', 'dr', 'gi'),
+(1, 0, 'ramesh', 'ramesh@gmail.com', '12345678', '', '', 'upload/images/6476-2021-11-28.jpg', 23, 'Ramesh', 'Developer', 'Chennai', 'Permanent', '3 Years', '40k', 'Engineering', 'male', '', 'Android', 'vdscvbdshgds c b', '', 'developer,designer', '', '', '', 'JP', 'Rajesh', 'Radha', '01-11-2000', 'Indian', 'Male', 'Street East', 23, 'https://www.facebook.com/', 'https://twitter.com/?lang=en', 'https://accounts.google.com/', 'https://www.linkedin.com/in/tim-cook-47522b6', '', '', '', 'dr', 'gi'),
 (2, 0, 'dfdg', 'gfgf', NULL, '', '', '', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL),
 (3, 0, NULL, NULL, NULL, '', '', '', 0, 'fgfrhfr', 'Health Care', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL),
 (4, 0, NULL, NULL, NULL, '', '', '', 0, 'swswds', 'Garments / Textile', '', 'Job Type', 'Experience (Optional)', '', 'Qualification', 'Gender', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Sex', '', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL),
-(6, 2, '', 'prasad@gmail.com', '12345678', '797886786', 'hrgbfb fgbgf gf gfnfg', 'upload/images/8435-2021-11-25.jpg', 0, 'jaya prasad', 'Developer', 'Bangalore', 'Job Type', '', '', '', '', NULL, 'skill,android', 'Hi Am Jp', NULL, 'Presentation,Animation', 'upload/images/3075-2021-11-25.jpg', 'upload/images/1118-2021-12-14.png', NULL, 'Jaya Prasad', 'Selvam', '', '', '', '', '', 0, 'https://www.facebook.com/samantharuthofficial', '', '', '', '', '', '', '', ''),
+(6, 2, '', 'prasad@gmail.com', '12345678', '797886786', 'hrgbfb fgbgf gf gfnfg', 'upload/images/8435-2021-11-25.jpg', 0, 'jaya prasad', 'Developer', 'Bangalore', 'Job Type', '', '', '', '', NULL, 'skill,android', 'Hi Am Jp bfgfghf', NULL, 'Presentation,Animation', 'upload/images/3075-2021-11-25.jpg', 'upload/images/1118-2021-12-14.png', NULL, 'Jaya Prasad', 'Selvam', '', '', '', '', '', 0, 'https://www.facebook.com/samantharuthofficial', '', '', '', '', '', '', '', ''),
 (7, 0, 'vicky', 'vicky@gmail.com', '12345678', '9827328', '', 'upload/images/5479-2021-11-29.jpg', 23, 'Vicky Kumar', 'Designer', 'Chennai', 'Part Time', '5 Year', '20k - 40k', 'Engineering', 'male', NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (8, 2, '', 'surya@gmail.com', '12345678', '2434343', 'street west', 'upload/images/4596-2021-12-01.jpg', 24, 'surya surya', 'designer', 'Chennai', 'Part Time', '2 years', '20k to 40 k', 'Engineering', 'male', NULL, 'developer', 'am surya as developer', NULL, 'web development', 'upload/images/1719-2021-12-01.sql', 'upload/images/5231-2021-12-01.php', NULL, 'JP', 'Rajesh', 'Radha', '01-11-2000', 'Indian', 'Male', 'Street East', 23, 'https://www.facebook.com/', '', '', '', '', '', '', '', ''),
 (41, 0, NULL, NULL, NULL, '', '', '', 0, '', 'Select Category', '', 'Job Type', 'Experience (Optional)', '', 'Qualification', 'Gender', '', '', '', NULL, '', 'upload/images/6510-2021-12-10.', '', NULL, 'jp am', '', '', '', '', 'Sex', '', NULL, '', '', '', '', '', '', '', '', ''),
@@ -227,20 +229,6 @@ CREATE TABLE `student_job` (
   `refer_category` varchar(200) DEFAULT NULL,
   `refer_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `student_job`
---
-
-INSERT INTO `student_job` (`id`, `student_id`, `job_id`, `status`, `refer_category`, `refer_id`) VALUES
-(7, 1, 1, 'applied', '', 0),
-(8, 1, 2, 'applied', '', 0),
-(9, 1, 3, 'applied', '', 0),
-(10, 0, 1, 'applied', 'college_institution', 2),
-(11, 6, 1, 'applied', 'college_institution', 2),
-(12, 43, 1, 'applied', 'college_institution', 2),
-(13, 8, 1, 'applied', 'college_institution', 2),
-(14, 6, 2, 'applied', 'college_institution', 2);
 
 -- --------------------------------------------------------
 
@@ -274,7 +262,6 @@ CREATE TABLE `stu_edu` (
 --
 
 INSERT INTO `stu_edu` (`id`, `student_id`, `edu_designation`, `edu_institute`, `edu_period`, `edu_description`) VALUES
-(6, 1, 'Computer Science Engineering', 'Harward University', '2018 - present', '   cdcfd f fdfd'),
 (14, 9, 'edudes', 'jpins', 'eduper', 'edudes'),
 (16, 0, 'des 1', 'ins 1', 'per 1', 'desc 1'),
 (17, 0, 'des 2', 'ins 2', 'per 2', 'des 2'),
@@ -295,7 +282,8 @@ INSERT INTO `stu_edu` (`id`, `student_id`, `edu_designation`, `edu_institute`, `
 (38, 6, 'Engineering', 'CARE', '2017-2020', '   cvc'),
 (39, 44, 'vb', 'bv', 'b', 'bgnv'),
 (40, 44, '', '', '', ''),
-(41, 44, '', '', '', '');
+(41, 44, '', '', '', ''),
+(42, 1, 'ds ', 'd we d', 'd wserdwrs', '    wsrdwsdsa');
 
 -- --------------------------------------------------------
 
@@ -397,7 +385,8 @@ INSERT INTO `stu_work_exp` (`id`, `student_id`, `exp_title`, `exp_company_name`,
 (14, 2, 'UIUX', 'Google', '217-2020', 'Nice'),
 (15, 2, 'UIUX', 'Google', '217-2020', 'ffvf'),
 (18, 6, 'UIUX', 'Google', '2017-2020', 'vbnvn'),
-(19, 44, '', 'BooksBear', '', '');
+(19, 44, '', 'BooksBear', '', ''),
+(20, 1, 'UIUX', 'Google', '2017-2020', 'kjjn');
 
 --
 -- Indexes for dumped tables
@@ -477,7 +466,7 @@ ALTER TABLE `stu_work_exp`
 -- AUTO_INCREMENT for table `clg_ins_bookmark_jobs`
 --
 ALTER TABLE `clg_ins_bookmark_jobs`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `college_institution`
@@ -495,7 +484,7 @@ ALTER TABLE `company`
 -- AUTO_INCREMENT for table `jobs`
 --
 ALTER TABLE `jobs`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `student`
@@ -507,19 +496,19 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT for table `student_job`
 --
 ALTER TABLE `student_job`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `stu_bookmark_jobs`
 --
 ALTER TABLE `stu_bookmark_jobs`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `stu_edu`
 --
 ALTER TABLE `stu_edu`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `stu_port`
@@ -537,7 +526,7 @@ ALTER TABLE `stu_prof`
 -- AUTO_INCREMENT for table `stu_work_exp`
 --
 ALTER TABLE `stu_work_exp`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

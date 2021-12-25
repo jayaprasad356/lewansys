@@ -1,35 +1,20 @@
 <?php
 session_start();
 ob_start();
-$id = $_SESSION['id'];
-  if (!isset($id)) {
-    header("location:login.php");
-  }
 include_once('../includes/crud.php');
 $db = new Database();
 $db->connect();
-$sql = "SELECT *,b.id AS id from jobs j INNER JOIN company c on j.company_id = c.id INNER JOIN student_job b ON b.job_id = j.id WHERE b.student_id = $id";
-$db->sql($sql);
-$result = $db->getResult();
-
-$sql = "SELECT * FROM student WHERE id = $id";
+$id = $_SESSION['id'];
+$job_id = $_GET['job_id'];
+$sql = "SELECT *,jobs.id AS id
+FROM jobs
+LEFT JOIN company
+ON jobs.company_id = company.id WHERE jobs.id = $job_id ";
 $db->sql($sql);
 $res = $db->getResult();
-$sql = "SELECT COUNT(*) AS count
-    FROM student_job
-    WHERE student_id = $id";
-    $db->sql($sql);
-    $applycount = $db->getResult();
-    if (isset($_GET['operation'])){
-      if ($_GET['operation'] == 'remove'){
-        $sql = "DELETE FROM student_job WHERE id = '" . $_GET['id'] . "'";
-        $db->sql($sql);
-        header("location: dashboard-applied.php");
 
-      }
-    }
+  
 ?>
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -55,7 +40,6 @@ $sql = "SELECT COUNT(*) AS count
 
     <!-- Custom Css -->
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="dashboard/css/dashboard.css">
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600%7CRoboto:300i,400,500" rel="stylesheet">
@@ -131,11 +115,11 @@ $sql = "SELECT COUNT(*) AS count
                   <div class="account-card">
                     <div class="header-top-account-info">
                       <a href="#" class="account-thumb">
-                        <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
+                        <img src="images/account/thumb-1.jpg" class="img-fluid" alt="">
                       </a>
                       <div class="account-body">
-                      <h5><a href="#"><?php echo $res[0]['name'] ?></a></h5>
-                          <span class="mail"><?php echo $res[0]['email'] ?></span>
+                        <h5><a href="#">Robert Chavez</a></h5>
+                        <span class="mail">chavez@domain.com</span>
                       </div>
                     </div>
                     <ul class="account-item-list">
@@ -244,137 +228,131 @@ $sql = "SELECT COUNT(*) AS count
       </div>
     </header>
 
-    <!-- Breadcrumb -->
-    <div class="alice-bg padding-top-70 padding-bottom-70">
+    <!-- Candidates Details -->
+    <div class="alice-bg padding-top-60 section-padding-bottom">
       <div class="container">
         <div class="row">
-          <div class="col-md-6">
-            <div class="breadcrumb-area">
-              <h1>Candidate Dashboard</h1>
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="job-listing.php">Home</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Candidate Dashboard</li>
-                </ol>
-              </nav>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="breadcrumb-form">
-              <!-- <form action="#">
-                <input type="text" placeholder="Enter Keywords">
-                <button><i data-feather="search"></i></button>
-              </form> -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Breadcrumb End -->
-
-    <div class="alice-bg section-padding-bottom">
-      <div class="container no-gliters">
-        <div class="row no-gliters">
           <div class="col">
-            <div class="dashboard-container">
-              <div class="dashboard-content-wrapper">
-                <div class="dashboard-applied">
-                  <h4 class="apply-title"><?php echo $applycount[0]['count'] ?> Job Applied</h4>
-                  <div class="dashboard-apply-area">
-                  <?php
-                      foreach ($result as $row) 
-                      { ?>
-                    <div class="job-list">
-                      <div class="thumb">
-                        <a href="#">
-                          <img src="../<?php echo $row['profile']  ?>" class="img-fluid" alt="">
-                        </a>
-                      </div>
-                      <div class="body">
-                        <div class="content">
-                          <h4><a href="#"><?php echo $row['job_title']  ?></a></h4>
-                          <div class="info">
-                            <span class="company"><a href="#"><i data-feather="briefcase"></i><?php echo $row['company_name']  ?></a></span>
-                            <span class="office-location"><a href="#"><i data-feather="map-pin"></i><?php echo $row['job_location']  ?></a></span>
-                            <span class="job-type temporary"><a href="#"><i data-feather="clock"></i><?php echo $row['job_type']  ?></a></span>
-                          </div>
-                        </div>
-                        <div class="more">
-                          <div class="buttons">
-                            <a href="#" class="button">Apply Now</a>
-                            <a href="#" class="favourite"><i data-feather="heart"></i></a>
-                          </div>
-                          <a href="dashboard-applied.php?operation=remove&id=<?php echo $row['id']?>" class="bookmark-remove"><i class="fas fa-times"></i></a>
-                          <p class="deadline"><?php echo $row['job_last_date']  ?></p>
-                        </div>
-                      </div>
+            <div class="job-listing-details">
+              <div class="job-title-and-info">
+                <div class="title">
+                  <div class="thumb">
+                    <img src="images/job/company-logo-1.png" class="img-fluid" alt="">
+                  </div>
+                  <div class="title-body">
+                    <h4><?php echo $res[0]['job_title'] ?></h4>
+                    <div class="info">
+                      <span class="company"><a href="#"><i data-feather="briefcase"></i><?php echo $res[0]['job_location']  ?></a></span>
+                      <span class="office-location"><a href="#"><i data-feather="map-pin"></i><?php echo $res[0]['job_location']  ?></a></span>
+                      <span class="job-type full-time"><a href="#"><i data-feather="clock"></i><?php echo $res[0]['company_name']  ?></a></span>
                     </div>
-                    <?php } ?>
-                    
+                  </div>
+                </div>
+                <div class="buttons">
+                  <a class="save" href="#"><i data-feather="heart"></i>Save Job</a>
+                  <a class="apply" href="#" data-toggle="modal" data-target="#apply-popup-id">Apply Online</a>
+                </div>
+              </div>
+              <div class="details-information section-padding-60">
+                <div class="row">
+                  <div class="col-xl-7 col-lg-8">
+                    <div class="description details-section">
+                      <h4><i data-feather="align-left"></i>Job Description</h4>
+                      <p><?php echo $res[0]['job_description'] ?></p>
+                    </div>
+                    <div class="responsibilities details-section">
+                      <h4><i data-feather="zap"></i>Responsibilities</h4>
+                      <p><?php echo $res[0]['job_description'] ?></p>
+                      <!-- <ul>
+                        <li>The applicants should have experience in the following areas</li>
+                        <li>Skills on M.S Word, Excel, and Integrated Accounting package i.e. Software</li>
+                        <li>Have sound knowledge of commercial activities.</li>
+                        <li>Should have vast knowledge in IAS/ IFRS, Company Act, Income Tax, VAT.</li>
+                        <li>Good verbal and written communication skills.</li>
+                        <li>Leadership, analytical, and problem-solving abilities.</li>
+                      </ul> -->
+                    </div>
+                    <div class="edication-and-experience details-section">
+                      <h4><i data-feather="book"></i>Education</h4>
+                      <p><?php echo $res[0]['education'] ?></p>
+                      <!-- <ul>
+                        <li>M.Com (Accounting) / M.B.S / M.B.A under National University with CA course complete.</li>
+                        <li>M.S (Statistics) any Public University / National University.</li>
+                        <li>Masters of library science any Public University.</li>
+                        <li>2 to 3 year(s) Experiance</li>
+                        <li>Females candidate are discourage to apply.</li>
+                      </ul> -->
+                    </div>
+                    <div class="edication-and-experience details-section">
+                      <h4><i data-feather="book"></i>Experience</h4>
+                      <p><?php echo $res[0]['job_experience'] ?></p>
+                      <!-- <ul>
+                        <li>M.Com (Accounting) / M.B.S / M.B.A under National University with CA course complete.</li>
+                        <li>M.S (Statistics) any Public University / National University.</li>
+                        <li>Masters of library science any Public University.</li>
+                        <li>2 to 3 year(s) Experiance</li>
+                        <li>Females candidate are discourage to apply.</li>
+                      </ul> -->
+                    </div>
+                    <div class="other-benifit details-section">
+                      <h4><i data-feather="gift"></i>Other Benefits</h4>
+                      <p><?php echo $res[0]['other_benefits'] ?></p>
+                    </div>
+                    <div class="job-apply-buttons">
+                      <a href="#" class="apply"  data-toggle="modal" data-target="#apply-popup-id">Apply Online</a>
+                      <a href="#" class="email"><i data-feather="mail"></i>Email Job</a>
+                    </div>
+                  </div>
+                  <div class="col-xl-4 offset-xl-1 col-lg-4">
+                    <div class="information-and-share">
+                      <div class="job-summary">
+                        <h4>Job Summary</h4>
+                        <ul>
+                          <!-- <li><span>Published on:</span> Oct 6,  2020</li> -->
+                          <li><span>Vacancy:</span> <?php echo $res[0]['job_vacancy'] ?></li>
+                          <li><span>Employment Status:</span> <?php echo $res[0]['job_type'] ?></li>
+                          <li><span>Experience:</span> <?php echo $res[0]['job_experience'] ?></li>
+                          <li><span>Job Location:</span> <?php echo $res[0]['job_location'] ?></li>
+                          <li><span>Salary:</span> <?php echo $res[0]['job_salary_range'] ?></li>
+                          <li><span>Gender:</span> <?php echo $res[0]['job_gender'] ?></li>
+                          <li><span>Application Deadline:</span> <?php echo $res[0]['job_last_date'] ?></li>
+                        </ul>
+                      </div>
+                      <div class="share-job-post">
+                        <span class="share"><i class="fas fa-share-alt"></i>Share:</span>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#" class="add-more"><span class="ti-plus"></span></a>
+                      </div>
+                      <div class="buttons">
+                        <a href="#" class="button print"><i data-feather="printer"></i>Print Job</a>
+                        <a href="#" class="button report"><i data-feather="flag"></i>Report Job</a>
+                      </div>
+                      <div class="job-location">
+                        <h4>Job Location</h4>
+                        <div id="map-area">
+                          <div class="cp-map" id="location" data-lat="40.713355" data-lng="-74.005535" data-zoom="10"></div>
+                          <!-- <div class="cp-map" id="location" data-lat="40.713355" data-lng="-74.005535" data-zoom="10"></div> -->
+                        </div>
+                      </div>
+                    </div> 
                   </div>
                 </div>
               </div>
-              <div class="dashboard-sidebar">
-                <div class="user-info">
-                  <div class="thumb">
-                    <img src="dashboard/images/user-1.jpg" class="img-fluid" alt="">
-                  </div>
-                  <div class="user-body">
-                    <h5><?php echo $res[0]['name'] ?></h5>
-                    <span>@<?php echo $res[0]['username'] ?></span>
-                  </div>
-                </div>
-                <div class="profile-progress">
-                  <div class="progress-item">
-                    <div class="progress-head">
-                      <p class="progress-on">Profile</p>
-                    </div>
-                    <div class="progress-body">
-                      <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 0;"></div>
-                      </div>
-                      <p class="progress-to">70%</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="dashboard-menu">
-                  <ul>
-                    <li><i class="fas fa-home"></i><a href="dashboard.php">Dashboard</a></li>
-                    <li><i class="fas fa-user"></i><a href="dashboard-edit-profile.php">Edit Profile</a></li>
-                    <li><i class="fas fa-file-alt"></i><a href="resume.php">Resume</a></li>
-                    <li><i class="fas fa-edit"></i><a href="edit-resume.php">Edit Resume</a></li>
-                    <li><i class="fas fa-heart"></i><a href="dashboard-bookmark.php">Bookmarked</a></li>
-                    <li class="active"><i class="fas fa-check-square"></i><a href="dashboard-applied.php">Applied Job</a></li>
-                    <li><i class="fas fa-comment"></i><a href="dashboard-message.html">Message</a></li>
-                    <li><i class="fas fa-calculator"></i><a href="dashboard-pricing.html">Pricing Plans</a></li>
-                  </ul>
-                  <ul class="delete">
-                    <li><i class="fas fa-power-off"></i><a href="#">Logout</a></li>
-                    <li><i class="fas fa-trash-alt"></i><a href="#" data-toggle="modal" data-target="#modal-delete">Delete Profile</a></li>
-                  </ul>
-                  <!-- Modal -->
-                  <div class="modal fade modal-delete" id="modal-delete" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-body">
-                          <h4><i data-feather="trash-2"></i>Delete Account</h4>
-                          <p>Are you sure! You want to delete your profile. This can't be undone!</p>
-                          <form action="#">
-                            <div class="form-group">
-                              <input type="password" class="form-control" placeholder="Enter password">
-                            </div>
-                            <div class="buttons">
-                              <button class="delete-button">Save Update</button>
-                              <button class="">Cancel</button>
-                            </div>
-                            <div class="form-group form-check">
-                              <input type="checkbox" class="form-check-input" checked="">
-                              <label class="form-check-label">You accepts our <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a></label>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
+              <div class="row">
+                <div class="col-xl-7 col-lg-8">
+                  <div class="company-information details-section">
+                    <h4><i data-feather="briefcase"></i>About the Company</h4>
+                    <ul>
+                      <li><span>Company Name:</span> <?php echo $res[0]['company_name'] ?></li>
+                      <li><span>Address:</span> <?php echo $res[0]['address'] ?></li>
+                      <li><span>Website:</span> <a href="#"><?php echo $res[0]['google'] ?></a></li>
+                      <li><span>Company Profile:</span></li>
+                      <li><?php echo $res[0]['about_us'] ?></li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -383,6 +361,188 @@ $sql = "SELECT COUNT(*) AS count
         </div>
       </div>
     </div>
+    <!-- Candidates Details End -->
+
+    <div class="apply-popup">
+      <div class="modal fade" id="apply-popup-id" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title"><i data-feather="edit"></i>APPLY FOR THIS JOB</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="#">
+                <div class="form-group">
+                  <input type="text" placeholder="Full Name" class="form-control">
+                </div>
+                <div class="form-group">
+                  <input type="email" placeholder="Email Address" class="form-control">
+                </div>
+                <div class="form-group">
+                  <textarea class="form-control" placeholder="Message"></textarea>
+                </div>
+                <div class="form-group file-input-wrap">
+                  <label for="up-cv">
+                    <input id="up-cv" type="file">
+                    <i data-feather="upload-cloud"></i>
+                    <span>Upload your resume <span>(pdf,zip,doc,docx)</span></span>
+                  </label>
+                </div>
+                <div class="more-option">
+                  <input class="custom-radio" type="checkbox" id="radio-4" name="termsandcondition">
+                  <label for="radio-4">
+                    <span class="dot"></span> I accept the <a href="#">terms & conditions</a>
+                  </label>
+                </div>
+                <button class="button primary-bg btn-block">Apply Now</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Jobs -->
+    <div class="section-padding-bottom alice-bg">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="section-header section-header-2 section-header-with-right-content">
+              <h2>Simillar Jobs</h2>
+              <a href="#" class="header-right">+ Browse All Jobs</a>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="job-list">
+              <div class="thumb">
+                <a href="#">
+                  <img src="images/job/company-logo-1.png" class="img-fluid" alt="">
+                </a>
+              </div>
+              <div class="body">
+                <div class="content">
+                  <h4><a href="job-details.php">Designer Required</a></h4>
+                  <div class="info">
+                    <span class="company"><a href="#"><i data-feather="briefcase"></i>Theoreo</a></span>
+                    <span class="office-location"><a href="#"><i data-feather="map-pin"></i>New York City</a></span>
+                    <span class="job-type full-time"><a href="#"><i data-feather="clock"></i>Full Time</a></span>
+                  </div>
+                </div>
+                <div class="more">
+                  <div class="buttons">
+                    <a href="#" class="button">Apply Now</a>
+                    <a href="#" class="favourite"><i data-feather="heart"></i></a>
+                  </div>
+                  <p class="deadline">Deadline: Oct 31,  2020</p>
+                </div>
+              </div>
+            </div>
+            <div class="job-list">
+              <div class="thumb">
+                <a href="#">
+                  <img src="images/job/company-logo-2.png" class="img-fluid" alt="">
+                </a>
+              </div>
+              <div class="body">
+                <div class="content">
+                  <h4><a href="job-details.php">Project Manager</a></h4>
+                  <div class="info">
+                    <span class="company"><a href="#"><i data-feather="briefcase"></i>Degoin</a></span>
+                    <span class="office-location"><a href="#"><i data-feather="map-pin"></i>San Francisco</a></span>
+                    <span class="job-type part-time"><a href="#"><i data-feather="clock"></i>Part Time</a></span>
+                  </div>
+                </div>
+                <div class="more">
+                  <div class="buttons">
+                    <a href="#" class="button">Apply Now</a>
+                    <a href="#" class="favourite"><i data-feather="heart"></i></a>
+                  </div>
+                  <p class="deadline">Deadline: Oct 31,  2020</p>
+                </div>
+              </div>
+            </div>
+            <div class="job-list">
+              <div class="thumb">
+                <a href="#">
+                  <img src="images/job/company-logo-8.png" class="img-fluid" alt="">
+                </a>
+              </div>
+              <div class="body">
+                <div class="content">
+                  <h4><a href="job-details.php">Restaurant Team Member - Crew </a></h4>
+                  <div class="info">
+                    <span class="company"><a href="#"><i data-feather="briefcase"></i>Geologitic</a></span>
+                    <span class="office-location"><a href="#"><i data-feather="map-pin"></i>New Orleans</a></span>
+                    <span class="job-type temporary"><a href="#"><i data-feather="clock"></i>Temporary</a></span>
+                  </div>
+                </div>
+                <div class="more">
+                  <div class="buttons">
+                    <a href="#" class="button">Apply Now</a>
+                    <a href="#" class="favourite"><i data-feather="heart"></i></a>
+                  </div>
+                  <p class="deadline">Deadline: Oct 31,  2020</p>
+                </div>
+              </div>
+            </div>
+            <div class="job-list">
+              <div class="thumb">
+                <a href="#">
+                  <img src="images/job/company-logo-9.png" class="img-fluid" alt="">
+                </a>
+              </div>
+              <div class="body">
+                <div class="content">
+                  <h4><a href="job-details.php">Nutrition Advisor</a></h4>
+                  <div class="info">
+                    <span class="company"><a href="#"><i data-feather="briefcase"></i>Theoreo</a></span>
+                    <span class="office-location"><a href="#"><i data-feather="map-pin"></i>New York City</a></span>
+                    <span class="job-type full-time"><a href="#"><i data-feather="clock"></i>Full Time</a></span>
+                  </div>
+                </div>
+                <div class="more">
+                  <div class="buttons">
+                    <a href="#" class="button">Apply Now</a>
+                    <a href="#" class="favourite"><i data-feather="heart"></i></a>
+                  </div>
+                  <p class="deadline">Deadline: Oct 31,  2020</p>
+                </div>
+              </div>
+            </div>
+            <div class="job-list">
+              <div class="thumb">
+                <a href="#">
+                  <img src="images/job/company-logo-3.png" class="img-fluid" alt="">
+                </a>
+              </div>
+              <div class="body">
+                <div class="content">
+                  <h4><a href="job-details.php">Land Development Marketer</a></h4>
+                  <div class="info">
+                    <span class="company"><a href="#"><i data-feather="briefcase"></i>Realouse</a></span>
+                    <span class="office-location"><a href="#"><i data-feather="map-pin"></i>Washington, D.C.</a></span>
+                    <span class="job-type freelance"><a href="#"><i data-feather="clock"></i>Freelance</a></span>
+                  </div>
+                </div>
+                <div class="more">
+                  <div class="buttons">
+                    <a href="#" class="button">Apply Now</a>
+                    <a href="#" class="favourite"><i data-feather="heart"></i></a>
+                  </div>
+                  <p class="deadline">Deadline: Oct 31,  2020</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Jobs End -->
 
     <!-- Call to Action -->
     <div class="call-to-action-bg padding-top-90 padding-bottom-90">
@@ -391,7 +551,7 @@ $sql = "SELECT COUNT(*) AS count
           <div class="col">
             <div class="call-to-action-2">
               <div class="call-to-action-content">
-                <h2>Find Your Dream Job or Candidate</h2>
+                <h2>For Find Your Dream Job or Candidate</h2>
                 <p>Add resume or post a job.</p>
               </div>
               <div class="call-to-action-button">
@@ -504,8 +664,8 @@ $sql = "SELECT COUNT(*) AS count
                       <a href="#" class="android-app">Google Play</a>
                     </div>
                   </div>
-                   <div class="col-xl-4 col-lg-4 order-lg-1">
-                    <p class="copyright-text">Copyright Lewansys 2021, All rights reserved. <br> Designed And Developed By <a href="https://aitechnologies.co.in/" target="_blank">AiTechnologies</a>. </p>
+                  <div class="col-xl-4 col-lg-4 order-lg-1">
+                    <p class="copyright-text">Copyright Lewnasys 2021, All right reserved. <br> Designed and Developed By <a href="https://aitechnologies.co.in/" target="_blank">AiTechnologies</a></p>
                   </div>
                   <div class="col-xl-4 col-lg-3 order-lg-3">
                     <div class="back-to-top">
@@ -520,6 +680,7 @@ $sql = "SELECT COUNT(*) AS count
       </div>
     </footer>
     <!-- Footer End -->
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -539,11 +700,9 @@ $sql = "SELECT COUNT(*) AS count
     <script src="assets/js/jquery.ajaxchimp.min.js"></script>
 
     <script src="js/custom.js"></script>
-    <script src="dashboard/js/dashboard.js"></script>
-    <script src="dashboard/js/datePicker.js"></script>
-    <script src="dashboard/js/upload-input.js"></script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC87gjXWLqrHuLKR0CTV5jNLdP4pEHMhmg"></script>
     <script src="js/map.js"></script>
+
   </body>
 </html>

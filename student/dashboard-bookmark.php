@@ -164,7 +164,7 @@ $sql = "SELECT COUNT(*) AS count
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
                       <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
-                      <li class="menu-item"><a  href="job-details.html">Job Details</a></li>
+                      <li class="menu-item"><a  href="job-details.php">Job Details</a></li>
                       <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
                     </ul>
                   </li> -->
@@ -293,7 +293,7 @@ $sql = "SELECT COUNT(*) AS count
                       </div>
                       <div class="body">
                         <div class="content">
-                          <h4><a href="job-details.html"><?php echo $row['job_title']  ?></a></h4>
+                          <h4><a href="job-details.php"><?php echo $row['job_title']  ?></a></h4>
                           <div class="info">
                           <span class="company"><a href="#"><i data-feather="briefcase"></i><?php echo $row['company_name']  ?></a></span>
                           <span class="office-location"><a href="#"><i data-feather="map-pin"></i><?php echo $row['job_location']  ?></a></span>

@@ -157,7 +157,7 @@ $sql = "SELECT * FROM company WHERE id = $id";
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
                       <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
-                      <li class="menu-item"><a  href="job-details.html">Job Details</a></li>
+                      <li class="menu-item"><a  href="job-details.php">Job Details</a></li>
                       <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
                     </ul>
                   </li>
@@ -320,11 +320,11 @@ $sql = "SELECT * FROM company WHERE id = $id";
               <div class="dashboard-sidebar">
                 <div class="company-info">
                   <div class="thumb">
-                    <img src="dashboard/images/company-logo.png" class="img-fluid" alt="">
+                    <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                   </div>
                   <div class="company-body">
-                    <h5>Degoin</h5>
-                    <span>@username</span>
+                    <h5><?php echo $res[0]['company_name'] ?></h5>
+                    <span>@<?php echo $res[0]['username'] ?></span>
                   </div>
                 </div>
                 <div class="profile-progress">

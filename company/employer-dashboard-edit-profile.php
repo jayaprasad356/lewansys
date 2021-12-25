@@ -31,26 +31,14 @@ $facebook = $res[0]['facebook'];
 $google = $res[0]['google'];
 $twitter = $res[0]['twitter'];
 
-if (isset($_POST['btnpwdUpdate']))
-{
-  $newpassword = $db->escapeString($_POST['newpassword']);
-
-  $data = array(
-    'password' => $newpassword
-  );
-  if($db->update('company', $data, 'id=' . $id)){
-    header("location: ../company/employer-dashboard.php");
-  
-  }
-
-}
 if (isset($_POST['btnUpdate'])) 
 {
   
 
   
   $menu_image = $db->escapeString($_FILES['profile']['name']);
-  $username = $db->escapeString($_POST['username']);
+  $gal_image = $db->escapeString($_FILES['galimage']['name']);
+
   $mobile = $db->escapeString($_POST['mobile']);
   $email = $db->escapeString($_POST['email']);
   $address = $db->escapeString($_POST['address']);
@@ -62,8 +50,96 @@ if (isset($_POST['btnUpdate']))
   $google = $db->escapeString($_POST['google']);
   $twitter = $db->escapeString($_POST['twitter']);
 
-  if (!empty($menu_image)) {
-    $extension = end(explode(".", $_FILES["profile"]["name"]));
+
+  if (!empty($menu_image) && !empty($gal_image)) {
+    
+
+    $tmp = explode(".", $_FILES["profile"]["name"]);
+    $extension = end($tmp);
+
+
+
+    // create random image file name
+    $string = '0123456789';
+    $file = preg_replace("/\s+/", "_", $_FILES['profile']['name']);
+    $menu_image = $function->get_random_string($string, 4) . "-" . date("Y-m-d") . "." . $extension;
+  
+    // upload new image
+    $upload = move_uploaded_file($_FILES['profile']['tmp_name'], '../upload/images/' . $menu_image);
+  
+    // insert new data to menu table
+    $upload_image = 'upload/images/' . $menu_image;
+
+    $tmp = explode(".", $_FILES["galimage"]["name"]);
+    $extension = end($tmp);
+
+
+
+    // create random image file name
+    $string = '0123456789';
+    $file = preg_replace("/\s+/", "_", $_FILES['galimage']['name']);
+    $gal_image = $function->get_random_string($string, 4) . "-" . date("Y-m-d") . "." . $extension;
+  
+    // upload new image
+    $upload = move_uploaded_file($_FILES['galimage']['tmp_name'], '../upload/images/' . $gal_image);
+  
+    // insert new data to menu table
+    $upload_galimage = 'upload/images/' . $gal_image;
+    $data = array(
+      
+      'mobile' => $mobile,
+      'email' => $email,
+      'address' => $address,
+      'profile' => $upload_image,
+      'category' => $category,
+      'about_us' => $about_us,
+      'image' => $upload_galimage,
+      'video' => $video,
+      'company_name' => $company_name,
+      'facebook' => $facebook,
+      'google' => $google,
+      'twitter' => $twitter
+  );
+  
+
+  }
+  else if (!empty($gal_image)) {
+    
+    $tmp = explode(".", $_FILES["galimage"]["name"]);
+    $extension = end($tmp);
+
+
+
+    // create random image file name
+    $string = '0123456789';
+    $file = preg_replace("/\s+/", "_", $_FILES['galimage']['name']);
+    $gal_image = $function->get_random_string($string, 4) . "-" . date("Y-m-d") . "." . $extension;
+  
+    // upload new image
+    $upload = move_uploaded_file($_FILES['galimage']['tmp_name'], '../upload/images/' . $gal_image);
+  
+    // insert new data to menu table
+    $upload_galimage = 'upload/images/' . $gal_image;
+    $data = array(
+      
+      'mobile' => $mobile,
+      'email' => $email,
+      'address' => $address,
+      'category' => $category,
+      'about_us' => $about_us,
+      'image' => $upload_galimage,
+      'video' => $video,
+      'company_name' => $company_name,
+      'facebook' => $facebook,
+      'google' => $google,
+      'twitter' => $twitter
+  );
+  }
+  else if (!empty($menu_image)) {
+    
+    $tmp = explode(".", $_FILES["profile"]["name"]);
+    $extension = end($tmp);
+
 
 
     // create random image file name
@@ -77,7 +153,7 @@ if (isset($_POST['btnUpdate']))
     // insert new data to menu table
     $upload_image = 'upload/images/' . $menu_image;
     $data = array(
-      'username' => $username,
+      
       'mobile' => $mobile,
       'email' => $email,
       'address' => $address,
@@ -93,8 +169,9 @@ if (isset($_POST['btnUpdate']))
 
   }
   else {
+    
     $data = array(
-      'username' => $username,
+      
       'mobile' => $mobile,
       'email' => $email,
       'address' => $address,
@@ -110,9 +187,10 @@ if (isset($_POST['btnUpdate']))
 
   
 if($db->update('company', $data, 'id=' . $id)){
-  header("location: ../company/employer-dashboard.php");
+  header("location: employer-dashboard-edit-profile.php");
 
 }
+
 
 
 
@@ -129,6 +207,9 @@ if($db->update('company', $data, 'id=' . $id)){
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Lewansys</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -254,7 +335,7 @@ if($db->update('company', $data, 'id=' . $id)){
                     <ul  class="dropdown-menu">
                       <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
                       <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
-                      <li class="menu-item"><a  href="job-details.html">Job Details</a></li>
+                      <li class="menu-item"><a  href="job-details.php">Job Details</a></li>
                       <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
                     </ul>
                   </li>
@@ -329,7 +410,7 @@ if($db->update('company', $data, 'id=' . $id)){
         <div class="row no-gliters">
           <div class="col">
             <div class="dashboard-container">
-              <div class="dashboard-content-wrapper">
+            <div class="dashboard-content-wrapper">
                 <form method="post" enctype="multipart/form-data" class="dashboard-form">
                   <div class="dashboard-section upload-profile-photo">
                     <div class="update-photo">
@@ -344,13 +425,13 @@ if($db->update('company', $data, 'id=' . $id)){
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">Company Name</label>
                       <div class="col-sm-9">
-                        <input name="company_name" type="text" class="form-control" placeholder="Company Name" value="<?php echo $company_name ?>">
+                        <input name="college_name" type="text" class="form-control" placeholder="College Name" value="<?php echo $company_name ?>">
                       </div>
                     </div>
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">Username</label>
                       <div class="col-sm-9">
-                        <input name="username" type="text" class="form-control" placeholder="@username" value="<?php echo $username ?>"> 
+                        <input name="username" type="text" class="form-control" placeholder="@username" value="<?php echo $username ?>" disabled> 
                       </div>
                     </div>
                     <div class="form-group row">
@@ -380,7 +461,7 @@ if($db->update('company', $data, 'id=' . $id)){
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">About Us</label>
                       <div class="col-sm-9">
-                        <textarea name="about_us" class="form-control" placeholder="" value="<?php echo $about_us ?>"></textarea>
+                        <textarea name="about_us" class="form-control" placeholder="" value="<?php echo $about_us ?>"><?php echo $about_us ?></textarea>
                       </div>
                     </div>
                   </div>
@@ -400,7 +481,15 @@ if($db->update('company', $data, 'id=' . $id)){
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">Gallery</label>
                       <div class="col-sm-9">
-                        <div class="input-group image-upload-input">
+                      <div class="dashboard-section upload-profile-photo">
+                      <div class="update-photo">
+                        <img class="image" src="../<?php echo  $image ?>" alt="">
+                      </div>
+                      <div class="file-upload">            
+                        <input name="galimage" type="file" class="file-input">Change Image
+                      </div>
+                    </div>
+                        <!-- <div class="input-group image-upload-input">
                           <div class="input-group-prepend">
                             <div class="input-group-text">Image</div>
                           </div>
@@ -411,7 +500,7 @@ if($db->update('company', $data, 'id=' . $id)){
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </div>
@@ -471,30 +560,39 @@ if($db->update('company', $data, 'id=' . $id)){
                       </div>
                     </div> -->
                   </div>
+                  
+                </form>
+                <br>
+                <br>
+                <form method="post" enctype="multipart/form-data" class="dashboard-form">
+                  
                   <div class="dashboard-section basic-info-input">
                     <h4><i data-feather="lock"></i>Change Password</h4>
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">Current Password</label>
                       <div class="col-sm-9">
-                        <input name="oldpassword" type="password" class="form-control" placeholder="Current Password" value="<?php echo $password ?>">
+                        <input  id="oldpassword" name="oldpassword" type="password" class="form-control" placeholder="Current Password" required>
                       </div>
                     </div>
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">New Password</label>
                       <div class="col-sm-9">
-                        <input name="newpassword" type="password" class="form-control" placeholder="New Password">
+                        <input id="newpassword" name="newpassword" type="password" class="form-control" placeholder="New Password" required>
                       </div>
                     </div>
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label">Retype Password</label>
                       <div class="col-sm-9">
-                        <input type="password" class="form-control" placeholder="Retype Password">
+                        <input id="retypepassword" name="retypepassword" type="password" class="form-control" placeholder="Retype Password" required>
                       </div>
                     </div>
                     <div class="form-group row">
                       <label class="col-sm-3 col-form-label"></label>
                       <div class="col-sm-9">
-                        <button  name="btnpwdUpdate" type="submit" class="button">Change Password</button>
+                        <input id="btnChangePwd" type="button" class="button" value="Change Password" />
+                
+                      
+                        <!-- <button  name="btnChangePwd" type="submit" class="button">Change Password</button> -->
                         
                       </div>
                     </div>
@@ -732,5 +830,47 @@ if($db->update('company', $data, 'id=' . $id)){
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC87gjXWLqrHuLKR0CTV5jNLdP4pEHMhmg"></script>
     <script src="js/map.js"></script>
+    <script>
+      $(document).ready(function() {
+      
+      $("#btnChangePwd").click(function() {
+        var retypepassword = $("#retypepassword").val();
+        var newpassword = $("#newpassword").val();
+        var oldpassword = $("#oldpassword").val();
+        var id='<?php echo $id;?>';
+        var password='<?php echo $password;?>';
+        
+      
+         
+        
+        $.ajax({
+          type: "POST",
+          url: "changepassword.php",
+          data: {
+          
+          currentpwd: oldpassword,
+          newpwd: newpassword,
+          retypepwd: retypepassword,
+          password: password,
+          id: id
+          },
+          cache: false,
+          success: function(response) {
+          alert(response.message);
+          if(response.success == true){
+            window.location.replace("employer-dashboard-edit-profile.php");
+          }
+          },
+          error: function(xhr, status, error) {
+          console.error(xhr);
+          }
+          });
+      
+      
+      
+      });
+      
+      });
+    </script>
   </body>
 </html>

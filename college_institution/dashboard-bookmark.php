@@ -255,7 +255,7 @@ $sql = "SELECT COUNT(*) AS count
                       </div>
                       <div class="body">
                         <div class="content">
-                          <h4><a href="job-details.html"><?php echo $row['job_title']  ?></a></h4>
+                          <h4><a href="job-details.php"><?php echo $row['job_title']  ?></a></h4>
                           <div class="info">
                           <span class="company"><a href="#"><i data-feather="briefcase"></i><?php echo $row['company_name']  ?></a></span>
                           <span class="office-location"><a href="#"><i data-feather="map-pin"></i><?php echo $row['job_location']  ?></a></span>
