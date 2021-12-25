@@ -336,7 +336,7 @@ if($db->update('company', $data, 'id=' . $id)){
                       <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
                       <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
                       <li class="menu-item"><a  href="job-details.php">Job Details</a></li>
-                      <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
+                      <li class="menu-item"><a  href="employer-dashboard-post-job.php">Post Job</a></li>
                     </ul>
                   </li>
                   <li class="menu-item dropdown">
@@ -368,7 +368,7 @@ if($db->update('company', $data, 'id=' . $id)){
                         </ul>
                   </li>
                   <li class="menu-item"><a href="contact.html">Contact Us</a></li>
-                  <li class="menu-item post-job"><a href="post-job.html"><i class="fas fa-plus"></i>Post a Job</a></li>
+                  <li class="menu-item post-job"><a href="employer-dashboard-post-job.php"><i class="fas fa-plus"></i>Post a Job</a></li>
                 </ul>
               </div>
             </nav>
@@ -682,7 +682,7 @@ if($db->update('company', $data, 'id=' . $id)){
               <div class="call-to-action-button">
                 <a href="add-resume.php" class="button">Add Resume</a>
                 <span>Or</span>
-                <a href="post-job.html" class="button">Post A Job</a>
+                <a href="employer-dashboard-post-job.php" class="button">Post A Job</a>
               </div>
             </div>
           </div>

@@ -158,7 +158,7 @@ $sql = "SELECT * FROM company WHERE id = $id";
                       <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
                       <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
                       <li class="menu-item"><a  href="job-details.php">Job Details</a></li>
-                      <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
+                      <li class="menu-item"><a  href="employer-dashboard-post-job.php">Post Job</a></li>
                     </ul>
                   </li>
                   <li class="menu-item dropdown">
@@ -190,7 +190,7 @@ $sql = "SELECT * FROM company WHERE id = $id";
                         </ul>
                   </li>
                   <li class="menu-item"><a href="contact.html">Contact Us</a></li>
-                  <li class="menu-item post-job"><a href="post-job.html"><i class="fas fa-plus"></i>Post a Job</a></li>
+                  <li class="menu-item post-job"><a href="employer-dashboard-post-job.php"><i class="fas fa-plus"></i>Post a Job</a></li>
                 </ul>
               </div>
             </nav>

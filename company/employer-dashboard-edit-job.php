@@ -1,3 +1,81 @@
+<?php 
+session_start();
+ob_start();
+include_once('../includes/crud.php');
+$db = new Database();
+$db->connect();
+$db->sql("SET NAMES 'utf8'");
+
+$id = $_SESSION['id'];
+if (!isset($id)) {
+  header("location:login.php");
+}
+$job_id = $_GET['job_id'];
+$sql = "SELECT * FROM jobs WHERE id = $job_id ";
+$db->sql($sql);
+$res = $db->getResult();
+if (isset($_POST['btnPostJob']))
+{
+  $job_title = $db->escapeString($_POST['job_title']);
+  $job_category = $db->escapeString($_POST['job_category']);
+  $job_location = $db->escapeString($_POST['job_location']);
+  $job_type = $db->escapeString($_POST['job_type']);
+  $job_experience = $db->escapeString($_POST['job_experience']);
+  $job_salary_range = $db->escapeString($_POST['job_salary_range']);
+  $job_qualification = $db->escapeString($_POST['job_qualification']);
+  $job_gender = $db->escapeString($_POST['job_gender']);
+  $job_vacancy = $db->escapeString($_POST['job_vacancy']);
+  $job_last_date = $db->escapeString($_POST['job_last_date']);
+  $job_description = $db->escapeString($_POST['job_description']);
+  $responsibilities = $db->escapeString($_POST['responsibilities']);
+  $education = $db->escapeString($_POST['education']);
+  $other_benefits = $db->escapeString($_POST['other_benefits']);
+  $country = $db->escapeString($_POST['country']);
+  $city = $db->escapeString($_POST['city']);
+  $pincode = $db->escapeString($_POST['pincode']);
+  $location = $db->escapeString($_POST['location']);
+  $company_name = $db->escapeString($_POST['company_name']);
+  $web_address = $db->escapeString($_POST['web_address']);
+  $company_profile	 = $db->escapeString($_POST['company_profile']);
+  $package = $db->escapeString($_POST['package']);
+  $payment_method = $db->escapeString($_POST['payment_method']);
+
+  $data = array(
+    'company_id' => $id,
+    'job_title' => $job_title,
+    'job_category' => $job_category,
+    'job_location' => $job_location,
+    'job_type' => $job_type,
+    'job_experience' => $job_experience,
+    'job_salary_range' => $job_salary_range,
+    'job_qualification' => $job_qualification,
+    'job_gender' => $job_gender,
+    'job_vacancy' => $job_vacancy,
+    'job_last_date' => $job_last_date,
+    'job_description' => $job_description,
+    'responsibilities' => $responsibilities,
+    'education' => $education,
+    'other_benefits' => $other_benefits,
+    'country' => $country,
+    'city' => $city,
+    'pincode' => $pincode,
+    'location' => $location,
+    'company_name' => $company_name,
+    'web_address' => $web_address,
+    'company_profile' => $company_profile,
+    'package' => $package,
+    'payment_method' => $payment_method
+);
+if($db->update('jobs', $data, 'id=' . $id)){
+  header("location: employer-dashboard.php");
+
+}
+
+
+}
+?>
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -17,9 +95,10 @@
     <link rel="stylesheet" href="assets/css/bootstrap-select.min.css" />
     <link rel="stylesheet" href="assets/css/plyr.css" />
     <link rel="stylesheet" href="assets/css/flag.css" />
-    <link rel="stylesheet" href="assets/css/slick.css" /> 
+    <link rel="stylesheet" href="assets/css/slick.css" />
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css" />
     <link rel="stylesheet" href="assets/css/jquery.nstSlider.min.css" />
+    <link rel="stylesheet" href="assets/css/html5-simple-date-input-polyfill.css" />
 
     <!-- Custom Css -->
     <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -43,7 +122,7 @@
   </head>
   <body>
 
-    <header class="header-2">
+     <header class="header-2">
       <div class="container">
         <div class="row">
           <div class="col">
@@ -190,7 +269,7 @@
           </div>
           <div class="col-md-6">
             <div class="breadcrumb-form">
-            <!--   <form action="#">
+              <!-- <form action="#">
                 <input type="text" placeholder="Enter Keywords">
                 <button><i data-feather="search"></i></button>
               </form> -->
@@ -206,114 +285,242 @@
         <div class="row no-gliters">
           <div class="col">
             <div class="dashboard-container">
-              <div class="dashboard-content-wrapper no-padding">
-                <div class="dashboard-message-wrapper">
-                  <div class="message-lists">
-                    <form action="#" class="message-search">
-                      <input type="text" placeholder="Search Friend...">
-                      <button><i data-feather="search"></i></button>
-                    </form>
-                    <a href="#" class="message-single">
-                      <div class="thumb">
-                        <img src="dashboard/images/user-1.jpg" class="img-fluid" alt="">
+              <div class="dashboard-content-wrapper">
+                <form method="post" enctype="multipart/form-data" class="dashboard-form job-post-form">
+                  <div class="dashboard-section basic-info-input">
+                    <h4><i data-feather="user-check"></i>Post A Job</h4>
+                    <div class="form-group row">
+                      <label class="col-md-3 col-form-label">Job Title</label>
+                      <div class="col-md-9">
+                        <input name="job_title" type="text" class="form-control" placeholder="Your job title here" value="<?php echo $res[0]['job_title'] ?>">
                       </div>
-                      <div class="body">
-                        <h6 class="username">Laura Cormier</h6>
-                        <span class="text-number">2</span>
-                      </div>
-                    </a>
-                    <a href="#" class="message-single">
-                      <div class="thumb">
-                        <img src="dashboard/images/user-2.jpg" class="img-fluid" alt="">
-                      </div>
-                      <div class="body">
-                        <h6 class="username">Paul Cox</h6>
-                        <span class="send-time">2 min</span>
-                      </div>
-                    </a>
-                    <a href="#" class="message-single active">
-                      <div class="thumb">
-                        <img src="dashboard/images/user-3.jpg" class="img-fluid" alt="">
-                      </div>
-                      <div class="body">
-                        <h6 class="username">Carlos Dobson</h6>
-                        <span class="send-time">6 min</span>
-                      </div>
-                    </a>
-                    <a href="#" class="message-single">
-                      <div class="thumb">
-                        <img src="dashboard/images/user-4.jpg" class="img-fluid" alt="">
-                      </div>
-                      <div class="body">
-                        <h6 class="username">Dahlia Divers</h6>
-                        <span class="send-time">45 min</span>
-                      </div>
-                    </a>
-                  </div>
-                  <div class="message-box">
-                    <div class="message-box-header">
-                      <a href="#"><i class="fas fa-ellipsis-h"></i></a>
-                      <h5>Carlos Dobson</h5>
                     </div>
-                    <ul class="dashboard-conversation">
-                      <li class="conversation in">
-                        <div class="avater">
-                          <img src="dashboard/images/avater-1.jpg" class="img-fluid" alt="">
-                        </div>
-                        <div class="message"><span>Can we go inside? I feel like my toes are starting to go numb.</span></div>
-                        <span class="send-time">2.32 am</span>
-                      </li>
-                      <li class="conversation out">
-                        <div class="avater">
-                          <img src="dashboard/images/avater-2.jpg" class="img-fluid" alt="">
-                        </div>
-                        <div class="message"><span>Can we go inside? I feel like my toes are starting to go numb.</span></div>
-                        <span class="send-time">2.32 am</span>
-                      </li>
-                      <li class="conversation in">
-                        <div class="avater">
-                          <img src="dashboard/images/avater-1.jpg" class="img-fluid" alt="">
-                        </div>
-                        <div class="message"><span>Hi, Luke! How are you? Can you please stop</span></div>
-                        <span class="send-time">2.34 am</span>
-                      </li>
-                      <li class="conversation out">
-                        <div class="avater">
-                          <img src="dashboard/images/avater-2.jpg" class="img-fluid" alt="">
-                        </div>
-                        <div class="message"><span>Hi, Luke! How are you? Can you please stop and pick up extra paper for the computer ?</span></div>
-                        <span class="send-time">2.34 am</span>
-                      </li>
-                      <li class="conversation in">
-                        <div class="avater">
-                          <img src="dashboard/images/avater-1.jpg" class="img-fluid" alt="">
-                        </div>
-                        <div class="message file-send">
-                          <div class="images">
-                            <img src="dashboard/images/avater-1.jpg" class="img-fluid" alt="">
-                            <img src="dashboard/images/avater-1.jpg" class="img-fluid" alt="">
-                            <img src="dashboard/images/avater-1.jpg" class="img-fluid" alt="">
-                            <span class="more">+12</span>
+                    <div class="row">
+                      <label class="col-md-3 col-form-label">Job Summery</label>
+                      <div class="col-md-9">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <select name="job_category" class="form-control">
+                                <option <?php if($res[0]['job_category']=="Select Category"){echo "selected";} ?>>Select Category</option>
+                                <option <?php if($res[0]['job_category']=="Accounting / Finance"){echo "selected";} ?>>Accounting / Finance</option>
+                                <option <?php if($res[0]['job_category']=="Health Care"){echo "selected";} ?>>Health Care</option>
+                                <option <?php if($res[0]['job_category']=="Garments / Textile"){echo "selected";} ?>>Garments / Textile</option>
+                                <option <?php if($res[0]['job_category']=="Telecommunication"){echo "selected";} ?>>Telecommunication</option>
+                              </select>
+                              <i class="fa fa-caret-down"></i>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <input name="job_location" type="text" class="form-control" placeholder="Job Location" value="<?php echo $res[0]['job_location'] ?>">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <select name="job_type" class="form-control">
+                                <option>Job Type</option>
+                                <option <?php if($res[0]['job_type']=="Part Time"){echo "selected";} ?>>Part Time</option>
+                                <option <?php if($res[0]['job_type']=="Full Time"){echo "selected";} ?>>Full Time</option>
+                                <option <?php if($res[0]['job_type']=="Temperory"){echo "selected";} ?>>Temperory</option>
+                                <option <?php if($res[0]['job_type']=="Permanent"){echo "selected";} ?>>Permanent</option>
+                                <option <?php if($res[0]['job_type']=="Freelance"){echo "selected";} ?>>Freelance</option>
+                              </select>
+                              <i class="fa fa-caret-down"></i>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <select name="job_experience" class="form-control">
+                                <option <?php if($res[0]['job_experience']=="Experience (Optional)"){echo "selected";} ?>>Experience (Optional)</option>
+                                <option <?php if($res[0]['job_experience']=="Less than 1 Year"){echo "selected";} ?>>Less than 1 Year</option>
+                                <option <?php if($res[0]['job_experience']=="2 Year"){echo "selected";} ?>>2 Year</option>
+                                <option <?php if($res[0]['job_experience']=="3 Year"){echo "selected";} ?>>3 Year</option>
+                                <option <?php if($res[0]['job_experience']=="4 Year"){echo "selected";} ?>>4 Year</option>
+                                <option <?php if($res[0]['job_experience']=="Over 5 Year"){echo "selected";} ?>>Over 5 Year</option>
+                              </select>
+                              <i class="fa fa-caret-down"></i>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <input name="job_salary_range" type="text" class="form-control" placeholder="Salary Range" value="<?php echo $res[0]['job_salary_range'] ?>">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <select name="job_qualification" class="form-control">
+                                <option <?php if($res[0]['job_qualification']=="Qualification"){echo "selected";} ?>>Qualification</option>
+                                <option <?php if($res[0]['job_qualification']=="Matriculation"){echo "selected";} ?>>Matriculation</option>
+                                <option <?php if($res[0]['job_qualification']=="Intermidiate"){echo "selected";} ?>>Intermidiate</option>
+                                <option <?php if($res[0]['job_qualification']=="Gradute"){echo "selected";} ?>>Gradute</option>
+                              </select>
+                              <i class="fa fa-caret-down"></i>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <select name="job_gender" class="form-control">
+                                <option <?php if($res[0]['job_gender']=="Gradute"){echo "selected";} ?>>Gender</option>
+                                <option <?php if($res[0]['job_gender']=="Male"){echo "selected";} ?>>Male</option>
+                                <option <?php if($res[0]['job_gender']=="Female"){echo "selected";} ?>>Female</option>
+                              </select>
+                              <i class="fa fa-caret-down"></i>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <input name="job_vacancy" type="text" class="form-control" placeholder="Vacancy" value="<?php echo $res[0]['job_vacancy'] ?>">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group datepicker">
+                              <input name="job_last_date" type="date" class="form-control" value="<?php echo $res[0]['job_last_date'] ?>">
+                            </div>
                           </div>
                         </div>
-                        <span class="send-time">2.34 am</span>
-                      </li>
-                    </ul>
-                    <div class="conversation-write-wrap">
-                      <form action="#">
-                        <label class="send-file">
-                          <input type="file"><i data-feather="paperclip"></i>
-                        </label>
-                        <label class="send-image">
-                          <input type="file"><i data-feather="image"></i>
-                        </label>
-                        <textarea placeholder="Type a message"></textarea>
-                        <a href="#" class="emoji"><i data-feather="thumbs-up"></i></a>
-                        <button class="send-message"><i data-feather="send"></i></button>
-                      </form>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-md-3 col-form-label">Job Description</label>
+                      <div class="col-md-9">
+                        <textarea name="job_description" id="mytextarea" class="tinymce-editor tinymce-editor-1" placeholder="Description text here"><?php echo $res[0]['job_description'] ?></textarea>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-md-3 col-form-label">Responsibilities</label>
+                      <div class="col-md-9">
+                        <textarea name="responsibilities" id="mytextarea2" class="tinymce-editor tinymce-editor-2" placeholder="Responsibilities (Optional)"><?php echo $res[0]['responsibilities'] ?></textarea>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-md-3 col-form-label">Education</label>
+                      <div class="col-md-9">
+                        <textarea name="education" id="mytextarea3" class="tinymce-editor tinymce-editor-2" placeholder="Education (Optional)"><?php echo $res[0]['education'] ?></textarea>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-md-3 col-form-label">Other Benefits</label>
+                      <div class="col-md-9">
+                        <textarea name="other_benefits" id="mytextarea4" class="tinymce-editor tinymce-editor-2" placeholder="Description text here"><?php echo $res[0]['other_benefits'] ?></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-3 col-form-label">Your Location</label>
+                      <div class="col-md-9">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <select name="country" class="form-control">
+                                <option <?php if($res[0]['country']=="Country"){echo "selected";} ?>>Country</option>
+                                <option <?php if($res[0]['country']=="USA"){echo "selected";} ?>>USA</option>
+                                <option <?php if($res[0]['country']=="United Kindom"){echo "selected";} ?>>United Kindom</option>
+                                <option <?php if($res[0]['country']=="Spain"){echo "selected";} ?>>Spain</option>
+                                <option <?php if($res[0]['country']=="France"){echo "selected";} ?>>France</option>
+                                <option <?php if($res[0]['country']=="Germany"){echo "selected";} ?>>Germany</option>
+                              </select>
+                              <i class="fa fa-caret-down"></i>
+                            </div>
+                            <div class="form-group">
+                              <select name="city" class="form-control" id="exampleFormControlSelect11">
+                                <option <?php if($res[0]['city']=="City"){echo "selected";} ?>>City</option>
+                                <option <?php if($res[0]['city']=="New york"){echo "selected";} ?>>New york</option>
+                                <option <?php if($res[0]['city']=="Washington D.C"){echo "selected";} ?>>Washington D.C</option>
+                                <option <?php if($res[0]['city']=="California"){echo "selected";} ?>>California</option>
+                                <option <?php if($res[0]['city']=="Las Vegas"){echo "selected";} ?>>Las Vegas</option>
+                              </select>
+                              <i class="fa fa-caret-down"></i>
+                            </div>
+                            <div class="form-group">
+                              <input name="pincode" type="text" class="form-control" placeholder="Zip Code" value="<?php echo $res[0]['pincode'] ?>">
+                            </div>
+                            <div class="form-group">
+                              <input name="location" type="text" class="form-control" placeholder="Your Location" value="<?php echo $res[0]['location'] ?>">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="set-location">
+                              <h5>Pin Location</h5>
+                              <div id="map-area" class="contact-location">
+                                <div class="cp-map" id="location" data-lat="40.713355" data-lng="-74.005535" data-zoom="10"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-md-3 col-form-label">About Company</label>
+                      <div class="col-md-9">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <input name="company_name" type="text" class="form-control" placeholder="Company Name" value="<?php echo $res[0]['company_name'] ?>">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <input name="web_address" type="text" class="form-control" placeholder="Web Address" value="<?php echo $res[0]['web_address'] ?>">
+                            </div>
+                          </div>
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <textarea name="company_profile" class="form-control" placeholder="Company Profile"><?php echo $res[0]['company_profile'] ?></textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-md-3 col-form-label">Select Package</label>
+                      <div class="col-md-9">
+                        <div class="package-select">
+                          <div class="package-select-inputs">
+                            <div class="form-group">
+                              <input name="package" class="custom-radio" type="radio" id="radio_1" name="my-radio" value="Free"<?php if($res[0]['package']=="Free"){echo "checked";} ?> >
+                              <label for="radio_1">
+                              <span class="dot"></span> <span class="package-type">Free</span> $0.00
+                            </label>
+                            </div>
+                            <div class="form-group">
+                              <input name="package" class="custom-radio" type="radio" id="radio_2" name="my-radio" value="Stater" <?php if($res[0]['package']=="Stater"){echo "checked";} ?>>
+                              <label for="radio_2">
+                              <span class="dot"></span> <span class="package-type">Stater</span> $22.00
+                            </label>
+                            </div>
+                            <div class="form-group">
+                              <input name="package" class="custom-radio" type="radio" id="radio_3" name="my-radio" value="Advance" <?php if($res[0]['package']=="Advance"){echo "checked";} ?>>
+                              <label for="radio_3">
+                              <span class="dot"></span> <span class="package-type">Advance</span> $44.00
+                            </label>
+                            </div>
+                          </div>
+                          <div class="payment-method">
+                            <a href="#" class="credit active"><i class="fas fa-credit-card"></i>Credit Card</a>
+                            <a href="#" class="paypal"><i class="fab fa-cc-paypal"></i>PayPal</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-9 offset-md-3">
+                        <div class="form-group terms">
+                          <input class="custom-radio" type="checkbox" id="radio-4" name="termsandcondition">
+                          <label for="radio-4">
+                            <span class="dot"></span> You accepts our <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-3 col-form-label"></label>
+                      <div class="col-md-9">
+                        <button  name="btnPostJob" type="submit" class="button">Save Job</button>
+                        
+                      </div>
                     </div>
                   </div>
-                </div>
+                </form>
               </div>
               <div class="dashboard-sidebar">
                 <div class="company-info">
@@ -345,8 +552,8 @@
                     <li><i class="fas fa-briefcase"></i><a href="employer-dashboard-manage-job.php">Manage Jobs</a></li>
                     <li><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.php">Manage Candidates</a></li>
                     <li><i class="fas fa-heart"></i><a href="#">Shortlisted Resumes</a></li>
-                    <li><i class="fas fa-plus-square"></i><a href="employer-dashboard-post-job.php">Post New Job</a></li>
-                    <li class="active"><i class="fas fa-comment"></i><a href="employer-dashboard-message.html">Message</a></li>
+                    <li class="active"><i class="fas fa-plus-square"></i><a href="employer-dashboard-post-job.php">Post New Job</a></li>
+                    <li><i class="fas fa-comment"></i><a href="employer-dashboard-message.html">Message</a></li>
                     <li><i class="fas fa-calculator"></i><a href="employer-dashboard-pricing.html">Pricing Plans</a></li>
                   </ul>
                   <ul class="delete">
@@ -538,6 +745,7 @@
     <script src="assets/js/tinymce.min.js"></script>
     <script src="assets/js/slick.min.js"></script>
     <script src="assets/js/jquery.ajaxchimp.min.js"></script>
+    <script src="assets/js/html5-simple-date-input-polyfill.min.js"></script>
 
     <script src="js/custom.js"></script>
     <script src="dashboard/js/dashboard.js"></script>
@@ -546,5 +754,6 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC87gjXWLqrHuLKR0CTV5jNLdP4pEHMhmg"></script>
     <script src="js/map.js"></script>
+
   </body>
 </html>

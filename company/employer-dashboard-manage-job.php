@@ -150,7 +150,7 @@ $result = $db->getResult();
                       <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
                       <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
                       <li class="menu-item"><a  href="job-details.php">Job Details</a></li>
-                      <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
+                      <li class="menu-item"><a  href="employer-dashboard-post-job.php">Post Job</a></li>
                     </ul>
                   </li>
                   <li class="menu-item dropdown">
@@ -182,7 +182,7 @@ $result = $db->getResult();
                         </ul>
                   </li>
                   <li class="menu-item"><a href="contact.html">Contact Us</a></li>
-                  <li class="menu-item post-job"><a href="post-job.html"><i class="fas fa-plus"></i>Post a Job</a></li>
+                  <li class="menu-item post-job"><a href="employer-dashboard-post-job.php"><i class="fas fa-plus"></i>Post a Job</a></li>
                 </ul>
               </div>
             </nav>
@@ -258,7 +258,7 @@ $result = $db->getResult();
                         <td class="action">
                           <a href="employer-dashboard-manage-candidate.php?job_id=<?php echo $row['id']  ?>"  title="Students"><i data-feather="user"></i></a>
                           <a href="job-details.php?job_id=<?php echo $row['id']  ?>" class="preview" title="Preview"><i data-feather="eye"></i></a>
-                          <a href="#" class="edit" title="Edit"><i data-feather="edit"></i></a>
+                          <a href="employer-dashboard-edit-job.php?job_id=<?php echo $row['id']  ?>" class="edit" title="Edit"><i data-feather="edit"></i></a>
                           <a href="#" class="remove" title="Delete"><i data-feather="trash-2"></i></a>
                         </td>
                       </tr>
@@ -363,7 +363,7 @@ $result = $db->getResult();
               <div class="call-to-action-button">
                 <a href="add-resume.php" class="button">Add Resume</a>
                 <span>Or</span>
-                <a href="post-job.html" class="button">Post A Job</a>
+                <a href="employer-dashboard-post-job.php" class="button">Post A Job</a>
               </div>
             </div>
           </div>
