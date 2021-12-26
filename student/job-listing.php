@@ -23,7 +23,7 @@ ob_start();
       $data = array(
         'student_id' => $id,
         'job_id' => $job_id,
-        'status' => "applied"
+        'status' => "Applied"
       );
       if($db->insert('student_job', $data)){
         header("location: job-listing.php");

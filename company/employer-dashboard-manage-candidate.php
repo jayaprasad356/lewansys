@@ -9,14 +9,23 @@ $id = $_SESSION['id'];
     header("location:login.php");
   }
   $job_id = $_GET['job_id'];
-$sql = "SELECT *,sj.student_id AS id from student s INNER JOIN student_job sj on s.id = sj.student_id WHERE sj.job_id = $job_id";
+$sql = "SELECT *,sj.student_id AS id,sj.status AS job_status from student s INNER JOIN student_job sj on s.id = sj.student_id WHERE sj.job_id = $job_id";
 $db->sql($sql);
 $result = $db->getResult();
 $sql = "SELECT * FROM company WHERE id = $id";
 $db->sql($sql);
 $res = $db->getResult();
 
+if (isset($_POST['btnStatus']))
+{
+  $job_id = $db->escapeString($_POST['job_id']);
+  $student_id = $db->escapeString($_POST['student_id']);
+  $job_status = $db->escapeString($_POST['job_status']);
+  $sql = "UPDATE student_job SET status = '$job_status' WHERE job_id = '" . $job_id . "' AND student_id = '" . $student_id . "'";
+  $db->sql($sql);
+  header("location: employer-dashboard-manage-candidate.php?job_id=".$job_id);
 
+}
 
 ?>
 <!doctype html>
@@ -120,17 +129,17 @@ $res = $db->getResult();
                   <div class="account-card">
                     <div class="header-top-account-info">
                       <a href="#" class="account-thumb">
-                        <img src="images/account/thumb-1.jpg" class="img-fluid" alt="">
+                        <img src="../<?php echo $res[0]['profile'] ?>" class="img-fluid" alt="">
                       </a>
                       <div class="account-body">
-                        <h5><a href="#">Robert Chavez</a></h5>
-                        <span class="mail">chavez@domain.com</span>
+                        <h5><a id='profilename' href="#"><?php echo $res[0]['username'] ?> </a></h5>
+                        <span class="mail"><?php echo $res[0]['email'] ?></span>
                       </div>
                     </div>
                     <ul class="account-item-list">
                       <li><a href="#"><span class="ti-user"></span>Account</a></li>
                       <li><a href="#"><span class="ti-settings"></span>Settings</a></li>
-                      <li><a href="#"><span class="ti-power-off"></span>Log Out</a></li>
+                      <li><a href="logout.php"><span class="ti-power-off"></span>Log Out</a></li>
                     </ul>
                   </div>
                 </div>
@@ -177,7 +186,7 @@ $res = $db->getResult();
                     <ul class="dropdown-menu">
                           <li class="menu-item"><a href="employer-dashboard.php">Employer Dashboard</a></li>
                           <li class="menu-item"><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
-                          <li class="menu-item"><a href="employer-dashboard-manage-candidate.php">Manage Candidate</a></li>
+                          <!-- <li class="menu-item"><a href="employer-dashboard-manage-candidate.php">Manage Candidate</a></li> -->
                           <li class="menu-item"><a href="employer-dashboard-manage-job.php">Manage Job</a></li>
                           <li class="menu-item"><a href="employer-dashboard-message.html">Dashboard Message</a></li>
                           <li class="menu-item"><a href="employer-dashboard-pricing.html">Dashboard Pricing</a></li>
@@ -254,11 +263,28 @@ $res = $db->getResult();
                             </div>
                           </div>
                         </td>
-                        <td class="status"><i data-feather="check-circle"></i><?php echo $row['status']  ?></td>
+                        <td class="status">
+                              
+                              <form method="post" enctype="multipart/form-data" >
+                              <select name="job_status" class="form-control">
+                                <option <?php if($row['job_status']=="Applied"){echo "selected";} ?>>Applied</option>
+                                <option <?php if($row['job_status']=="Pending"){echo "selected";} ?>>Pending</option>
+                                <option <?php if($row['job_status']=="Shortlisted"){echo "selected";} ?>>Shortlisted</option>
+                                <option <?php if($row['job_status']=="Selected"){echo "selected";} ?>>Selected</option>
+                                <option <?php if($row['job_status']=="Rejected"){echo "selected";} ?>>Rejected</option>
+                                
+                              </select>
+                                <input hidden name="student_id" type="text" value="<?php echo $row['id']  ?>">
+                                <input hidden name="job_id" type="text" value="<?php echo $job_id ?>">
+                                <button  name="btnStatus" type="submit" class="button">Update</button>
+                              </form>
+                              
+                              
+                        </td>
                         <td class="action">
-                          <a href="#" class="download"><i data-feather="download"></i></a>
-                          <a href="#" class="inbox"><i data-feather="mail"></i></a>
-                          <a href="#" class="remove"><i data-feather="trash-2"></i></a>
+                          <a href="<?php echo DOMAIN_URL . $row['cv_file']  ?>" class="download"><i data-feather="download"></i></a>
+                          <!-- <a href="#" class="inbox"><i data-feather="mail"></i></a>
+                          <a href="#" class="remove"><i data-feather="trash-2"></i></a> -->
                         </td>
                       </tr>
                       <?php }?>
@@ -307,8 +333,8 @@ $res = $db->getResult();
                     <li><i class="fas fa-home"></i><a href="employer-dashboard.php">Dashboard</a></li>
                     <li><i class="fas fa-user"></i><a href="employer-dashboard-edit-profile.php">Edit Profile</a></li>
                     <li><i class="fas fa-briefcase"></i><a href="employer-dashboard-manage-job.php">Manage Jobs</a></li>
-                    <li class="active"><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.php">Manage Candidates</a></li>
-                    <li><i class="fas fa-heart"></i><a href="#">Shortlisted Resumes</a></li>
+                    <!-- <li class="active"><i class="fas fa-users"></i><a href="employer-dashboard-manage-candidate.php">Manage Candidates</a></li> -->
+                    <!-- <li><i class="fas fa-heart"></i><a href="#">Shortlisted Resumes</a></li> -->
                     <li><i class="fas fa-plus-square"></i><a href="employer-dashboard-post-job.php">Post New Job</a></li>
                     <li><i class="fas fa-comment"></i><a href="employer-dashboard-message.html">Message</a></li>
                     <li><i class="fas fa-calculator"></i><a href="employer-dashboard-pricing.html">Pricing Plans</a></li>
