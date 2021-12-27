@@ -1,3 +1,20 @@
+<?php
+session_start();
+ob_start();
+include_once('../includes/crud.php');
+$db = new Database();
+$db->connect();
+$id = $_SESSION['id'];
+$job_id = $_GET['job_id'];
+$sql = "SELECT *,jobs.id AS id
+FROM jobs
+LEFT JOIN company
+ON jobs.company_id = company.id WHERE jobs.id = $job_id ";
+$db->sql($sql);
+$res = $db->getResult();
+
+  
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -108,7 +125,7 @@
                     <ul class="account-item-list">
                       <li><a href="#"><span class="ti-user"></span>Account</a></li>
                       <li><a href="#"><span class="ti-settings"></span>Settings</a></li>
-                      <li><a href="#"><span class="ti-power-off"></span>Log Out</a></li>
+                      <li><a href="logout.php"><span class="ti-power-off"></span>Log Out</a></li>
                     </ul>
                   </div>
                 </div>
@@ -131,7 +148,7 @@
                       <li class="menu-item"><a  href="job-listing.php">Job Listing</a></li>
                       <li class="menu-item"><a  href="job-listing-with-map.html">Job Listing With Map</a></li>
                       <li class="menu-item"><a  href="job-details.php">Job Details</a></li>
-                      <li class="menu-item"><a  href="post-job.html">Post Job</a></li>
+                      <li class="menu-item"><a  href="employer-dashboard-post-job.php">Post Job</a></li>
                     </ul>
                   </li> -->
                  <!--  <li class="menu-item dropdown">
@@ -202,7 +219,7 @@
                     </ul>
                   </li> -->
                   <li class="menu-item"><a href="contact.html">Contact Us</a></li>
-                <!--   <li class="menu-item post-job"><a href="post-job.html"><i class="fas fa-plus"></i>Post a Job</a></li> -->
+                <!--   <li class="menu-item post-job"><a href="employer-dashboard-post-job.php"><i class="fas fa-plus"></i>Post a Job</a></li> -->
                 </ul>
               </div>
             </nav>
@@ -223,11 +240,11 @@
                     <img src="images/job/company-logo-1.png" class="img-fluid" alt="">
                   </div>
                   <div class="title-body">
-                    <h4>Designer Required</h4>
+                    <h4><?php echo $res[0]['job_title'] ?></h4>
                     <div class="info">
-                      <span class="company"><a href="#"><i data-feather="briefcase"></i>Theoreo</a></span>
-                      <span class="office-location"><a href="#"><i data-feather="map-pin"></i>New York City</a></span>
-                      <span class="job-type full-time"><a href="#"><i data-feather="clock"></i>Full Time</a></span>
+                      <span class="company"><a href="#"><i data-feather="briefcase"></i><?php echo $res[0]['job_location']  ?></a></span>
+                      <span class="office-location"><a href="#"><i data-feather="map-pin"></i><?php echo $res[0]['job_location']  ?></a></span>
+                      <span class="job-type full-time"><a href="#"><i data-feather="clock"></i><?php echo $res[0]['company_name']  ?></a></span>
                     </div>
                   </div>
                 </div>
@@ -241,38 +258,45 @@
                   <div class="col-xl-7 col-lg-8">
                     <div class="description details-section">
                       <h4><i data-feather="align-left"></i>Job Description</h4>
-                      <p>Combined with a handful of model sentence structures, to generate lorem Ipsum which  It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including.</p>
-                      <p>Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable </p>
+                      <p><?php echo $res[0]['job_description'] ?></p>
                     </div>
                     <div class="responsibilities details-section">
                       <h4><i data-feather="zap"></i>Responsibilities</h4>
-                      <ul>
+                      <p><?php echo $res[0]['job_description'] ?></p>
+                      <!-- <ul>
                         <li>The applicants should have experience in the following areas</li>
                         <li>Skills on M.S Word, Excel, and Integrated Accounting package i.e. Software</li>
                         <li>Have sound knowledge of commercial activities.</li>
                         <li>Should have vast knowledge in IAS/ IFRS, Company Act, Income Tax, VAT.</li>
                         <li>Good verbal and written communication skills.</li>
                         <li>Leadership, analytical, and problem-solving abilities.</li>
-                      </ul>
+                      </ul> -->
                     </div>
                     <div class="edication-and-experience details-section">
-                      <h4><i data-feather="book"></i>Education + Experience</h4>
-                      <ul>
+                      <h4><i data-feather="book"></i>Education</h4>
+                      <p><?php echo $res[0]['education'] ?></p>
+                      <!-- <ul>
                         <li>M.Com (Accounting) / M.B.S / M.B.A under National University with CA course complete.</li>
                         <li>M.S (Statistics) any Public University / National University.</li>
                         <li>Masters of library science any Public University.</li>
                         <li>2 to 3 year(s) Experiance</li>
                         <li>Females candidate are discourage to apply.</li>
-                      </ul>
+                      </ul> -->
+                    </div>
+                    <div class="edication-and-experience details-section">
+                      <h4><i data-feather="book"></i>Experience</h4>
+                      <p><?php echo $res[0]['job_experience'] ?></p>
+                      <!-- <ul>
+                        <li>M.Com (Accounting) / M.B.S / M.B.A under National University with CA course complete.</li>
+                        <li>M.S (Statistics) any Public University / National University.</li>
+                        <li>Masters of library science any Public University.</li>
+                        <li>2 to 3 year(s) Experiance</li>
+                        <li>Females candidate are discourage to apply.</li>
+                      </ul> -->
                     </div>
                     <div class="other-benifit details-section">
                       <h4><i data-feather="gift"></i>Other Benefits</h4>
-                      <ul>
-                        <li>Health and life insurance </li>
-                        <li>2 days of weekend </li>
-                        <li>2 annual performanc Bonuses</li>
-                        <li>Lunch &amp; Snacks</li>
-                      </ul>
+                      <p><?php echo $res[0]['other_benefits'] ?></p>
                     </div>
                     <div class="job-apply-buttons">
                       <a href="#" class="apply"  data-toggle="modal" data-target="#apply-popup-id">Apply Online</a>
@@ -284,14 +308,14 @@
                       <div class="job-summary">
                         <h4>Job Summary</h4>
                         <ul>
-                          <li><span>Published on:</span> Oct 6,  2020</li>
-                          <li><span>Vacancy:</span> 08</li>
-                          <li><span>Employment Status:</span> Full-time</li>
-                          <li><span>Experience:</span> 2 to 3 year(s)</li>
-                          <li><span>Job Location:</span> New ork City</li>
-                          <li><span>Salary:</span> $32k - $36k</li>
-                          <li><span>Gender:</span> Any</li>
-                          <li><span>Application Deadline:</span> Oct 15,  2020</li>
+                          <!-- <li><span>Published on:</span> Oct 6,  2020</li> -->
+                          <li><span>Vacancy:</span> <?php echo $res[0]['job_vacancy'] ?></li>
+                          <li><span>Employment Status:</span> <?php echo $res[0]['job_type'] ?></li>
+                          <li><span>Experience:</span> <?php echo $res[0]['job_experience'] ?></li>
+                          <li><span>Job Location:</span> <?php echo $res[0]['job_location'] ?></li>
+                          <li><span>Salary:</span> <?php echo $res[0]['job_salary_range'] ?></li>
+                          <li><span>Gender:</span> <?php echo $res[0]['job_gender'] ?></li>
+                          <li><span>Application Deadline:</span> <?php echo $res[0]['job_last_date'] ?></li>
                         </ul>
                       </div>
                       <div class="share-job-post">
@@ -323,11 +347,11 @@
                   <div class="company-information details-section">
                     <h4><i data-feather="briefcase"></i>About the Company</h4>
                     <ul>
-                      <li><span>Company Name:</span> The Oreo Company Ltd.</li>
-                      <li><span>Address:</span> Queens, NY 11375 USA</li>
-                      <li><span>Website:</span> <a href="#">www.theoreoltd.com</a></li>
+                      <li><span>Company Name:</span> <?php echo $res[0]['company_name'] ?></li>
+                      <li><span>Address:</span> <?php echo $res[0]['address'] ?></li>
+                      <li><span>Website:</span> <a href="#"><?php echo $res[0]['google'] ?></a></li>
                       <li><span>Company Profile:</span></li>
-                      <li>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum looked up one of the more obscure Latin words, consectetur.</li>
+                      <li><?php echo $res[0]['about_us'] ?></li>
                     </ul>
                   </div>
                 </div>
@@ -533,7 +557,7 @@
               <div class="call-to-action-button">
                 <a href="add-resume.php" class="button">Add Resume</a>
                 <span>Or</span>
-                <a href="post-job.html" class="button">Post A Job</a>
+                <a href="employer-dashboard-post-job.php" class="button">Post A Job</a>
               </div>
             </div>
           </div>

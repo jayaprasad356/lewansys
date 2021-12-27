@@ -63,6 +63,18 @@ if (isset($_GET['operation']))
     $db->getResult();
 
   }
+  else if ($_GET['operation'] == 'professional'){
+    $prodel = $_GET['id'];
+    $sql = "DELETE FROM stu_prof WHERE id = $prodel";
+    $db->sql($sql);
+    $db->getResult();
+  }
+  else if ($_GET['operation'] == 'portfolio'){
+    $portfo = $_GET['id'];
+    $sql = "DELETE FROM stu_port WHERE id = $portfo";
+    $db->sql($sql);
+    $db->getResult();
+  }
   else {
     $workexpdel = $_GET['id'];
     $sql = "DELETE FROM stu_work_exp WHERE id = $workexpdel";
@@ -460,7 +472,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                     <ul class="account-item-list">
                       <li><a href="#"><span class="ti-user"></span>Account</a></li>
                       <li><a href="#"><span class="ti-settings"></span>Settings</a></li>
-                      <li><a href="#"><span class="ti-power-off"></span>Log Out</a></li>
+                      <li><a href="logout.php"><span class="ti-power-off"></span>Log Out</a></li>
                     </ul>
                   </div>
                 </div>
@@ -599,20 +611,18 @@ if (isset($_POST['btnUpdateCoverFile']))
               <div class="dashboard-content-wrapper">
               <form method="post" enctype="multipart/form-data" class="dashboard-form">
               <div class="download-resume dashboard-section">
+                <div class="row">
+                <input name="cvfile" type="file">
+                <button  name="btnUpdateCVFile" type="submit" class="button">Upload CV</button>
+
+                </div>
                 
-                  <div class="update-file">
-                    <input name="cvfile" type="file">Update CV <i data-feather="edit-2"></i>
-                  </div>
-                  <div class="update-file">
-                    <input name="coverfile" type="file">Update Cover Letter <i data-feather="edit-2"></i>
-                  </div>
-                  <div class="call-to-action-button">
-                  <button  name="btnUpdateCVFile" type="submit" class="button">Upload CV</button>
+                
+                </div>
+                <br>
+                <div class="row">
+                  <input name="coverfile" type="file">
                   <button  name="btnUpdateCoverFile" type="submit" class="button">Upload Cover</button>
-              </div>
-                  
-                  
-                  
                 </div>
               </form>
                 
@@ -620,10 +630,10 @@ if (isset($_POST['btnUpdateCoverFile']))
                   <div class="skill">
                     <label>Skills:</label>
                     <?php $skills = explode(",", $skill);
-                    foreach($skills as $skill) {
-                      $skill = trim($skill); ?>
+                    foreach($skills as $skill_list) {
+                      $skill_list = trim($skill_list); ?>
                     
-                      <a href="#"><?php echo  $skill ?></a>
+                      <a href="#"><?php echo  $skill_list ?></a>
                       <?php }?>
 
                     
@@ -648,11 +658,13 @@ if (isset($_POST['btnUpdateCoverFile']))
                                 <div class="form-group row">
                                   <label class="col-sm-3 col-form-label">Type Skills</label>
                                   <div class="col-sm-9">
-                                    <select name='skill[]' id='skills' class='form-control' placeholder='Enter the Skills' required multiple="multiple">
+                                    <input name="skill[]" type="text" class="form-control"  placeholder="Enter the Skills" value="<?php echo  $skill ?>" required>
+                                    
+                                    <!-- <select name='skill[]' id='skills' class='form-control' placeholder='Enter the Skills' required multiple="multiple">
                                           <option value='Android'>Android</option>
                                           <option value='IOS'>IOS</option>
                                           <option value='WEB'>WEB</option>
-                                    </select>
+                                    </select> -->
                                   </div>
                                 </div>
                                 <!-- <div class="form-group row">
@@ -1298,6 +1310,10 @@ if (isset($_POST['btnUpdateCoverFile']))
                     
                   </div>
                   <br>
+                  <a href="edit-resume.php?operation=professional&id=<?php echo $row['id']?> " class="delete">
+                    <i class="fas fa-trash-alt"></i>
+                    </a>
+                  <br>
                   <br>
                   <?php } ?>
                   <!-- Button trigger modal -->
@@ -1550,6 +1566,9 @@ if (isset($_POST['btnUpdateCoverFile']))
                       <div class="overlay">
                         <!-- <a href="#"><i data-feather="eye"></i></a> -->
                         <a target="_blank" href="<?php echo $row['port_link'] ?>"><i data-feather="link"></i></a>
+                        <a href="edit-resume.php?operation=portfolio&id=<?php echo $row['id']?> " class="delete">
+                    <i class="fas fa-trash-alt"></i>
+                    </a>
                       </div>
                     </div>
                     <?php }?>
@@ -2029,7 +2048,7 @@ if (isset($_POST['btnUpdateCoverFile']))
       </div>
     </footer>
     <!-- Footer End -->
-
+<!-- 
     <script>
        
         $('#skills').select2({
@@ -2080,7 +2099,7 @@ if (isset($_POST['btnUpdateCoverFile']))
             } */
         });
         
-    </script>
+    </script> -->
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

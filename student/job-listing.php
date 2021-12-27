@@ -175,7 +175,7 @@ ob_start();
                     <ul class="account-item-list">
                       <li><a href="#"><span class="ti-user"></span>Account</a></li>
                       <li><a href="#"><span class="ti-settings"></span>Settings</a></li>
-                      <li><a href="#"><span class="ti-power-off"></span>Log Out</a></li>
+                      <li><a href="logout.php"><span class="ti-power-off"></span>Log Out</a></li>
                     </ul>
                   </div>
                 </div>
@@ -348,7 +348,7 @@ ob_start();
                     </div>
                     <div class="body">
                       <div class="content">
-                        <h4><a href="job-details.php"><?php echo $row['job_title']  ?></a></h4>
+                        <h4><a href="job-details.php?job_id=<?php echo $row['id']  ?>"><?php echo $row['job_title']  ?></a></h4>
                         <div class="info">
                           <span class="company"><a href="#"><i data-feather="briefcase"></i><?php echo $row['company_name']  ?></a></span>
                           <span class="office-location"><a href="#"><i data-feather="map-pin"></i><?php echo $row['job_location']  ?></a></span>

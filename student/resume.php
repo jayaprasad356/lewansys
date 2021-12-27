@@ -26,6 +26,8 @@ $gender = $res[0]['gender'];
 $age = $res[0]['age'];
 $qualification = $res[0]['qualification'];
 $skill = $res[0]['skill'];
+$cv_file = $res[0]['cv_file'];
+$cover_letter = $res[0]['cover_letter'];
 
 
 
@@ -167,7 +169,7 @@ $github = $res[0]['github'];
                     <ul class="account-item-list">
                       <li><a href="#"><span class="ti-user"></span>Account</a></li>
                       <li><a href="#"><span class="ti-settings"></span>Settings</a></li>
-                      <li><a href="#"><span class="ti-power-off"></span>Log Out</a></li>
+                      <li><a href="logout.php"><span class="ti-power-off"></span>Log Out</a></li>
                     </ul>
                   </div>
                 </div>
@@ -305,8 +307,8 @@ $github = $res[0]['github'];
             <div class="dashboard-container">
               <div class="dashboard-content-wrapper">
                 <div class="download-resume dashboard-section">
-                  <a href="#">Download CV<i data-feather="download"></i></a>
-                  <a href="#">Download Cover Letter<i data-feather="download"></i></a>
+                  <a target="_blank" href="../<?php echo  $cv_file ?>">Download CV<i data-feather="download"></i></a>
+                  <a target="_blank" href="../<?php echo  $cover_letter ?>">Download Cover Letter<i data-feather="download"></i></a>
                 </div>
                 
                 <div class="skill-and-profile dashboard-section">

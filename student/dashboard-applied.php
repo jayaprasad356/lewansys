@@ -8,7 +8,7 @@ $id = $_SESSION['id'];
 include_once('../includes/crud.php');
 $db = new Database();
 $db->connect();
-$sql = "SELECT *,b.id AS id from jobs j INNER JOIN company c on j.company_id = c.id INNER JOIN student_job b ON b.job_id = j.id WHERE b.student_id = $id";
+$sql = "SELECT *,b.id AS id,b.status AS job_status from jobs j INNER JOIN company c on j.company_id = c.id INNER JOIN student_job b ON b.job_id = j.id WHERE b.student_id = $id";
 $db->sql($sql);
 $result = $db->getResult();
 
@@ -141,7 +141,7 @@ $sql = "SELECT COUNT(*) AS count
                     <ul class="account-item-list">
                       <li><a href="#"><span class="ti-user"></span>Account</a></li>
                       <li><a href="#"><span class="ti-settings"></span>Settings</a></li>
-                      <li><a href="#"><span class="ti-power-off"></span>Log Out</a></li>
+                      <li><a href="logout.php"><span class="ti-power-off"></span>Log Out</a></li>
                     </ul>
                   </div>
                 </div>
@@ -304,9 +304,10 @@ $sql = "SELECT COUNT(*) AS count
                             <a href="#" class="button">Apply Now</a>
                             <a href="#" class="favourite"><i data-feather="heart"></i></a>
                           </div>
-                          <a href="dashboard-applied.php?operation=remove&id=<?php echo $row['id']?>" class="bookmark-remove"><i class="fas fa-times"></i></a>
+                          <!-- <a href="dashboard-applied.php?operation=remove&id=<?php echo $row['id']?>" class="bookmark-remove"><i class="fas fa-times"></i></a> -->
                           <p class="deadline"><?php echo $row['job_last_date']  ?></p>
                         </div>
+                        <h4><a href="#"><?php echo $row['job_status']  ?></a></h4>
                       </div>
                     </div>
                     <?php } ?>
