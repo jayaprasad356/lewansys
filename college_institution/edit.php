@@ -8,7 +8,7 @@ $db = new Database();
 $db->connect();
 $db->sql("SET NAMES 'utf8'");
 
-$id = $_SESSION['id'];
+$id = $_SESSION['college_institution_id'];
 if (!isset($id)) {
   header("location:../login/login.php");
 }
@@ -434,7 +434,7 @@ if (isset($_POST['btnUpdateCoverFile']))
                     <ul class="account-item-list">
                       <li><a href="#"><span class="ti-user"></span>Account</a></li>
                       <li><a href="#"><span class="ti-settings"></span>Settings</a></li>
-                      <li><a href="#"><span class="ti-power-off"></span>Log Out</a></li>
+                      <li><a href="logout.php"><span class="ti-power-off"></span>Log Out</a></li>
                     </ul>
                   </div>
                 </div>

@@ -4,7 +4,7 @@ ob_start();
 include_once('../includes/crud.php');
 $db = new Database();
 $db->connect();
-$id = $_SESSION['id'];
+$id = $_SESSION['college_institution_id'];
   if (!isset($id)) {
     header("location:../login/login.php");
   }
@@ -135,7 +135,7 @@ if (isset($_GET['operation'])){
                     <ul class="account-item-list">
                       <li><a href="#"><span class="ti-user"></span>Account</a></li>
                       <li><a href="#"><span class="ti-settings"></span>Settings</a></li>
-                      <li><a href="#"><span class="ti-power-off"></span>Log Out</a></li>
+                      <li><a href="logout.php"><span class="ti-power-off"></span>Log Out</a></li>
                     </ul>
                   </div>
                 </div>
@@ -167,7 +167,7 @@ if (isset($_GET['operation'])){
                         <a href="#" data-toggle="dropdown"  class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Dashboard</a>
                         <ul class="dropdown-menu">
                           <li class="menu-item"><a  href="collage-dashboard.php">Dashboard</a></li>
-                          <li class="menu-item"><a  href="dashboard-edit-profile.php">Edit Profile</a></li>
+                          <li class="menu-item"><a  href="collage-dashboard-edit-profile.php">Edit Profile</a></li>
                           <li class="menu-item"><a  href="employer-dashboard-manage-candidate.php">Manage Canditates</a></li>
                           <li class="menu-item"><a  href="job-listing.php">Jobs</a></li>
                           <li class="menu-item"><a  href="dashboard-bookmark.php">Bookmarked</a></li>

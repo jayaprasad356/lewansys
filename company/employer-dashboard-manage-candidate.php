@@ -4,7 +4,7 @@ ob_start();
 include_once('../includes/crud.php');
 $db = new Database();
 $db->connect();
-$id = $_SESSION['id'];
+$id = $_SESSION['company_id'];
   if (!isset($id)) {
     header("location:../login/login.php");
   }
@@ -270,6 +270,7 @@ if (isset($_POST['btnStatus']))
                                 <option <?php if($row['job_status']=="Applied"){echo "selected";} ?>>Applied</option>
                                 <option <?php if($row['job_status']=="Pending"){echo "selected";} ?>>Pending</option>
                                 <option <?php if($row['job_status']=="Shortlisted"){echo "selected";} ?>>Shortlisted</option>
+                                <option <?php if($row['job_status']=="Call for interview"){echo "selected";} ?>>Call for interview</option>
                                 <option <?php if($row['job_status']=="Selected"){echo "selected";} ?>>Selected</option>
                                 <option <?php if($row['job_status']=="Rejected"){echo "selected";} ?>>Rejected</option>
                                 

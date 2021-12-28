@@ -2,7 +2,7 @@
 //session_save_path("../temp");
 	session_start();	
 
-	unset($_SESSION['id']);
+	unset($_SESSION['student_id']);
 	unset($_SESSION['type']);
 	
 // 	session_destroy();

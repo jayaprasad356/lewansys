@@ -1,7 +1,7 @@
 <?php
 session_start();
 ob_start();
-$id = $_SESSION['id'];
+$id = $_SESSION['student_id'];
   if (!isset($id)) {
     header("location:../login/login.php");
   }
@@ -309,7 +309,19 @@ $sql = "SELECT COUNT(*) AS count
                         </div>
                         <h4><a href="#"><?php echo $row['job_status']  ?></a></h4>
                       </div>
+                      
                     </div>
+                    <?php
+                      if($row['refer_id'] != 0){
+                        $sql = "SELECT * FROM college_institution WHERE id = '" . $row['refer_id'] . "'";
+                        $db->sql($sql);
+                        $resclg = $db->getResult();
+                        ?>
+                        
+                        <p class="">Referred by <?php echo $resclg[0]['college_institution_name'] ?></p>
+                        <?php
+                      }?>
+                    
                     <?php } ?>
                     
                   </div>

@@ -4,7 +4,7 @@ ob_start();
 include_once('../includes/crud.php');
 $db = new Database();
 $db->connect();
-$id = $_SESSION['id'];
+$id = $_SESSION['student_id'];
 $job_id = $_GET['job_id'];
 $sql = "SELECT *,jobs.id AS id
 FROM jobs

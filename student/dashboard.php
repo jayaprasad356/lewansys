@@ -11,7 +11,7 @@ $db = new Database();
 $db->connect();
 $db->sql("SET NAMES 'utf8'");
 
-$id = $_SESSION['id'];
+$id = $_SESSION['student_id'];
 if (!isset($id)) {
   header("location:../login/login.php");
 }

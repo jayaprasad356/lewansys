@@ -11,13 +11,20 @@ $db = new Database();
 $db->connect();
 $db->sql("SET NAMES 'utf8'");
 
-$id = $_SESSION['id'];
+$id = $_SESSION['company_id'];
 if (!isset($id)) {
   header("location:../login/login.php");
 }
 $sql = "SELECT * FROM company WHERE id = $id";
     $db->sql($sql);
     $res = $db->getResult();
+
+$sql = "SELECT COUNT(*) AS count from student_job sj INNER JOIN jobs j on sj.job_id = j.id WHERE j.company_id = $id AND sj.status = 'Applied'";
+$db->sql($sql);
+$applycount = $db->getResult();
+$sql = "SELECT COUNT(*) AS count from student_job sj INNER JOIN jobs j on sj.job_id = j.id WHERE j.company_id = $id AND sj.status = 'Call for interview'";
+$db->sql($sql);
+$cfi = $db->getResult();
     
 
 
@@ -241,12 +248,12 @@ $sql = "SELECT * FROM company WHERE id = $id";
                   </div>
                   <div class="user-statistic">
                     <i data-feather="file-text"></i>
-                    <h3>123</h3>
+                    <h3><?PHP echo $applycount[0]['count'] ?></h3>
                     <span>Application Submit</span>
                   </div>
                   <div class="user-statistic">
                     <i data-feather="users"></i>
-                    <h3>32</h3>
+                    <h3><?PHP echo $cfi[0]['count'] ?></h3>
                     <span>Call for interview</span>
                   </div>
                 </div>

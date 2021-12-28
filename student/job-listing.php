@@ -13,7 +13,7 @@ ob_start();
   ON jobs.company_id = company.id";
   $db->sql($sql);
   $res = $db->getResult();
-  $id = $_SESSION['id'];
+  $id = $_SESSION['student_id'];
   if (!isset($id)) {
     header("location:../login/login.php");
   }

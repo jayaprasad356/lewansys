@@ -6,7 +6,7 @@ $db = new Database();
 $db->connect();
 $db->sql("SET NAMES 'utf8'");
 
-$id = $_SESSION['id'];
+$id = $_SESSION['company_id'];
 if (!isset($id)) {
   header("location:../login/login.php");
 }

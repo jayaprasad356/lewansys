@@ -1,7 +1,7 @@
 <?php
 session_start();
 ob_start();
-$id = $_SESSION['id'];
+$id = $_SESSION['student_id'];
   if (!isset($id)) {
     header("location:../login/login.php");
   }

@@ -4,7 +4,7 @@ ob_start();
 include_once('../includes/crud.php');
 $db = new Database();
 $db->connect();
-$id = $_SESSION['id'];
+$id = $_SESSION['company_id'];
 if (!isset($id)) {
   header("location:../login/login.php");
 }

@@ -12,20 +12,35 @@ if (isset($_POST['btnLogin'])) {
   if(($type == 'college') || ($type == 'institution')){
     $sql = "SELECT * FROM college_institution WHERE email = '" . $email . "' AND password = '" . $password . "' AND type = '" . $type . "'";
     $db->sql($sql);
+    $res = $db->getResult();
+    $_SESSION['college_institution_id'] = $res[0]['id'];
+    $_SESSION['college_institution_type'] = $res[0]['type'];
 
   }
-  else {
+  else if(($type == 'student')){
     $sql = "SELECT * FROM $type WHERE email = '" . $email . "' AND password = '" . $password . "'";
     $db->sql($sql);
+    $res = $db->getResult();
+    $_SESSION['student_id'] = $res[0]['id'];
+    $_SESSION['student_type'] = $res[0]['type'];
+
+  }
+  else if(($type == 'company')){
+    $sql = "SELECT * FROM $type WHERE email = '" . $email . "' AND password = '" . $password . "'";
+    $db->sql($sql);
+    $res = $db->getResult();
+    $_SESSION['company_id'] = $res[0]['id'];
+    $_SESSION['company_type'] = $res[0]['type'];
+
   }
   
-  $res = $db->getResult();
+  
+  
   $num = $db->numRows($res);
   $error = array();
 
   if ($num == 1) {
-    $_SESSION['id'] = $res[0]['id'];
-    $_SESSION['type'] = $res[0]['type'];
+    
     if(($type == 'company') ){
       header("location: ../company/employer-dashboard.php");
 
