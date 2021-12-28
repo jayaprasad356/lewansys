@@ -3,7 +3,7 @@ session_start();
 ob_start();
 $id = $_SESSION['id'];
   if (!isset($id)) {
-    header("location:login.php");
+    header("location:../login/login.php");
   }
 include_once('../includes/crud.php');
 $db = new Database();

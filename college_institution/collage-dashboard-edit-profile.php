@@ -11,7 +11,7 @@ $db->sql("SET NAMES 'utf8'");
 $id = $_SESSION['id'];
 $type = $_SESSION['type'];
 if (!isset($id)) {
-  header("location:login.php");
+  header("location:../login/login.php");
 }
 $sql = "SELECT * FROM college_institution WHERE id = $id AND type = '$type'";
 $db->sql($sql);

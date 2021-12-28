@@ -214,7 +214,7 @@ $res = $db->getResult();
                       <li class="menu-item"><a href="invoice.html">Invoice</a></li>
                       <li class="menu-item"><a href="terms-and-condition.html">Terms And Condition</a></li>
                       <li class="menu-item"><a href="404.html">404 Page</a></li>
-                      <li class="menu-item"><a href="login.php">Login</a></li>
+                      <li class="menu-item"><a href="../login/login.php">Login</a></li>
                       <li class="menu-item"><a href="register.php">Register</a></li>
                     </ul>
                   </li> -->

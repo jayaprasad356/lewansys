@@ -10,7 +10,7 @@ $db->sql("SET NAMES 'utf8'");
 
 $id = $_SESSION['id'];
 if (!isset($id)) {
-  header("location:login.php");
+  header("location:../login/login.php");
 }
 $student_id = $_GET['student_id'];
 $sql = "SELECT * FROM student WHERE id = $student_id";
@@ -535,21 +535,17 @@ if (isset($_POST['btnUpdateCoverFile']))
               <div class="dashboard-content-wrapper">
               <form method="post" enctype="multipart/form-data" class="dashboard-form">
               <div class="download-resume dashboard-section">
-                
-                  <div class="update-file">
-                    <input name="cvfile" type="file">Update CV <i data-feather="edit-2"></i>
-                  </div>
-                  <div class="update-file">
-                    <input name="coverfile" type="file">Update Cover Letter <i data-feather="edit-2"></i>
-                  </div>
-                  <div class="call-to-action-button">
-                  <button  name="btnUpdateCVFile" type="submit" class="button">Upload CV</button>
-                  <button  name="btnUpdateCoverFile" type="submit" class="button">Upload Cover</button>
-              </div>
-                  
-                  
-                  
+                <div class="row">
+                  <input name="cvfile" type="file">
+                  <button  name="cvfile" type="submit" class="button">Update CV</button>
                 </div>
+                <br>
+                <br>
+                <div class="row">
+                  <input name="coverfile" type="file">
+                  <button  name="coverfile" type="submit" class="button">Update Cover Letter</button>
+                </div>
+              </div>
               </form>
                 <div class="skill-and-profile dashboard-section">
                   <div class="skill">

@@ -3,7 +3,7 @@ session_start();
 ob_start();
 $id = $_SESSION['id'];
   if (!isset($id)) {
-    header("location:login.php");
+    header("location:../login/login.php");
   }
 include_once('../includes/crud.php');
 $db = new Database();
@@ -230,7 +230,7 @@ $sql = "SELECT COUNT(*) AS count
                       <li class="menu-item"><a href="invoice.html">Invoice</a></li>
                       <li class="menu-item"><a href="terms-and-condition.html">Terms And Condition</a></li>
                       <li class="menu-item"><a href="404.html">404 Page</a></li>
-                      <li class="menu-item"><a href="login.php">Login</a></li>
+                      <li class="menu-item"><a href="../login/login.php">Login</a></li>
                       <li class="menu-item"><a href="register.php">Register</a></li>
                     </ul>
                   </li> -->

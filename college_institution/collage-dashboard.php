@@ -13,7 +13,7 @@ $db->sql("SET NAMES 'utf8'");
 
 $id = $_SESSION['id'];
 if (!isset($id)) {
-  header("location:login.php");
+  header("location:../login/login.php");
 }
 $sql = "SELECT * FROM college_institution WHERE id = $id";
 $db->sql($sql);
@@ -224,7 +224,7 @@ $sql = "SELECT COUNT(*) AS count
         <div class="row">
           <div class="col-md-6">
             <div class="breadcrumb-area">
-              <h1>Collage/Institution Dashboard</h1>
+              <h1>Collage/Institution Dashboard <?php echo $id ?></h1>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="#">Home</a></li>

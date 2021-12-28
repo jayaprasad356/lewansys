@@ -16,7 +16,7 @@ ob_start();
   
   $id = $_SESSION['id'];
   if (!isset($id)) {
-    header("location:login.php");
+    header("location:../login/login.php");
   }
 
   $sql = "SELECT * FROM college_institution WHERE id = $id";

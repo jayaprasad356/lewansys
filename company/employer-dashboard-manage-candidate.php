@@ -6,7 +6,7 @@ $db = new Database();
 $db->connect();
 $id = $_SESSION['id'];
   if (!isset($id)) {
-    header("location:login.php");
+    header("location:../login/login.php");
   }
   $job_id = $_GET['job_id'];
 $sql = "SELECT *,sj.student_id AS id,sj.status AS job_status from student s INNER JOIN student_job sj on s.id = sj.student_id WHERE sj.job_id = $job_id";

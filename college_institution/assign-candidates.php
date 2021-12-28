@@ -8,7 +8,7 @@ $db = new Database();
 $db->connect();
 $id = $_SESSION['id'];
   if (!isset($id)) {
-    header("location:login.php");
+    header("location:../login/login.php");
   }
 $sql = "SELECT * FROM student WHERE college_institution = $id";
 $db->sql($sql);

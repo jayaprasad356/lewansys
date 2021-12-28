@@ -10,7 +10,7 @@ $db->sql("SET NAMES 'utf8'");
 
 $id = $_SESSION['id'];
 if (!isset($id)) {
-  header("location:login.php");
+  header("location:../login/login.php");
 }
 $student_id = $_GET['student_id'];
 $sql = "SELECT * FROM student WHERE id = $student_id";

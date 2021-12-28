@@ -8,7 +8,7 @@ $db->sql("SET NAMES 'utf8'");
 
 $id = $_SESSION['id'];
 if (!isset($id)) {
-  header("location:login.php");
+  header("location:../login/login.php");
 }
 $job_id = $_GET['job_id'];
 $sql = "SELECT * FROM jobs WHERE id = $job_id ";

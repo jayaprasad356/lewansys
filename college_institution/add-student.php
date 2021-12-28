@@ -10,14 +10,16 @@ $db->sql("SET NAMES 'utf8'");
 
 $id = $_SESSION['id'];
 if (!isset($id)) {
-  header("location:login.php");
+  header("location:../login/login.php");
 }
 $sql = "SELECT * FROM college_institution WHERE id = $id";
 $db->sql($sql);
 $res = $db->getResult();
 
 if (isset($_POST['btnAddStudent'])){
-  
+  $user_name = $db->escapeString($_POST['username']);
+  $email = $db->escapeString($_POST['email']);
+  $pwd = $db->escapeString($_POST['pwd']);
   $student_name = $db->escapeString($_POST['student_name']);
   $category = $db->escapeString($_POST['category']);
   $location = $db->escapeString($_POST['location']);
@@ -74,7 +76,7 @@ if (isset($_POST['btnAddStudent'])){
 
 
 
-$sql = "INSERT INTO student (name,college_institution,category,location,job_type,experience,salary_range,qualification,gender,dob,skill,about,spl_qualification,cv_file,cover_letter,pd_name,pd_father_name,pd_mother_name,pd_dob,pd_nationality,pd_sex,pd_address,facebook,twitter,google,linkedin,pinterest,instagram,behance,dribbble,github) VALUES('$student_name','$id','$category','$location','$job_type','$experience','$salary_range','$qualification','$gender','$dob','$skill','$about','$spl_qualification','$upload_image','$cover_letter','$pd_name','$pd_father_name','$pd_mother_name','$pd_dob','$pd_nationality','$pd_sex','$pd_address','$facebook','$twitter','$google','$linkedin','$pinterest','$instagram','$behance','$dribbble','$github')";
+$sql = "INSERT INTO student (username,email,password,name,college_institution,category,location,job_type,experience,salary_range,qualification,gender,dob,skill,about,spl_qualification,cv_file,cover_letter,pd_name,pd_father_name,pd_mother_name,pd_dob,pd_nationality,pd_sex,pd_address,facebook,twitter,google,linkedin,pinterest,instagram,behance,dribbble,github) VALUES('$user_name','$email','$pwd','$student_name','$id','$category','$location','$job_type','$experience','$salary_range','$qualification','$gender','$dob','$skill','$about','$spl_qualification','$upload_image','$cover_letter','$pd_name','$pd_father_name','$pd_mother_name','$pd_dob','$pd_nationality','$pd_sex','$pd_address','$facebook','$twitter','$google','$linkedin','$pinterest','$instagram','$behance','$dribbble','$github')";
 $db->sql($sql);
 $student_result = $db->getResult();
 if (!empty($student_result)) {
@@ -362,11 +364,31 @@ if ($student_result == 1) {
                 <form method="post" enctype="multipart/form-data" action="#" class="job-post-form">
                   <div class="basic-info-input">
                     <h4><i data-feather="plus-circle"></i>Add Student</h4>
+                  
+                    <div id="user-name" class="form-group row">
+                      <label class="col-md-3 col-form-label">User Name</label>
+                      <div class="col-md-9">
+                        <input id="uname" name="username" type="text" placeholder="Username" class="form-control" required>
+                      </div>
+                    </div>
+                    <div id="user-name" class="form-group row">
+                      <label class="col-md-3 col-form-label">Email</label>
+                      <div class="col-md-9">
+                        <input id="email" name="email" type="text" placeholder="Email Address" class="form-control" required>
+                      </div>
+                    </div>
+                    <div id="pass-word" class="form-group row">
+                      <label class="col-md-3 col-form-label">Password</label>
+                      <div class="col-md-9">
+                        <input id="pwd" name="pwd" type="password" placeholder="Password" class="form-control" required>
+                      </div>
+                    </div>
                     <div id="full-name" class="form-group row">
                       <label class="col-md-3 col-form-label">Full Name</label>
                       <div class="col-md-9">
                         <input name="student_name" type="text" class="form-control" placeholder="Your Name">
                       </div>
+                      
                     </div>
                     <div id="information" class="row">
                       <label class="col-md-3 col-form-label">Information</label>
